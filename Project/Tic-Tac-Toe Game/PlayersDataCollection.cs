@@ -23,12 +23,17 @@ namespace Tic_Tac_Toe_Game
             {
                 foreach (var playerData in playersData)
                 {
-                    yield return playerData;
+                    if (gameFinished)
+                    {
+                        yield break;
+                    }
+                    else
+                    {
+
+                        yield return playerData;
+                    }
                 }
-                if (gameFinished)
-                {
-                    yield break;
-                }
+                
             } while (true);
         }
     }
