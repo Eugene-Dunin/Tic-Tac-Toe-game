@@ -36,11 +36,14 @@ namespace Tic_Tac_Toe_Player
             LastName = lastName;
             Age = age;
         }
+<<<<<<< HEAD
 
         public static class AgeConstraints
         {
             public const int MinAge = 3;
             public const int MaxAge = 120;
         }
+=======
+>>>>>>> b3515b2062d73b8bf110195b385a37500084e28c
     }
 }
