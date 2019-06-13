@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace iTechArt.Tic_Tac_Toe_Game.Foundation.Figures
 {
-    interface IFigure
+    public interface IFigure
     {
         FigureType GetFigureType { get; }
     }

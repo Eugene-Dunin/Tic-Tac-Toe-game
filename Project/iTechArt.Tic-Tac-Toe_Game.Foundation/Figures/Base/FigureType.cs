@@ -1,5 +1,9 @@
-﻿enum FigureType
+﻿namespace iTechArt.Tic_Tac_Toe_Game.Foundation.Figures
 {
-    Circle,
-    Cross
+    public enum FigureType
+    {
+        None,
+        Circle,
+        Cross
+    }
 }
