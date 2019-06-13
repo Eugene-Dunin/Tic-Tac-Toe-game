@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iTechArt.Tic_Tac_Toe_Game.Foundation.Notification;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,10 +13,10 @@ namespace Tic_Tac_Toe_Game
 {
     public interface IUserInteractor
     {
-        Player CreatePlayer();
-        int SetPlayersCount();
-        int SetGameGridSize();
-        bool RepeatGame();
-        CellCoordinates GetCellCoordinates();
+        Player CreatePlayer(IMessageNotification messageNotification);
+        int SetPlayersCount(IMessageNotification messageNotification);
+        int SetGameGridSize(IMessageNotification messageNotification);
+        bool RepeatGame(IMessageNotification messageNotification);
+        CellCoordinates GetCellCoordinates(IMessageNotification messageNotification);
     }
 }
