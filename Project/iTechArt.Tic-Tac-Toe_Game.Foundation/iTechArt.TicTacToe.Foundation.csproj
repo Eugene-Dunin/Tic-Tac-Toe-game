@@ -51,7 +51,8 @@
     <Compile Include="GameLogic\Game.cs" />
     <Compile Include="GameLogic\IGameProgressManager.cs" />
     <Compile Include="GameLogic\IGameBoardStorage.cs" />
-    <Compile Include="Notification\INotificationManager.cs" />
+    <Compile Include="Notification\IGameNotificationManager.cs" />
+    <Compile Include="Notification\IMessageNotification.cs" />
     <Compile Include="PlayersDataManager\IPlayersDataManager.cs" />
     <Compile Include="Player\AgeConstrains.cs" />
     <Compile Include="Player\Player.cs" />

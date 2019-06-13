@@ -21,7 +21,7 @@ namespace Tic_Tac_Toe_Game
 
         private IPlayersDataManager playersDataManager;
         private IUserInteractor userInteractor;
-        private INotificationManager notificationManager;
+        private IGameNotificationManager notificationManager;
         private IFigureManager figureManager;
         private IGameBoardDisplay gameBoardDisplay;
         private IGameBoardStorage gameBoardStorage;
@@ -52,7 +52,7 @@ namespace Tic_Tac_Toe_Game
                 RegisterPlayers();
                 Gaming();
 
-                while (userInteractor.RepeatGame())
+                while (userInteractor.RepeatGame(notificationManager))
                 {
                     gameBoardStorage.ClearGameBoard();
                     Gaming();
@@ -63,12 +63,12 @@ namespace Tic_Tac_Toe_Game
 
         private void RegisterPlayers()
         {
-            int playersCount = userInteractor.SetPlayersCount();
+            int playersCount = userInteractor.SetPlayersCount(notificationManager);
             playersDataManager = gameServicesFactory.GetPlayersDataManager(playersCount);
             Player player;
             for (int playerNum = 1; playerNum <= playersCount; playerNum++)
             {
-                player = userInteractor.CreatePlayer();
+                player = userInteractor.CreatePlayer(notificationManager);
                 if (playersDataManager.IsUniquePlayer(player))
                 {
                     playersDataManager.Add(player, figureManager.GetFigure());
@@ -92,12 +92,11 @@ namespace Tic_Tac_Toe_Game
         private void DoStep(Figure figure)
         {
             bool isStepSucceed = false;
-
             do
             {
                 try
                 {
-                    gameBoardStorage.FillCell(figure, userInteractor.GetCellCoordinates());
+                    gameBoardStorage.FillCell(figure, userInteractor.GetCellCoordinates(notificationManager));
                     isStepSucceed = true;
                 }
                 catch (InvalidCastException ex)
