@@ -15,7 +15,7 @@ namespace Tic_Tac_Toe_Game.Foundation.Factories
     {
         public abstract IPlayersDataManager GetPlayersDataManager(int playersCount);
         public abstract IUserInteractor GetUserInteractor();
-        public abstract INotificationManager GetNotificationManager();
+        public abstract IGameNotificationManager GetNotificationManager();
         public abstract IFigureManager GetFigureManager();
         public abstract IGameBoardDisplay GameBoardDisplay();
         public abstract IGameBoardStorage GetGameBoard();
