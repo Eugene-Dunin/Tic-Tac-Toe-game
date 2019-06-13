@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iTechArt.Tic_Tac_Toe_Game.Foundation.Notification;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +10,9 @@ using Tic_Tac_Toe_Player;
 
 namespace Tic_Tac_Toe_Game.Notification
 {
-    public interface INotificationManager
+    public interface IGameNotificationManager: IMessageNotification
     {
         void ShowActivePlayer(KeyValuePair<Player, Figure> player);
         void ShowGameResults(GameFinishedEventArgs gameFinishedEventArgs);
-        void DisplayMessage(string message);
     }
 }
