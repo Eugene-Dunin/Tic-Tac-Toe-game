@@ -1,4 +1,5 @@
 ﻿using iTechArt.Tic_Tac_Toe_Game.Foundation.Figures;
+using iTechArt.TicTacToeGame.Foundation.GameBoard.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using TicTacToeGame.Foundation.GameLogic;
 
 namespace iTechArt.Tic_Tac_Toe_Game.Foundation.GameLogic
 {
-    class GameBoardStorage : IGameBoardStorage<BoardCell>
+    class GameBoardStorage : IGameBoardStorage
     {
         private const string FILL_CELL_EXCEPTION_MESS = "This cell is occupied";
         private const string BOARD_IS_NOT_CONTAIN_CELL_MESS = "This cell is not exist.";
@@ -56,7 +57,7 @@ namespace iTechArt.Tic_Tac_Toe_Game.Foundation.GameLogic
             }
         }
 
-        public IReadOnlyList<BoardCell> GetCellsData()
+        public IReadOnlyList<ICell> GetCellsData()
         {
             return cells;
         }

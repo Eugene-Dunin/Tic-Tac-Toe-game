@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace TicTacToeGame.Foundation.GameBoard.Base
 {
-    public interface IGameBoardStorage<TCell> where TCell : ICell
+    public interface IGameBoardStorage
     {
         void ClearGameBoard();
 
         void FillCell(IFigure figure, int row, int column);
 
-        IReadOnlyList<TCell> GetCellsData();
+        IReadOnlyList<ICell> GetCellsData();
     }
 }
