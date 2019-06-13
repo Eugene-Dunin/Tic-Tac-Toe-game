@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tic_Tac_Toe_Game.Foundation.Figures
+namespace iTechArt.Tic_Tac_Toe_Game.Foundation.Figures
 {
-    public abstract class Figure
+    interface IFigure
     {
-        public abstract void Draw();
+        FigureType GetFigureType { get; }
     }
 }
