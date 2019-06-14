@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace iTechArt.TicTacToe.Foundation.Figures
 {
-    class Cross : IFigure
+    public class Circle : IFigure
     {
-        public FigureType GetFigureType => FigureType.Cross;
+        public FigureType Type => FigureType.Circle;
     }
 }

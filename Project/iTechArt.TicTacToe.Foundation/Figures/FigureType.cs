@@ -2,7 +2,6 @@
 {
     public enum FigureType
     {
-        None,
         Circle,
         Cross
     }
