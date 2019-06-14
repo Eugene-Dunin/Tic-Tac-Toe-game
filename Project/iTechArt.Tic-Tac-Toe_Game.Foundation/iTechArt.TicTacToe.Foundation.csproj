@@ -41,23 +41,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Display\IGameBoardDisplay.cs" />
-    <Compile Include="Events\GameFinishedEventArgs.cs" />
-    <Compile Include="Events\IEventSource.cs" />
-    <Compile Include="Events\RepeatGameEventArgs.cs" />
-    <Compile Include="Factories\AbstractGameServicesFactory.cs" />
+    <Compile Include="Events\GameToUIArgs\GameFinishedEventArgs.cs" />
+    <Compile Include="Events\GameToUIArgs\GameNotificationEventArgs.cs" />
+    <Compile Include="Events\GameToUIArgs\GameResult.cs" />
+    <Compile Include="Events\GameToUIArgs\GameStepFinishedEventArgs.cs" />
+    <Compile Include="Events\UITiGameArgs\FillCellEventArgs.cs" />
+    <Compile Include="Events\UITiGameArgs\RegisterEventArgs.cs" />
+    <Compile Include="Events\Interfaces\IInGameDependenceEvents.cs" />
     <Compile Include="FigureManager\IFigureManager.cs" />
-    <Compile Include="Figures\Figure.cs" />
+    <Compile Include="Figures\Circle.cs" />
+    <Compile Include="Figures\Base\FigureType.cs" />
+    <Compile Include="Figures\Base\IFigure.cs" />
+    <Compile Include="Figures\Cross.cs" />
+    <Compile Include="GameBoard\BoardCell.cs" />
     <Compile Include="GameLogic\Game.cs" />
+    <Compile Include="GameBoard\GameBoardStorage.cs" />
+    <Compile Include="GameBoard\Base\ICell.cs" />
     <Compile Include="GameLogic\IGameProgressManager.cs" />
-    <Compile Include="GameLogic\IGameBoardStorage.cs" />
-    <Compile Include="Notification\IGameNotificationManager.cs" />
-    <Compile Include="Notification\IMessageNotification.cs" />
+    <Compile Include="GameBoard\Base\IGameBoardStorage.cs" />
     <Compile Include="PlayersDataManager\IPlayersDataManager.cs" />
     <Compile Include="Player\AgeConstrains.cs" />
     <Compile Include="Player\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserInteraction\IUserInteractor.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
