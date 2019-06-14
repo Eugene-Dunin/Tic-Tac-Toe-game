@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace iTechArt.TicTacToe.Foundation.Figures.Base
+namespace iTechArt.TicTacToe.Foundation.Interfaces
 {
-    public interface IFigure
+    public interface IFigureManager
     {
-        FigureType GetFigureType { get; }
+        IFigure GetFigure();
     }
 }

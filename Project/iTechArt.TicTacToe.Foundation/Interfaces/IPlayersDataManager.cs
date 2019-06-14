@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tic_Tac_Toe_Player;
 using iTechArt.TicTacToe.Foundation.Figures.Base;
+using iTechArt.TicTacToe.Foundation.Players;
 
-namespace iTechArt.TicTacToe.Foundation.PlayersDataManager
+namespace iTechArt.TicTacToe.Foundation.Interfaces
 {
     public interface IPlayersDataManager
     {

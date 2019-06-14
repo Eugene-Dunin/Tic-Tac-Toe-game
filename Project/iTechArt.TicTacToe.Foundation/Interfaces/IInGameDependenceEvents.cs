@@ -1,13 +1,11 @@
-﻿using iTechArt.Tic_Tac_Toe_Game.Foundation.Events;
-using iTechArt.Tic_Tac_Toe_Game.Foundation.Events.UITiGameArgs;
-using iTechArt.TicTacToe.Foundation.Events.UIToGameArgs;
+﻿using iTechArt.TicTacToe.Foundation.Events.UIToGameArgs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace iTechArt.TicTacToe.Foundation.Events.Interfaces
+namespace iTechArt.TicTacToe.Foundation.Interfaces
 {
     public interface IInGameDependenceEvents
     {
