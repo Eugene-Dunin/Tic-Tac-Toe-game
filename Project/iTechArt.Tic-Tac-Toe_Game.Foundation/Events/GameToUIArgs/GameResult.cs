@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tic_Tac_Toe_Game.Events
+namespace iTechArt.TicTacToe.Foundation.Events.GameToUIArgs
 {
-    public class RepeatGameEventArgs: EventArgs
+    public enum GameResult
     {
+        Draw,
+        Win,
+        Winners
     }
 }
