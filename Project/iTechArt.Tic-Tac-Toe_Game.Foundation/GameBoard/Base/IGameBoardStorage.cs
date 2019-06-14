@@ -1,13 +1,11 @@
-﻿using iTechArt.Tic_Tac_Toe_Game.Foundation.Figures;
-using iTechArt.Tic_Tac_Toe_Game.Foundation.GameLogic;
-using iTechArt.TicTacToeGame.Foundation.GameBoard.Base;
+﻿using iTechArt.TicTacToe.Foundation.Figures.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TicTacToeGame.Foundation.GameBoard.Base
+namespace iTechArt.TicTacToe.Foundation.GameBoard.Base
 {
     public interface IGameBoardStorage
     {

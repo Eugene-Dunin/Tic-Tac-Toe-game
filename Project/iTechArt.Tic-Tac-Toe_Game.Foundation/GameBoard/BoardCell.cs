@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using iTechArt.Tic_Tac_Toe_Game.Foundation.Figures;
-using iTechArt.TicTacToeGame.Foundation.GameBoard.Base;
+using iTechArt.TicTacToe.Foundation.Figures.Base;
+using iTechArt.TicTacToe.Foundation.GameBoard.Base;
 
-namespace iTechArt.Tic_Tac_Toe_Game.Foundation.GameLogic
+
+namespace iTechArt.TicTacToe.Foundation.GameBoard
 {
     class BoardCell : ICell
     {

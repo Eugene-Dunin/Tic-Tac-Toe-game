@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tic_Tac_Toe_Game.Foundation.Figures;
 using Tic_Tac_Toe_Player;
+using iTechArt.TicTacToe.Foundation.Figures.Base;
 
-namespace Tic_Tac_Toe_Game.Foundation.PlayersDataManager
+namespace iTechArt.TicTacToe.Foundation.PlayersDataManager
 {
     public interface IPlayersDataManager
     {
         bool IsUniquePlayer(Player player);
-        bool Add(Player key, Figure value);
+        bool Add(Player key, IFigure value);
         string GetPlayersList();
         void SetFirstPlayer(int ind);
-        IEnumerable<KeyValuePair<Player, Figure>> GetNextPlayer(bool gameFinished);
+        IEnumerable<KeyValuePair<Player, IFigure>> GetNextPlayer(bool gameFinished);
     }
 }

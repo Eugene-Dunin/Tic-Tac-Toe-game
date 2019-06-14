@@ -4,14 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tic_Tac_Toe_Player
+namespace iTechArt.TicTacToe.Foundation.Player
 {
     public class Player
     {
+        private int age;
+
         public string Name { get; private set; }
+
         public string LastName { get; private set; }
 
-        private int age;
+
         public int Age {
             get => age;
             private set {
@@ -29,6 +32,7 @@ namespace Tic_Tac_Toe_Player
                 }
             }
         }
+
 
         public Player(string name, string lastName, int age)
         {
