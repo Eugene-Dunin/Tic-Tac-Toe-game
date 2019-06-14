@@ -1,120 +1,163 @@
-﻿using System;
+﻿using iTechArt.TicTacToe.Foundation.Events.GameToUIArgs;
+using iTechArt.TicTacToe.Foundation.Events.Interfaces;
+using iTechArt.TicTacToe.Foundation.Events.UIToGameArgs;
+using iTechArt.TicTacToe.Foundation.FigureManager;
+using iTechArt.TicTacToe.Foundation.Figures.Base;
+using iTechArt.TicTacToe.Foundation.GameBoard.Base;
+using iTechArt.TicTacToe.Foundation.PlayersDataManager;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tic_Tac_Toe_Game.Events;
-using Tic_Tac_Toe_Game.FigureManager;
-using Tic_Tac_Toe_Game.Foundation.Display;
-using Tic_Tac_Toe_Game.Foundation.Factories;
-using Tic_Tac_Toe_Game.Foundation.Figures;
-using Tic_Tac_Toe_Game.Foundation.GameLogic;
-using Tic_Tac_Toe_Game.Foundation.PlayersDataManager;
-using Tic_Tac_Toe_Game.Notification;
-using Tic_Tac_Toe_Player;
 
-namespace Tic_Tac_Toe_Game
+
+namespace iTechArt.TicTacToe.Foundation.GameLogic
 {
     public class Game
     {
-        private readonly string INUNIQUE_PLAYER_NOTIFICATION_MESSAGE = "This player alredy exists.";
+        private const string BuildObjectExceptionMessage = "All parameters of constructor should have value.";
 
         private IPlayersDataManager playersDataManager;
-        private IUserInteractor userInteractor;
-        private IGameNotificationManager notificationManager;
+
         private IFigureManager figureManager;
-        private IGameBoardDisplay gameBoardDisplay;
+
         private IGameBoardStorage gameBoardStorage;
+
         private IGameProgressManager gameProgressManager;
 
-        private AbstractGameServicesFactory gameServicesFactory;
         private bool isGameFinished;
 
-        public Game(AbstractGameServicesFactory gameServicesFactory)
+        private StepArgs stepArgs;
+
+
+        public EventHandler<GameFinishedEventArgs> GameFinishedEvent;
+
+
+        public EventHandler<GameStepFinishedEventArgs> GameStepEvent;
+
+
+        public EventHandler<GameNotificationEventArgs> GameNotificationEvent;
+
+
+        public EventHandler<EventArgs> GetCellCoordinatesEvent;
+
+        public Game(IPlayersDataManager playersDataManager,
+            IFigureManager figureManager,
+            IGameBoardStorage gameBoardStorage,
+            IGameProgressManager gameProgressManager,
+            IInGameDependenceEvents inGameDependenceEvents)
         {
-            this.gameServicesFactory = gameServicesFactory;
+            this.playersDataManager = playersDataManager ?? throw new NullReferenceException(BuildObjectExceptionMessage);
 
-            userInteractor = gameServicesFactory.GetUserInteractor();
-            notificationManager = gameServicesFactory.GetNotificationManager();
-            figureManager = gameServicesFactory.GetFigureManager();
-            gameBoardStorage = gameServicesFactory.GetGameBoard();
+            this.figureManager = figureManager ?? throw new NullReferenceException(BuildObjectExceptionMessage); ;
 
-            gameProgressManager = gameServicesFactory.GetGameProgressManager();
-            gameProgressManager.EventReccipientsKeeper += OnGameFinished;
+            this.gameBoardStorage = gameBoardStorage ?? throw new NullReferenceException(BuildObjectExceptionMessage); ;
+
+            this.gameProgressManager = gameProgressManager ?? throw new NullReferenceException(BuildObjectExceptionMessage);
+
+            this.gameProgressManager.GameFinished += OnGameFinished;
+
+            if (inGameDependenceEvents != null)
+            {
+                inGameDependenceEvents.RegisterEvent += RegisterNewGame;
+                inGameDependenceEvents.RepeatGameEvent += RepeatGame;
+                inGameDependenceEvents.FillCellEvent += TryDoStep;
+            }
+            else
+            {
+                throw new NullReferenceException(BuildObjectExceptionMessage);
+            }
 
             isGameFinished = false;
+
+            stepArgs = new StepArgs();
         }
 
-        public void Start()
+        private void RegisterNewGame(object sender, RegisterEventArgs registerEventArgs)
         {
-            do
+            RegisterPlayers(registerEventArgs);
+            Gaming();
+        }
+
+        private void RepeatGame(object sender, EventArgs repeatGameEventArgs)
+        {
+            if (isGameFinished)
             {
-                RegisterPlayers();
+                gameBoardStorage.ClearGameBoard();
+                isGameFinished = false;
                 Gaming();
-
-                while (userInteractor.RepeatGame(notificationManager))
-                {
-                    gameBoardStorage.ClearGameBoard();
-                    Gaming();
-                }
             }
-            while (true);
-        }
-
-        private void RegisterPlayers()
-        {
-            int playersCount = userInteractor.SetPlayersCount(notificationManager);
-            playersDataManager = gameServicesFactory.GetPlayersDataManager(playersCount);
-            Player player;
-            for (int playerNum = 1; playerNum <= playersCount; playerNum++)
+            else
             {
-                player = userInteractor.CreatePlayer(notificationManager);
-                if (playersDataManager.IsUniquePlayer(player))
-                {
-                    playersDataManager.Add(player, figureManager.GetFigure());
-                }
-                else
-                {
-                    notificationManager.DisplayMessage(INUNIQUE_PLAYER_NOTIFICATION_MESSAGE);
-                }
+                throw new InvalidOperationException("The game has no data about the previous game.");
             }
         }
+
+        private void RegisterPlayers(RegisterEventArgs registerEventArgs)
+        {
+            foreach (var player in registerEventArgs.Players)
+            {
+                playersDataManager.Add(player, figureManager.GetFigure());
+            }
+        }
+
 
         private void Gaming()
         {
             foreach (var playerData in playersDataManager.GetNextPlayer(isGameFinished))
             {
-                notificationManager.ShowActivePlayer(playerData);
+                GameNotificationEvent?.Invoke(this,
+                    new GameNotificationEventArgs(
+                        playerData.Value.ToString(), playerData.Key.ToString())
+                );
                 DoStep(playerData.Value);
             }
         }
 
-        private void DoStep(Figure figure)
+
+        private void DoStep(IFigure figure)
         {
-            bool isStepSucceed = false;
+            stepArgs.Figure = figure;
+            stepArgs.IsStepSucceed = false;
             do
             {
-                try
-                {
-                    gameBoardStorage.FillCell(figure, userInteractor.GetCellCoordinates(notificationManager));
-                    isStepSucceed = true;
-                }
-                catch (InvalidCastException ex)
-                {
-                    notificationManager.DisplayMessage(ex.Message);
-                }
+                GetCellCoordinatesEvent?.Invoke(this, null);
             }
-            while (!isStepSucceed);
+            while (!stepArgs.IsStepSucceed);
 
-            var gridData = gameBoardStorage.GetCellsData();
-            gameBoardDisplay.DrawGameBoard(gridData);
-            gameProgressManager.CalcGameProgress(gridData);
+            GameStepEvent?.Invoke(this, new GameStepFinishedEventArgs(gameBoardStorage.GetCellsData()));
+            gameProgressManager.CalcGameProgress(gameBoardStorage);
         }
+
+
+        private void TryDoStep(object sender, FillCellEventArgs fillCellEventArgs)
+        {
+            try
+            {
+                gameBoardStorage.FillCell(stepArgs.Figure, fillCellEventArgs.Row, fillCellEventArgs.Column);
+                stepArgs.IsStepSucceed = true;
+            }
+            catch (InvalidCastException ex)
+            {
+                GameNotificationEvent?.Invoke(this, new GameNotificationEventArgs(ex.Message));
+            }
+        }
+
 
         private void OnGameFinished(object sender, GameFinishedEventArgs e)
         {
-            notificationManager.ShowGameResults(e);
+            GameFinishedEvent?.Invoke(this, e);
             isGameFinished = true;
+        }
+
+
+
+        private struct StepArgs
+        {
+            public bool IsStepSucceed { get; set; }
+
+            public IFigure Figure { get; set; }
         }
     }
 }
