@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace iTechArt.TicTacToe.Foundation.Player
+namespace iTechArt.TicTacToe.Foundation.Players
 {
     public class Player
     {
