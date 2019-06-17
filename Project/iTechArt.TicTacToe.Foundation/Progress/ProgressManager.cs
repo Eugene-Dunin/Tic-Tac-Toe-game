@@ -1,5 +1,4 @@
-﻿using iTechArt.Tic_Tac_Toe_Game.Foundation.Interfaces;
-using iTechArt.TicTacToe.Foundation.Events.GameToUIArgs;
+﻿using iTechArt.TicTacToe.Foundation.Events.GameToUIArgs;
 using iTechArt.TicTacToe.Foundation.Figures;
 using iTechArt.TicTacToe.Foundation.Interfaces;
 using iTechArt.TicTacToe.Foundation.Lines;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace iTechArt.TicTacToe.Foundation.Progress
 {
-    public class GameProgressManager : BaseProgressManager
+    public sealed class GameProgressManager : BaseProgressManager
     {
         private readonly IFigurePointsCounterFactory figurePointsCounterFactory;
 
@@ -19,10 +18,9 @@ namespace iTechArt.TicTacToe.Foundation.Progress
             : base(board)
         {
             this.figurePointsCounterFactory = figurePointsCounterFactory ?? throw new NullReferenceException();
-            InitLineCollections();
         }
 
-        private void InitLineCollections()
+        protected override void InitLineCollection()
         {
             int matrixSize = (int)Math.Sqrt(board.Cells.Count);
 
@@ -61,19 +59,7 @@ namespace iTechArt.TicTacToe.Foundation.Progress
             lines = new HashSet<ILine>(linesList);
         }
 
-        public override void CalcGameProgress()
-        {
-            lines.ToList().ForEach(line => line.CalcLineProgress());
-            lines.RemoveWhere(line => line.State == LineState.Standoff);
-            CalcFigurePoints();
-            lines.RemoveWhere(line => line.State == LineState.Winning);
-            if (lines.Count == 0)
-            {
-                EmitGameFinishedEvent();
-            }
-        }
-
-        private void CalcFigurePoints()
+        protected override void CalcFigurePoints()
         {
             foreach (var winLine in lines.Where(line => line.State == LineState.Winning))
             {
@@ -92,7 +78,7 @@ namespace iTechArt.TicTacToe.Foundation.Progress
             }
         }
 
-        private void EmitGameFinishedEvent()
+        protected override void EmitGameFinishedEvent()
         {
             
         }

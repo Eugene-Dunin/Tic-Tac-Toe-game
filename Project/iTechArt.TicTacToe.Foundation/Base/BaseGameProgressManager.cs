@@ -1,4 +1,5 @@
 ﻿using iTechArt.TicTacToe.Foundation.Events.GameToUIArgs;
+using iTechArt.TicTacToe.Foundation.Lines;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +23,25 @@ namespace iTechArt.TicTacToe.Foundation.Interfaces
         protected BaseProgressManager(IBoard board)
         {
             this.board = board ?? throw new NullReferenceException();
+            InitLineCollection();
         }
 
+        protected abstract void InitLineCollection();
 
-        public abstract void CalcGameProgress();
+
+        public void CalcGameProgress()
+        {
+            lines.ToList().ForEach(line => line.CalcLineProgress());
+            lines.RemoveWhere(line => line.State == LineState.Standoff);
+            CalcFigurePoints();
+            lines.RemoveWhere(line => line.State == LineState.Winning);
+            if (lines.Count == 0)
+            {
+                EmitGameFinishedEvent();
+            }
+        }
+
+        protected abstract void CalcFigurePoints();
+        protected abstract void EmitGameFinishedEvent();
     }
 }
