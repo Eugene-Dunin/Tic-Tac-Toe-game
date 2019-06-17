@@ -1,4 +1,5 @@
 ﻿using iTechArt.TicTacToe.Foundation.GameBoard.Base;
+using iTechArt.TicTacToe.Foundation.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace iTechArt.TicTacToe.Foundation.Events.GameToUIArgs
 {
     public class GameStepFinishedEventArgs : EventArgs
     {
-        public IReadOnlyList<ICell> Cells { get; }
+        public IEnumerable<ICell> Cells { get; }
 
 
-        public GameStepFinishedEventArgs(IReadOnlyList<ICell> cells)
+        public GameStepFinishedEventArgs(IEnumerable<ICell> cells)
         {
             Cells = cells;
         }
