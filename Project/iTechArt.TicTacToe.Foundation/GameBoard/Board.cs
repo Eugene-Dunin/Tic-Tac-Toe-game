@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace iTechArt.TicTacToe.Foundation.GameBoard
 {
-    class GameBoardStorage : IBoard
+    class Board : IBoard
     {
         private const string FILL_CELL_EXCEPTION_MESS = "This cell is occupied";
         private const string BOARD_IS_NOT_CONTAIN_CELL_MESS = "This cell is not exist.";
@@ -33,7 +33,7 @@ namespace iTechArt.TicTacToe.Foundation.GameBoard
         public ICell this[int index] => cells.ElementAt(index);
 
 
-        public GameBoardStorage(
+        public Board(
             int matrixSize, IFigureFactory figureFactory, ICellFactory cellFactory)
         {
             this.figureFactory = figureFactory ?? throw new NullReferenceException();

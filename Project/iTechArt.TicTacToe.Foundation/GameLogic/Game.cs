@@ -1,10 +1,6 @@
 ﻿using iTechArt.TicTacToe.Foundation.Events.GameToUIArgs;
-using iTechArt.TicTacToe.Foundation.Events.Interfaces;
 using iTechArt.TicTacToe.Foundation.Events.UIToGameArgs;
-using iTechArt.TicTacToe.Foundation.FigureManager;
-using iTechArt.TicTacToe.Foundation.Figures.Base;
-using iTechArt.TicTacToe.Foundation.GameBoard.Base;
-using iTechArt.TicTacToe.Foundation.PlayersDataManager;
+using iTechArt.TicTacToe.Foundation.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +14,13 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
     {
         private const string BuildObjectExceptionMessage = "All parameters of constructor should have value.";
 
-        private IPlayersDataManager playersDataManager;
+        private PlayersDataManager playersDataManager;
 
         private IFigureManager figureManager;
 
-        private IGameBoardStorage gameBoardStorage;
+        private IBoard gameBoardStorage;
 
-        private IGameProgressManager gameProgressManager;
+        private Interfaces.BaseProgressManager gameProgressManager;
 
         private bool isGameFinished;
 
@@ -42,10 +38,10 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
 
         public EventHandler<EventArgs> GetCellCoordinatesEvent;
 
-        public Game(IPlayersDataManager playersDataManager,
+        public Game(PlayersDataManager playersDataManager,
             IFigureManager figureManager,
-            IGameBoardStorage gameBoardStorage,
-            IGameProgressManager gameProgressManager,
+            IBoard gameBoardStorage,
+            Interfaces.BaseProgressManager gameProgressManager,
             IInGameDependenceEvents inGameDependenceEvents)
         {
             this.playersDataManager = playersDataManager ?? throw new NullReferenceException(BuildObjectExceptionMessage);
