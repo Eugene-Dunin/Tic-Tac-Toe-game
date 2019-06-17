@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using iTechArt.TicTacToe.Foundation.Interfaces;
+using iTechArt.TicTacToe.Foundation.Interfaces.Internals;
 
 namespace iTechArt.TicTacToe.Foundation.Cells
 {
-    class Cell : ICell
+    public class Cell : ISetCell
     {
         public IFigure Figure { get; private set; }
 
@@ -22,31 +23,16 @@ namespace iTechArt.TicTacToe.Foundation.Cells
             Column = Column;
         }
 
-        public FillCellResult SetFigure(Func<IBoard> getBoard, IFigure figure)
+        public void SetFigure(IFigure figure)
         {
-            if (getBoard == null)
+            if (IsEmpty)
             {
-                return FillCellResult.NullBoard;
+                Figure = figure;
             }
-
-            if(getBoard == null)
+            else
             {
-                return FillCellResult.NullFigure;
+                throw new InvalidOperationException("Cell is filled.");
             }
-
-            if (getBoard.Target is IBoard && getBoard().Cells.Contains(this))
-            {
-                if (IsEmpty)
-                {
-                    Figure = figure;
-
-                    return FillCellResult.Successful;
-                }
-
-                return FillCellResult.Occupied;
-            }
-
-            return FillCellResult.Forbidden;
         }
     }
 }

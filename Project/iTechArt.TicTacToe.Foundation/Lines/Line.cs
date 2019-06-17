@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace iTechArt.TicTacToe.Foundation.Lines
 {
-    class Line : ILine
+    public sealed class Line : ILine
     {
         private IReadOnlyList<ICell> cells;
 

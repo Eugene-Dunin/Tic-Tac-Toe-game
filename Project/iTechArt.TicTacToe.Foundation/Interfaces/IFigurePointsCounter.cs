@@ -12,6 +12,5 @@ namespace iTechArt.TicTacToe.Foundation.Interfaces
     {
         FigureType Type { get; }
         int NumberOfPoints { get; }
-        IncrementPointsResult IncrementPoints(Func<BaseProgressManager> getProgressManager);
     }
 }

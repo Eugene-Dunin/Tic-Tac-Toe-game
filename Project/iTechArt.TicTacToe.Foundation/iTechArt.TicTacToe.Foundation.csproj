@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\BaseFigureManager.cs" />
     <Compile Include="Cells\CellFactory.cs" />
     <Compile Include="Cells\FillCellResult.cs" />
     <Compile Include="Events\GameToUIArgs\GameFinishedEventArgs.cs" />
@@ -49,25 +50,26 @@
     <Compile Include="Events\GameToUIArgs\GameStepFinishedEventArgs.cs" />
     <Compile Include="Events\UITiGameArgs\FillCellEventArgs.cs" />
     <Compile Include="Events\UITiGameArgs\RegisterEventArgs.cs" />
+    <Compile Include="FigurePointsCounters\IncrementPointsResult.cs" />
     <Compile Include="Interfaces\ICellFactory.cs" />
-    <Compile Include="Interfaces\IFigureDataManager.cs" />
     <Compile Include="Interfaces\IFigurePointsCounter.cs" />
     <Compile Include="Interfaces\IFigurePointsCounterFactory.cs" />
+    <Compile Include="Interfaces\Internals\IFigurePointsIncrement.cs" />
+    <Compile Include="Interfaces\Internals\ISetCell.cs" />
     <Compile Include="Lines\Line.cs" />
     <Compile Include="Lines\LineState.cs" />
     <Compile Include="Interfaces\ILine.cs" />
-    <Compile Include="Progress\FigurePointsProgress.cs" />
+    <Compile Include="FigurePointsCounters\FigurePointsCounter.cs" />
     <Compile Include="Progress\ProgressManager.cs" />
     <Compile Include="Interfaces\IFigureFactory.cs" />
     <Compile Include="Interfaces\IInGameDependenceEvents.cs" />
-    <Compile Include="Interfaces\IFigureManager.cs" />
     <Compile Include="Figures\Circle.cs" />
     <Compile Include="Figures\FigureType.cs" />
     <Compile Include="Interfaces\IFigure.cs" />
     <Compile Include="Figures\Cross.cs" />
     <Compile Include="Cells\Cell.cs" />
     <Compile Include="GameLogic\Game.cs" />
-    <Compile Include="GameBoard\GameBoard.cs" />
+    <Compile Include="GameBoard\Board.cs" />
     <Compile Include="Interfaces\ICell.cs" />
     <Compile Include="Base\BaseGameProgressManager.cs" />
     <Compile Include="Interfaces\IBoard.cs" />

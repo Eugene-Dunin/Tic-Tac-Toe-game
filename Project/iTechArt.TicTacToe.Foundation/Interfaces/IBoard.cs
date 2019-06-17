@@ -10,7 +10,7 @@ namespace iTechArt.TicTacToe.Foundation.Interfaces
 {
     public interface IBoard : IEnumerable<ICell>
     {
-        IReadOnlyList<ICell> Cells { get; }
+        ICell this[int index] { get; }
 
         FillCellResult FillCell(FigureType figureType, int row, int column);
     }

@@ -9,18 +9,22 @@ using System.Threading.Tasks;
 
 namespace iTechArt.TicTacToe.Foundation.Base
 {
-    public abstract class BasePlayersDataManager
+    public abstract class PlayersCreationManager
     {
         private HashSet<Player> players;
-        private IFigureManager figureManager;
 
-        protected BasePlayersDataManager(IFigureManager figureManager)
+        private BaseFigureManager figureManager;
+
+
+        public PlayersCreationManager(BaseFigureManager figureManager)
         {
-
+            figureManager = figureManager ?? throw new NullReferenceException();
         }
 
         public abstract bool Add(Player key);
+
         public abstract void SetFirstPlayer(Player player);
+
         public abstract IEnumerable<Player> GetNextPlayer(bool gameFinished);
     }
 }

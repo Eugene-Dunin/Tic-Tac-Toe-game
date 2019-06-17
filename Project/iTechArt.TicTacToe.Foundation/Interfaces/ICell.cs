@@ -17,7 +17,5 @@ namespace iTechArt.TicTacToe.Foundation.Interfaces
         int Row { get; }
 
         int Column { get; }
-
-        FillCellResult SetFigure(Func<IBoard> getBoard, IFigure figure);
     }
 }

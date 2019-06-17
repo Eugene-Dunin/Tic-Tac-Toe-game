@@ -9,10 +9,7 @@ namespace iTechArt.TicTacToe.Foundation.Cells
     public enum FillCellResult
     {
         Successful,
-        Forbidden,
         Occupied,
-        NullBoard,
-        NullFigure,
-        NotContain
+        BoardNotContain
     }
 }

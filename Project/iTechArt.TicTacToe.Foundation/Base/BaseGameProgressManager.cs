@@ -1,4 +1,5 @@
 ﻿using iTechArt.TicTacToe.Foundation.Events.GameToUIArgs;
+using iTechArt.TicTacToe.Foundation.Interfaces.Internals;
 using iTechArt.TicTacToe.Foundation.Lines;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,6 @@ namespace iTechArt.TicTacToe.Foundation.Interfaces
 
         protected HashSet<IFigurePointsCounter> figurePointsCounters;
 
-
-        public bool ContainsFigurePointsCounters(IFigurePointsCounter figurePointsCounter)
-        {
-            return figurePointsCounters.Contains(figurePointsCounter);
-        }
 
         public EventHandler<GameFinishedEventArgs> GameFinished { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using iTechArt.TicTacToe.Foundation.Events.GameToUIArgs;
 using iTechArt.TicTacToe.Foundation.Figures;
 using iTechArt.TicTacToe.Foundation.Interfaces;
+using iTechArt.TicTacToe.Foundation.Interfaces.Internals;
 using iTechArt.TicTacToe.Foundation.Lines;
 using System;
 using System.Collections.Generic;
@@ -22,13 +23,13 @@ namespace iTechArt.TicTacToe.Foundation.Progress
 
         protected override void InitLineCollection()
         {
-            int matrixSize = (int)Math.Sqrt(board.Cells.Count);
+            int matrixSize = (int)Math.Sqrt(board.Count());
 
             var linesList = new List<ILine>();
 
             //horizontal lines
             var lineCollects = Enumerable.Range(1, matrixSize)
-                .Select(row => board.Cells.Where(cell => cell.Row == row));
+                .Select(row => board.Where(cell => cell.Row == row));
             foreach (var rowLine in lineCollects)
             {
                 linesList.Add(new Line(rowLine));
@@ -36,21 +37,21 @@ namespace iTechArt.TicTacToe.Foundation.Progress
 
             //vertical lines
             lineCollects = Enumerable.Range(1, matrixSize)
-                .Select(column => board.Cells.Where(cell => cell.Column == column));
+                .Select(column => board.Where(cell => cell.Column == column));
             foreach (var colLine in lineCollects)
             {
                 linesList.Add(new Line(colLine));
             }
 
             //diagonal lines
-            linesList.Add(new Line(board.Cells.Where(cell => cell.Row == cell.Column)));
+            linesList.Add(new Line(board.Where(cell => cell.Row == cell.Column)));
             int position = 0;
             linesList.Add(
                 new Line(Enumerable.Range(1, matrixSize)
                                 .Select(ind =>
                                     {
                                         position += matrixSize - 1;
-                                        return board.Cells[position];
+                                        return board[position];
                                     }
                                 )
                         )
@@ -68,7 +69,7 @@ namespace iTechArt.TicTacToe.Foundation.Progress
                                             .First();
                 if (figurePointsCounter != null)
                 {
-                    figurePointsCounter.IncrementPoints(this);
+                    ((IFigurePointsIncrement)figurePointsCounter).IncrementPoints();
                 }
                 else
                 {

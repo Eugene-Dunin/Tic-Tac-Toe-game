@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D4DBD925-7EE4-47EC-8763-5EBCEBC7984E}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Tic_Tac_Toe_Game</RootNamespace>
-    <AssemblyName>Tic-Tac-Toe Game</AssemblyName>
+    <RootNamespace>TicTacToe</RootNamespace>
+    <AssemblyName>TicTacToe</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -53,7 +53,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\iTechArt.Tic-Tac-Toe_Game.Foundation\iTechArt.TicTacToe.Foundation.csproj">
+    <ProjectReference Include="..\iTechArt.TicTacToe.Foundation\iTechArt.TicTacToe.Foundation.csproj">
       <Project>{c0bf88d6-56c3-4331-891e-471630294080}</Project>
       <Name>iTechArt.TicTacToe.Foundation</Name>
     </ProjectReference>

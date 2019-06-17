@@ -11,23 +11,17 @@ using System.Threading.Tasks;
 
 namespace iTechArt.TicTacToe.Foundation.GameBoard
 {
-    class Board : IBoard
+    public sealed class Board : IBoard
     {
-        private const string FILL_CELL_EXCEPTION_MESS = "This cell is occupied";
-        private const string BOARD_IS_NOT_CONTAIN_CELL_MESS = "This cell is not exist.";
-
-        public List<Cell> cells;
+        private IReadOnlyList<Cell> cells;
 
 
-        protected readonly int matrixSize;
+        private readonly int matrixSize;
 
 
         private readonly IFigureFactory figureFactory;
 
         private ICellFactory cellFactory;
-
-
-        public IReadOnlyList<ICell> Cells => cells;
 
 
         public ICell this[int index] => cells.ElementAt(index);
@@ -36,18 +30,12 @@ namespace iTechArt.TicTacToe.Foundation.GameBoard
         public Board(
             int matrixSize, IFigureFactory figureFactory, ICellFactory cellFactory)
         {
-            this.figureFactory = figureFactory ?? throw new NullReferenceException();
-            this.cellFactory = cellFactory ?? throw new NullReferenceException();
+            this.figureFactory = figureFactory;
+            this.cellFactory = cellFactory;
 
-            if (matrixSize >= 3)
-            {
-                this.matrixSize = matrixSize;
-                CreateCells();
-            }
-            else
-            {
-                throw new ArgumentException("Matrix size must be 3 or more.");
-            }
+            this.matrixSize = matrixSize;
+            CreateCells();
+
         }
         private void CreateCells()
         {
@@ -59,31 +47,33 @@ namespace iTechArt.TicTacToe.Foundation.GameBoard
 
         public FillCellResult FillCell(FigureType figureType, int row, int column)
         {
-            var matchCell = cells.Find(cell => cell.Row == row && cell.Column == column);
+            var matchCell = cells.Where(cell => cell.Row == row && cell.Column == column).First();
             if(matchCell != null)
             {
-                return matchCell.SetFigure(() => this, figureFactory.GetFigure(figureType));
+                if (matchCell.IsEmpty)
+                {
+                    matchCell.SetFigure(figureFactory.GetFigure(figureType));
+
+                    return FillCellResult.Successful;
+                }
+
+                return FillCellResult.Occupied;
             }
 
-            return FillCellResult.NotContain;
+            return FillCellResult.BoardNotContain;
         }
 
         public IEnumerator<ICell> GetEnumerator()
         {
-            return Enumerator();
+            foreach (var cell in cells)
+            {
+                yield return cell;
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return Enumerator();
-        }
-
-        private IEnumerator<ICell> Enumerator()
-        {
-            foreach(var cell in cells)
-            {
-                yield return cell;
-            }
+            return GetEnumerator();
         }
     }
 }
