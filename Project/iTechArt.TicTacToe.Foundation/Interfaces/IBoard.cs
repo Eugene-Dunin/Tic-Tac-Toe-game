@@ -10,6 +10,8 @@ namespace iTechArt.TicTacToe.Foundation.Interfaces
 {
     public interface IBoard : IEnumerable<ICell>
     {
+        int MatrixSize { get; }
+
         ICell this[int index] { get; }
 
         FillCellResult FillCell(FigureType figureType, int row, int column);

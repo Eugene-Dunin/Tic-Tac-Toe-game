@@ -9,8 +9,6 @@ namespace iTechArt.TicTacToe.Foundation.Interfaces
 {
     public interface IInGameDependenceEvents
     {
-        event EventHandler<RegisterEventArgs> RegisterEvent;
-        event EventHandler<EventArgs> RepeatGameEvent;
         event EventHandler<FillCellEventArgs> FillCellEvent;
     }
 }
