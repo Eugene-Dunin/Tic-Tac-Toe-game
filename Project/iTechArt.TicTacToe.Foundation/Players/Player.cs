@@ -35,7 +35,7 @@ namespace iTechArt.TicTacToe.Foundation.Players
         }
 
 
-        IFigure Figure { get; }
+        public IFigure Figure { get; }
 
 
         public Player(string name, string lastName, int age, IFigure figure)

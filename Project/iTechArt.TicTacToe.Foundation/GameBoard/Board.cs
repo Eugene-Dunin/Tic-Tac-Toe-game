@@ -15,13 +15,12 @@ namespace iTechArt.TicTacToe.Foundation.GameBoard
     {
         private IReadOnlyList<Cell> cells;
 
-
-        private readonly int matrixSize;
-
-
         private readonly IFigureFactory figureFactory;
 
         private ICellFactory cellFactory;
+
+
+        public int MatrixSize { get;}
 
 
         public ICell this[int index] => cells.ElementAt(index);
@@ -33,14 +32,14 @@ namespace iTechArt.TicTacToe.Foundation.GameBoard
             this.figureFactory = figureFactory;
             this.cellFactory = cellFactory;
 
-            this.matrixSize = matrixSize;
+            MatrixSize = matrixSize;
             CreateCells();
 
         }
         private void CreateCells()
         {
-            cells = cells = Enumerable.Range(1, matrixSize)
-                .SelectMany(row => (IEnumerable<Cell>)Enumerable.Range(1, matrixSize).Select(col => cellFactory.GetCell(row, col)))
+            cells = cells = Enumerable.Range(1, MatrixSize)
+                .SelectMany(row => (IEnumerable<Cell>)Enumerable.Range(1, MatrixSize).Select(col => cellFactory.CreateCell(row, col)))
                 .ToList();
         }
 
@@ -52,7 +51,7 @@ namespace iTechArt.TicTacToe.Foundation.GameBoard
             {
                 if (matchCell.IsEmpty)
                 {
-                    matchCell.SetFigure(figureFactory.GetFigure(figureType));
+                    matchCell.SetFigure(figureFactory.GreateFigure(figureType));
 
                     return FillCellResult.Successful;
                 }

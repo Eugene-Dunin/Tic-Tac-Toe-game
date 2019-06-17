@@ -15,11 +15,13 @@ namespace iTechArt.TicTacToe.Foundation.Progress
     {
         private readonly IFigurePointsCounterFactory figurePointsCounterFactory;
 
+
         public GameProgressManager(IBoard board, IFigurePointsCounterFactory figurePointsCounterFactory)
             : base(board)
         {
             this.figurePointsCounterFactory = figurePointsCounterFactory ?? throw new NullReferenceException();
         }
+
 
         protected override void InitLineCollection()
         {

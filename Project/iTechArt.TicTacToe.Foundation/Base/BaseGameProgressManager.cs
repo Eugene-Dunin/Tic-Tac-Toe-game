@@ -18,7 +18,6 @@ namespace iTechArt.TicTacToe.Foundation.Interfaces
 
         protected HashSet<IFigurePointsCounter> figurePointsCounters;
 
-
         public EventHandler<GameFinishedEventArgs> GameFinished { get; set; }
 
 
