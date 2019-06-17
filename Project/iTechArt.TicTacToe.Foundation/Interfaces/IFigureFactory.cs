@@ -11,6 +11,6 @@ namespace iTechArt.TicTacToe.Foundation.Interfaces
 {
     public interface IFigureFactory
     {
-        IFigure GetFigure(FigureType figureType);
+        IFigure GreateFigure(FigureType figureType);
     }
 }

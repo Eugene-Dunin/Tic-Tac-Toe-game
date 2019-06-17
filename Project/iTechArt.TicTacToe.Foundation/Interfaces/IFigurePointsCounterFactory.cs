@@ -9,6 +9,6 @@ namespace iTechArt.TicTacToe.Foundation.Interfaces
 {
     public interface IFigurePointsCounterFactory
     {
-        IFigurePointsCounter GetPointsCounter(FigureType figureType);
+        IFigurePointsCounter CreatePointsCounter(FigureType figureType);
     }
 }

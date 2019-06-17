@@ -8,6 +8,6 @@ namespace iTechArt.TicTacToe.Foundation.Interfaces
 {
     public interface ICellFactory
     {
-        ICell GetCell(int row, int column);
+        ICell CreateCell(int row, int column);
     }
 }
