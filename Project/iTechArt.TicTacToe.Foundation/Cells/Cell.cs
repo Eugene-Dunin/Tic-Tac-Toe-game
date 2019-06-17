@@ -3,20 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using iTechArt.Tic_Tac_Toe_Game.Foundation.Cells;
 using iTechArt.TicTacToe.Foundation.Interfaces;
 
-namespace iTechArt.TicTacToe.Foundation.GameBoard
+namespace iTechArt.TicTacToe.Foundation.Cells
 {
     class Cell : ICell
     {
         public IFigure Figure { get; private set; }
 
-        public bool IsEmpty => Figure != null ? true : false;
-
         public int Row { get; }
         public int Column { get; }
-        
+
+        public bool IsEmpty => Figure == null ? true : false;
 
         public Cell(int row, int col)
         {
@@ -26,13 +24,23 @@ namespace iTechArt.TicTacToe.Foundation.GameBoard
 
         public FillCellResult SetFigure(IBoard board, IFigure figure)
         {
-            if (board.Cells.Contains(this)) {
-           
+            if (board == null)
+            {
+                return FillCellResult.NullBoard;
+            }
+
+            if(figure == null)
+            {
+                return FillCellResult.NullFigure;
+            }
+
+            if (board.Cells.Contains(this))
+            {
                 if (IsEmpty)
                 {
                     Figure = figure;
 
-                    return FillCellResult.Success;
+                    return FillCellResult.Successful;
                 }
 
                 return FillCellResult.Occupied;

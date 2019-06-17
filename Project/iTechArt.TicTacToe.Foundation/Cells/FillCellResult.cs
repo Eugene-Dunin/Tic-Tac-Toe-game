@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace iTechArt.Tic_Tac_Toe_Game.Foundation.Cells
+namespace iTechArt.TicTacToe.Foundation.Cells
 {
     public enum FillCellResult
     {
-        Success,
+        Successful,
         Forbidden,
-        Occupied
+        Occupied,
+        NullBoard,
+        NullFigure,
+        NotContain
     }
 }
