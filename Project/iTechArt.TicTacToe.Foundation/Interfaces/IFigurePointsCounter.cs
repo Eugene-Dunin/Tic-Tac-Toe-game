@@ -1,4 +1,5 @@
-﻿using iTechArt.TicTacToe.Foundation.Figures;
+﻿using iTechArt.TicTacToe.Foundation.FigurePointsCounters;
+using iTechArt.TicTacToe.Foundation.Figures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,6 @@ namespace iTechArt.TicTacToe.Foundation.Interfaces
     {
         FigureType Type { get; }
         int NumberOfPoints { get; }
-        void IncrementPoints();
+        IncrementPointsResult IncrementPoints(Func<BaseProgressManager> getProgressManager);
     }
 }

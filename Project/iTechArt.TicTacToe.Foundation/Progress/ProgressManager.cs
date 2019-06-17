@@ -68,11 +68,11 @@ namespace iTechArt.TicTacToe.Foundation.Progress
                                             .First();
                 if (figurePointsCounter != null)
                 {
-                    figurePointsCounter.IncrementPoints();
+                    figurePointsCounter.IncrementPoints(this);
                 }
                 else
                 {
-                    figurePointsCounter = new FigurePointsProgress(winLine.WinningFigure.Type);
+                    figurePointsCounter = new FigurePointsCounter(winLine.WinningFigure.Type);
                     figurePointsCounters.Add(figurePointsCounter);
                 }
             }
