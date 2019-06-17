@@ -18,6 +18,6 @@ namespace iTechArt.TicTacToe.Foundation.Interfaces
 
         int Column { get; }
 
-        FillCellResult SetFigure(IBoard board, IFigure figure);
+        FillCellResult SetFigure(Func<IBoard> getBoard, IFigure figure);
     }
 }

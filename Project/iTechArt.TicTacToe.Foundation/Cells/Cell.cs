@@ -22,19 +22,19 @@ namespace iTechArt.TicTacToe.Foundation.Cells
             Column = Column;
         }
 
-        public FillCellResult SetFigure(IBoard board, IFigure figure)
+        public FillCellResult SetFigure(Func<IBoard> getBoard, IFigure figure)
         {
-            if (board == null)
+            if (getBoard == null)
             {
                 return FillCellResult.NullBoard;
             }
 
-            if(figure == null)
+            if(getBoard == null)
             {
                 return FillCellResult.NullFigure;
             }
 
-            if (board.Cells.Contains(this))
+            if (getBoard.Target is IBoard && getBoard().Cells.Contains(this))
             {
                 if (IsEmpty)
                 {
