@@ -80,7 +80,19 @@ namespace iTechArt.TicTacToe.Foundation.Progress
 
         protected override void EmitGameFinishedEvent()
         {
-            
+            GameFinishedEventArgs gameFinishedEventArgs = null;
+            var maxFigurePoints = figurePointsCounters.ElementAt(figurePointsCounters.Max(figurePoints => figurePoints.NumberOfPoints));
+            if ( figurePointsCounters
+                .Where(figurePointsCounter => figurePointsCounter.NumberOfPoints == maxFigurePoints.NumberOfPoints)
+                .Count() == 1 )
+            {
+                gameFinishedEventArgs = new GameFinishedEventArgs(GameResult.Win, figurePointsCounters);
+            }
+            else
+            {
+                gameFinishedEventArgs = new GameFinishedEventArgs(GameResult.Draw, figurePointsCounters);
+            }
+            GameFinished?.Invoke(this, gameFinishedEventArgs);
         }
     }
 }
