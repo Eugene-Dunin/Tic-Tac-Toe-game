@@ -1,4 +1,4 @@
-﻿using iTechArt.TicTacToe.Foundation.Figures.Base;
+﻿using iTechArt.TicTacToe.Foundation.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
