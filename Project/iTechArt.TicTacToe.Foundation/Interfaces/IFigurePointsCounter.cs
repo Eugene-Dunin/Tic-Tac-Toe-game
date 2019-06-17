@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace iTechArt.TicTacToe.Foundation.Interfaces
 {
-    public interface IFigure
+    public interface IFigurePointsCounter
     {
         FigureType Type { get; }
+        int NumberOfPoints { get; }
+        void IncrementPoints();
     }
 }

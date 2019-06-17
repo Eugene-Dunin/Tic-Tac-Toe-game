@@ -1,6 +1,5 @@
-﻿using iTechArt.Tic_Tac_Toe_Game.Foundation.Cells;
-using iTechArt.Tic_Tac_Toe_Game.Foundation.Interfaces;
-using iTechArt.TicTacToe.Foundation.Figures.Base;
+﻿using iTechArt.TicTacToe.Foundation.Cells;
+using iTechArt.TicTacToe.Foundation.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

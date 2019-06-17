@@ -1,5 +1,5 @@
-﻿using iTechArt.TicTacToe.Foundation.Figures.Base;
-using iTechArt.TicTacToe.Foundation.GameBoard;
+﻿using iTechArt.TicTacToe.Foundation.Cells;
+using iTechArt.TicTacToe.Foundation.Figures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace iTechArt.TicTacToe.Foundation.Interfaces
 {
-    public interface IBoard: IEnumerable<ICell>
+    public interface IBoard : IEnumerable<ICell>
     {
-        FillBoardCellResult FillBoardCell(FigureType figure, int row, int column);
+        IReadOnlyList<ICell> Cells { get; }
+
+        FillCellResult FillCell(FigureType figureType, int row, int column);
     }
 }
