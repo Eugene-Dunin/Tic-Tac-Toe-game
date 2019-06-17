@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iTechArt.TicTacToe.Foundation.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,7 +35,10 @@ namespace iTechArt.TicTacToe.Foundation.Players
         }
 
 
-        public Player(string name, string lastName, int age)
+        IFigure Figure { get; }
+
+
+        public Player(string name, string lastName, int age, IFigure figure)
         {
             Name = name;
             LastName = lastName;
