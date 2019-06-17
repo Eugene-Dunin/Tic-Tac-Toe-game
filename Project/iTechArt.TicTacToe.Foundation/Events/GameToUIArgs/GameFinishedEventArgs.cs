@@ -1,4 +1,5 @@
 ﻿using iTechArt.Tic_Tac_Toe_Game.Foundation.Events;
+using iTechArt.TicTacToe.Foundation.Players;
 using System;
 using System.Collections.Generic;
 using System.Linq;
