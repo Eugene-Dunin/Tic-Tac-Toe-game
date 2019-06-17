@@ -62,7 +62,7 @@ namespace iTechArt.TicTacToe.Foundation.GameBoard
             var matchCell = cells.Find(cell => cell.Row == row && cell.Column == column);
             if(matchCell != null)
             {
-                return matchCell.SetFigure(this, figureFactory.GetFigure(figureType));
+                return matchCell.SetFigure(() => this, figureFactory.GetFigure(figureType));
             }
 
             return FillCellResult.NotContain;
