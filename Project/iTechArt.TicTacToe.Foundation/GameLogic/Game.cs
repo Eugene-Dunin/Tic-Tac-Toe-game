@@ -1,5 +1,8 @@
-﻿using iTechArt.TicTacToe.Foundation.Events.GameToUIArgs;
+﻿using iTechArt.TicTacToe.Foundation.Base;
+using iTechArt.TicTacToe.Foundation.Cells;
+using iTechArt.TicTacToe.Foundation.Events.GameToUIArgs;
 using iTechArt.TicTacToe.Foundation.Events.UIToGameArgs;
+using iTechArt.TicTacToe.Foundation.Figures;
 using iTechArt.TicTacToe.Foundation.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,15 +15,9 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
 {
     public class Game
     {
-        private const string BuildObjectExceptionMessage = "All parameters of constructor should have value.";
+        private IGameConfigManagerFactory gameConfigManagerFactory;
 
-        private PlayersDataManager playersDataManager;
-
-        private IFigureManager figureManager;
-
-        private IBoard gameBoardStorage;
-
-        private Interfaces.BaseProgressManager gameProgressManager;
+        private BaseGameConfigManager gameConfigManager;
 
         private bool isGameFinished;
 
@@ -38,83 +35,51 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
 
         public EventHandler<EventArgs> GetCellCoordinatesEvent;
 
-        public Game(PlayersDataManager playersDataManager,
-            IFigureManager figureManager,
-            IBoard gameBoardStorage,
-            Interfaces.BaseProgressManager gameProgressManager,
+
+        public Game(
+            IGameConfigManagerFactory gameConfigManagerFactory,
             IInGameDependenceEvents inGameDependenceEvents)
         {
-            this.playersDataManager = playersDataManager ?? throw new NullReferenceException(BuildObjectExceptionMessage);
+            this.gameConfigManagerFactory = gameConfigManagerFactory;
 
-            this.figureManager = figureManager ?? throw new NullReferenceException(BuildObjectExceptionMessage); ;
+            gameConfigManager = gameConfigManagerFactory.CreateBaseGameConfigManager();
 
-            this.gameBoardStorage = gameBoardStorage ?? throw new NullReferenceException(BuildObjectExceptionMessage); ;
+            gameConfigManager.ProgressManager.GameFinished += OnGameFinished;
 
-            this.gameProgressManager = gameProgressManager ?? throw new NullReferenceException(BuildObjectExceptionMessage);
-
-            this.gameProgressManager.GameFinished += OnGameFinished;
-
-            if (inGameDependenceEvents != null)
-            {
-                inGameDependenceEvents.RegisterEvent += RegisterNewGame;
-                inGameDependenceEvents.RepeatGameEvent += RepeatGame;
-                inGameDependenceEvents.FillCellEvent += TryDoStep;
-            }
-            else
-            {
-                throw new NullReferenceException(BuildObjectExceptionMessage);
-            }
+            inGameDependenceEvents.FillCellEvent += TryDoStep;
 
             isGameFinished = false;
 
             stepArgs = new StepArgs();
         }
 
-        private void RegisterNewGame(object sender, RegisterEventArgs registerEventArgs)
-        {
-            RegisterPlayers(registerEventArgs);
-            Gaming();
-        }
-
-        private void RepeatGame(object sender, EventArgs repeatGameEventArgs)
+        public void StartOrRepeat()
         {
             if (isGameFinished)
             {
-                gameBoardStorage.ClearGameBoard();
+                gameConfigManager = gameConfigManagerFactory.CreateBaseGameConfigManager();
                 isGameFinished = false;
-                Gaming();
             }
-            else
-            {
-                throw new InvalidOperationException("The game has no data about the previous game.");
-            }
-        }
-
-        private void RegisterPlayers(RegisterEventArgs registerEventArgs)
-        {
-            foreach (var player in registerEventArgs.Players)
-            {
-                playersDataManager.Add(player, figureManager.GetFigure());
-            }
+            Gaming();
         }
 
 
         private void Gaming()
         {
-            foreach (var playerData in playersDataManager.GetNextPlayer(isGameFinished))
+            foreach (var player in gameConfigManager.GetNextPlayer(isGameFinished))
             {
                 GameNotificationEvent?.Invoke(this,
                     new GameNotificationEventArgs(
-                        playerData.Value.ToString(), playerData.Key.ToString())
+                        player.Figure.ToString(), player.ToString())
                 );
-                DoStep(playerData.Value);
+                DoStep(player.Figure.Type);
             }
         }
 
 
-        private void DoStep(IFigure figure)
+        private void DoStep(FigureType figureType)
         {
-            stepArgs.Figure = figure;
+            stepArgs.FigureType = figureType;
             stepArgs.IsStepSucceed = false;
             do
             {
@@ -122,21 +87,32 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
             }
             while (!stepArgs.IsStepSucceed);
 
-            GameStepEvent?.Invoke(this, new GameStepFinishedEventArgs(gameBoardStorage.GetCellsData()));
-            gameProgressManager.CalcGameProgress(gameBoardStorage);
+            GameStepEvent?.Invoke(this, new GameStepFinishedEventArgs(gameConfigManager.Board.AsEnumerable()));
+            gameConfigManager.ProgressManager.CalcGameProgress();
         }
 
 
         private void TryDoStep(object sender, FillCellEventArgs fillCellEventArgs)
         {
-            try
+            var fillResult = gameConfigManager.Board.FillCell(stepArgs.FigureType, fillCellEventArgs.Row, fillCellEventArgs.Column);
+            switch (fillResult)
             {
-                gameBoardStorage.FillCell(stepArgs.Figure, fillCellEventArgs.Row, fillCellEventArgs.Column);
-                stepArgs.IsStepSucceed = true;
-            }
-            catch (InvalidCastException ex)
-            {
-                GameNotificationEvent?.Invoke(this, new GameNotificationEventArgs(ex.Message));
+                case FillCellResult.Successful:
+                    {
+                        gameConfigManager.Board.FillCell(stepArgs.FigureType, fillCellEventArgs.Row, fillCellEventArgs.Column);
+                        stepArgs.IsStepSucceed = true;
+                        break;
+                    }
+                case FillCellResult.Occupied:
+                    {
+                        GameNotificationEvent?.Invoke(this, new GameNotificationEventArgs(nameof(FillCellResult.Occupied)));
+                        break;
+                    }
+                case FillCellResult.BoardNotContain:
+                    {
+                        GameNotificationEvent?.Invoke(this, new GameNotificationEventArgs(nameof(FillCellResult.BoardNotContain)));
+                        break;
+                    }
             }
         }
 
@@ -153,7 +129,7 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
         {
             public bool IsStepSucceed { get; set; }
 
-            public IFigure Figure { get; set; }
+            public FigureType FigureType { get; set; }
         }
     }
 }
