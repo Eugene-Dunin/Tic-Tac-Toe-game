@@ -1,15 +1,11 @@
-﻿using iTechArt.TicTacToe.Foundation.Base;
-using iTechArt.TicTacToe.Foundation.Cells;
-using iTechArt.TicTacToe.Foundation.Events.GameToUIArgs;
-using iTechArt.TicTacToe.Foundation.Events.UIToGameArgs;
+﻿using iTechArt.TicTacToe.Foundation.GameBoard;
 using iTechArt.TicTacToe.Foundation.Figures;
 using iTechArt.TicTacToe.Foundation.Interfaces;
-using iTechArt.TicTacToe.Foundation.Players;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using iTechArt.TicTacToe.Foundation.Events.DependenceOfGameArgs;
+using iTechArt.TicTacToe.Foundation.Events.GameUseArgs;
+using iTechArt.TicTacToe.Foundation.Interfaces.Internals;
 
 
 namespace iTechArt.TicTacToe.Foundation.GameLogic
@@ -24,9 +20,9 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
 
         private IGameConfig gameConfig;
 
-        private IBoard board;
+        private IBoardInternal board;
 
-        private BaseProgressManager progressManager;
+        private IProgressManager progressManager;
 
         private bool isGameFinished;
 
@@ -36,10 +32,10 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
         public EventHandler<GameFinishedEventArgs> GameFinishedEvent;
 
 
-        public EventHandler<GameStepFinishedEventArgs> GameStepEvent;
+        public EventHandler<StepFinishedEventArgs> GameStepEvent;
 
 
-        public EventHandler<GameNotificationEventArgs> GameNotificationEvent;
+        public EventHandler<NotificationEventArgs> GameNotificationEvent;
 
 
         public EventHandler<EventArgs> GetCellCoordinatesEvent;
@@ -59,7 +55,7 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
 
             InitGameServices();
 
-            progressManager.GameFinished += OnGameFinished;
+            progressManager.Finished += OnGameFinished;
 
             inGameDependenceEvents.FillCellEvent += TryDoStep;
 
@@ -71,7 +67,7 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
 
         private void InitGameServices()
         {
-            board = boardFactory.CreateBoard(gameConfig.BoardSize);
+            board = (IBoardInternal)boardFactory.CreateBoard(gameConfig.BoardSize);
             progressManager = progressManagerFactory.CreateProgressManager(board);
         }
 
@@ -89,16 +85,15 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
         private void Gaming()
         {
             var enumerator = gameConfig.Players.AsEnumerable().GetEnumerator();
-            Player player;
 
             while(!isGameFinished)
             {
                 if (enumerator.MoveNext())
                 {
-                    player = enumerator.Current;
+                    var player = enumerator.Current;
 
                     GameNotificationEvent?.Invoke(this,
-                    new GameNotificationEventArgs(
+                    new NotificationEventArgs(
                        player.Figure.ToString(), player.ToString())
                     );
                     DoStep(player.Figure.Type);
@@ -121,7 +116,7 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
             }
             while (!stepArgs.IsStepSucceed);
 
-            GameStepEvent?.Invoke(this, new GameStepFinishedEventArgs(board.AsEnumerable()));
+            GameStepEvent?.Invoke(this, new StepFinishedEventArgs(board));
             progressManager.CalcGameProgress();
         }
 
@@ -137,14 +132,14 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
                         stepArgs.IsStepSucceed = true;
                         break;
                     }
-                case FillCellResult.Occupied:
+                case FillCellResult.CellOccupied:
                     {
-                        GameNotificationEvent?.Invoke(this, new GameNotificationEventArgs(nameof(FillCellResult.Occupied)));
+                        GameNotificationEvent?.Invoke(this, new NotificationEventArgs(nameof(FillCellResult.CellOccupied)));
                         break;
                     }
-                case FillCellResult.BoardNotContain:
+                case FillCellResult.CellNotFound:
                     {
-                        GameNotificationEvent?.Invoke(this, new GameNotificationEventArgs(nameof(FillCellResult.BoardNotContain)));
+                        GameNotificationEvent?.Invoke(this, new NotificationEventArgs(nameof(FillCellResult.CellNotFound)));
                         break;
                     }
             }

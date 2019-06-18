@@ -1,9 +1,5 @@
 ﻿using iTechArt.TicTacToe.Foundation.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace iTechArt.TicTacToe.Foundation.Players
 {
@@ -27,8 +23,7 @@ namespace iTechArt.TicTacToe.Foundation.Players
                 else
                 {
                     throw new ArgumentException(
-                        String.Format("Age of player should between {0} - {1}",
-                            AgeConstraints.MinAge, AgeConstraints.MaxAge)
+                        $"Age of player should between {AgeConstraints.MinAge} - {AgeConstraints.MaxAge}"
                     );
                 }
             }
@@ -43,6 +38,7 @@ namespace iTechArt.TicTacToe.Foundation.Players
             Name = name;
             LastName = lastName;
             Age = age;
+            Figure = figure;
         }
     }
 }
