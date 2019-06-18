@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cells\CellFactory.cs" />
+    <Compile Include="Configs\GameConfig.cs" />
     <Compile Include="GameBoard\FillCellResult.cs" />
     <Compile Include="Events\GameUseArgs\GameFinishedEventArgs.cs" />
     <Compile Include="Events\GameUseArgs\NotificationEventArgs.cs" />
