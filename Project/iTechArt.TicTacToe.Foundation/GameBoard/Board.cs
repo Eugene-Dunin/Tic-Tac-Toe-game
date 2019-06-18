@@ -1,4 +1,4 @@
-﻿using iTechArt.TicTacToe.Foundation.Cells;
+﻿using iTechArt.TicTacToe.Foundation.GameBoard;
 using iTechArt.TicTacToe.Foundation.Figures;
 using iTechArt.TicTacToe.Foundation.Interfaces;
 using System;
@@ -7,72 +7,71 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using iTechArt.TicTacToe.Foundation.Interfaces.Internals;
 
 namespace iTechArt.TicTacToe.Foundation.GameBoard
 {
-    public sealed class Board : IBoard
+    public sealed class Board : IBoardInternal
     {
-        private IReadOnlyList<Cell> cells;
+        private readonly IReadOnlyList<ICellInternal> _cells;
 
-        private readonly IFigureFactory figureFactory;
+        private readonly IFigureFactory _figureFactory;
 
-        private ICellFactory cellFactory;
-
-
-        public int MatrixSize { get;}
+        private readonly ICellFactory _cellFactory;
 
 
-        public ICell this[int index] => cells.ElementAt(index);
+        public int MatrixSize { get; }
+
+
+        public ICell this[int row, int column] => _cells.First(cell => cell.Row == row && cell.Column == column);
 
 
         public Board(
             int matrixSize, IFigureFactory figureFactory, ICellFactory cellFactory)
         {
-            this.figureFactory = figureFactory;
-            this.cellFactory = cellFactory;
+            _figureFactory = figureFactory;
+
+            _cellFactory = cellFactory;
 
             MatrixSize = matrixSize;
-            CreateCells();
+
+            _cells = CreateCells();
 
         }
-        private void CreateCells()
+        private IReadOnlyList<ICellInternal> CreateCells()
         {
-            cells = cells = Enumerable.Range(1, MatrixSize)
-                .SelectMany(row => (IEnumerable<Cell>)Enumerable.Range(1, MatrixSize).Select(col => cellFactory.CreateCell(row, col)))
+            return Enumerable.Range(1, MatrixSize)
+                .SelectMany(row => (IEnumerable<ICellInternal>)Enumerable.Range(1, MatrixSize).Select(col => _cellFactory.CreateCell(row, col)))
                 .ToList();
         }
 
 
         public FillCellResult FillCell(FigureType figureType, int row, int column)
         {
-            var matchCell = cells.Where(cell => cell.Row == row && cell.Column == column).First();
-            if(matchCell != null)
+            var matchCell = (ICellInternal)this[row, column];
+            if (matchCell != null)
             {
                 if (matchCell.IsEmpty)
                 {
-                    matchCell.SetFigure(figureFactory.GreateFigure(figureType));
+                    matchCell.Figure = _figureFactory.GreateFigure(figureType);
 
                     return FillCellResult.Successful;
                 }
 
-                return FillCellResult.Occupied;
+                return FillCellResult.CellOccupied;
             }
 
-            return FillCellResult.BoardNotContain;
+            return FillCellResult.CellNotFound;
         }
 
         public IEnumerator<ICell> GetEnumerator()
         {
-            foreach (var cell in cells)
-            {
-                yield return cell;
-            }
+            return _cells.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return _cells.GetEnumerator();
         }
     }
 }
