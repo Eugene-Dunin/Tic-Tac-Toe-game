@@ -1,39 +1,33 @@
 ﻿using iTechArt.TicTacToe.Foundation.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace iTechArt.TicTacToe.Foundation.Lines
 {
     public sealed class Line : ILine
     {
-        private IReadOnlyList<ICell> cells;
+        public IEnumerable<ICell> Cells { get; }
 
 
-        public IFigure WinningFigure { get; private set; }
+        public LineState State {
+            get
+            {
+                var filledCells = Cells.Where(cell => cell.Figure != null);
+                var enumerable = filledCells.ToList();
 
+                if (enumerable.Any(cell => cell.Figure.Type != enumerable.First().Figure.Type))
+                {
+                    return LineState.Standoff;
+                }
 
-        public LineState State { get; private set; }
+                return enumerable.Count == Cells.Count() ? LineState.Winning : LineState.Progress;
+            }
+        }
 
 
         public Line(IEnumerable<ICell> cells)
         {
-            cells = cells ?? throw new NullReferenceException();
-            State = LineState.Progress;
-        }
-
-
-        public void CalcLineProgress()
-        {
-            if (State == LineState.Progress)
-            {
-                if (cells.All(cell => cell.Figure.Type == cells.First().Figure.Type))
-                {
-                    WinningFigure = cells.First().Figure;
-                }
-            }
+            Cells = cells;
         }
     }
 }
