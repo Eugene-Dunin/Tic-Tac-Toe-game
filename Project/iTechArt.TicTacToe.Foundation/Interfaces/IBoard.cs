@@ -1,19 +1,11 @@
-﻿using iTechArt.TicTacToe.Foundation.Cells;
-using iTechArt.TicTacToe.Foundation.Figures;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace iTechArt.TicTacToe.Foundation.Interfaces
 {
     public interface IBoard : IEnumerable<ICell>
     {
-        int MatrixSize { get; }
+        int Size { get; }
 
-        ICell this[int index] { get; }
-
-        FillCellResult FillCell(FigureType figureType, int row, int column);
+        ICell this[int row, int column] { get; }
     }
 }

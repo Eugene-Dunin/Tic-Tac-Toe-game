@@ -1,4 +1,5 @@
-﻿using iTechArt.TicTacToe.Foundation.Interfaces;
+﻿using iTechArt.TicTacToe.Foundation.GameBoard;
+using iTechArt.TicTacToe.Foundation.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

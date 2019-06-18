@@ -1,59 +1,56 @@
-﻿using iTechArt.TicTacToe.Foundation.Events.GameToUIArgs;
-using iTechArt.TicTacToe.Foundation.Figures;
+﻿using System;
 using iTechArt.TicTacToe.Foundation.Interfaces;
-using iTechArt.TicTacToe.Foundation.Interfaces.Internals;
 using iTechArt.TicTacToe.Foundation.Lines;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using iTechArt.TicTacToe.Foundation.Events.GameUseArgs;
+using iTechArt.TicTacToe.Foundation.GameLogic;
 
 namespace iTechArt.TicTacToe.Foundation.Progress
 {
-    public sealed class GameProgressManager : BaseProgressManager
+    public sealed class ProgressManager : IProgressManager
     {
-        private readonly IFigurePointsCounterFactory figurePointsCounterFactory;
+        private HashSet<ILine> lines;
+
+        private readonly IBoard _board;
+        
+        private readonly ILineFactory _lineFactory;
 
 
-        public GameProgressManager(IBoard board, IFigurePointsCounterFactory figurePointsCounterFactory)
-            : base(board)
+        public EventHandler<GameFinishedEventArgs> Finished { get; set; }
+
+        public ProgressManager(IBoard board, ILineFactory lineFactory)
         {
-            this.figurePointsCounterFactory = figurePointsCounterFactory ?? throw new NullReferenceException();
+            _board = board;
+            _lineFactory = lineFactory;
         }
 
 
-        protected override void InitLineCollection()
+        private void InitLineCollection()
         {
-            int matrixSize = (int)Math.Sqrt(board.Count());
-
-            var linesList = new List<ILine>();
-
             //horizontal lines
-            var lineCollects = Enumerable.Range(1, matrixSize)
-                .Select(row => board.Where(cell => cell.Row == row));
-            foreach (var rowLine in lineCollects)
-            {
-                linesList.Add(new Line(rowLine));
-            }
+            var lineCollects = Enumerable.Range(1, _board.Size)
+                .Select(row => _board.Where(cell => cell.Row == row));
+
+            var linesList = lineCollects.Select(rowLine => _lineFactory.CreateLine(rowLine)).ToList();
 
             //vertical lines
-            lineCollects = Enumerable.Range(1, matrixSize)
-                .Select(column => board.Where(cell => cell.Column == column));
-            foreach (var colLine in lineCollects)
-            {
-                linesList.Add(new Line(colLine));
-            }
+            lineCollects = Enumerable.Range(1, _board.Size)
+                .Select(column => _board.Where(cell => cell.Column == column));
+
+            linesList.AddRange( lineCollects.Select(colLine => new Line(colLine)) );
 
             //diagonal lines
-            linesList.Add(new Line(board.Where(cell => cell.Row == cell.Column)));
-            int position = 0;
+            linesList.Add(new Line(_board.Where(cell => cell.Row == cell.Column)));
+            int rowNum = 1, colNum = _board.Size;
             linesList.Add(
-                new Line(Enumerable.Range(1, matrixSize)
+                new Line(Enumerable.Range(1, _board.Size)
                                 .Select(ind =>
                                     {
-                                        position += matrixSize - 1;
-                                        return board[position];
+                                        var cell = _board[rowNum, colNum];
+                                        rowNum++;
+                                        colNum--;
+                                        return cell;
                                     }
                                 )
                         )
@@ -62,40 +59,23 @@ namespace iTechArt.TicTacToe.Foundation.Progress
             lines = new HashSet<ILine>(linesList);
         }
 
-        protected override void CalcFigurePoints()
+
+        public void CalcGameProgress()
         {
-            foreach (var winLine in lines.Where(line => line.State == LineState.Winning))
+            if(lines.First(line => line.State == LineState.Winning) != null || lines.Count == 0)
             {
-                var figurePointsCounter = figurePointsCounters
-                                            .Where(figurePointsCounterElem => figurePointsCounterElem.Type == winLine.WinningFigure.Type)
-                                            .First();
-                if (figurePointsCounter != null)
-                {
-                    ((IFigurePointsIncrement)figurePointsCounter).IncrementPoints();
-                }
-                else
-                {
-                    figurePointsCounter = new FigurePointsCounter(winLine.WinningFigure.Type);
-                    figurePointsCounters.Add(figurePointsCounter);
-                }
+                EmitGameFinishedEvent();
             }
+            lines.RemoveWhere(line => line.State == LineState.Standoff);
         }
 
-        protected override void EmitGameFinishedEvent()
+
+        private void EmitGameFinishedEvent()
         {
-            GameFinishedEventArgs gameFinishedEventArgs = null;
-            var maxFigurePoints = figurePointsCounters.ElementAt(figurePointsCounters.Max(figurePoints => figurePoints.NumberOfPoints));
-            if ( figurePointsCounters
-                .Where(figurePointsCounter => figurePointsCounter.NumberOfPoints == maxFigurePoints.NumberOfPoints)
-                .Count() == 1 )
-            {
-                gameFinishedEventArgs = new GameFinishedEventArgs(GameResult.Win, figurePointsCounters);
-            }
-            else
-            {
-                gameFinishedEventArgs = new GameFinishedEventArgs(GameResult.Draw, figurePointsCounters);
-            }
-            GameFinished?.Invoke(this, gameFinishedEventArgs);
+            var gameFinishedEventArgs = lines.Count == 0
+                ? new GameFinishedEventArgs(GameResult.Win, lines)
+                : new GameFinishedEventArgs(GameResult.Draw, lines);
+            Finished?.Invoke(this, gameFinishedEventArgs);
         }
     }
 }

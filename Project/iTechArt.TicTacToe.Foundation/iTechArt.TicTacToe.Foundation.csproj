@@ -41,28 +41,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\BaseFigureManager.cs" />
     <Compile Include="Cells\CellFactory.cs" />
-    <Compile Include="Cells\FillCellResult.cs" />
-    <Compile Include="Events\GameToUIArgs\GameFinishedEventArgs.cs" />
-    <Compile Include="Events\GameToUIArgs\GameNotificationEventArgs.cs" />
-    <Compile Include="Events\GameToUIArgs\GameResult.cs" />
-    <Compile Include="Events\GameToUIArgs\GameStepFinishedEventArgs.cs" />
-    <Compile Include="Events\UITiGameArgs\FillCellEventArgs.cs" />
-    <Compile Include="FigurePointsCounters\IncrementPointsResult.cs" />
+    <Compile Include="Configs\GameConfig.cs" />
+    <Compile Include="GameBoard\FillCellResult.cs" />
+    <Compile Include="Events\GameUseArgs\GameFinishedEventArgs.cs" />
+    <Compile Include="Events\GameUseArgs\NotificationEventArgs.cs" />
+    <Compile Include="Events\GameUseArgs\GameResult.cs" />
+    <Compile Include="Events\GameUseArgs\StepFinishedEventArgs.cs" />
+    <Compile Include="Events\DependenceOfGameArgs\FillCellEventArgs.cs" />
+    <Compile Include="Interfaces\IProgressManager.cs" />
     <Compile Include="Interfaces\IBoardFactory.cs" />
     <Compile Include="Interfaces\ICellFactory.cs" />
-    <Compile Include="Interfaces\IFigurePointsCounter.cs" />
-    <Compile Include="Interfaces\IFigurePointsCounterFactory.cs" />
     <Compile Include="Interfaces\IGameConfig.cs" />
     <Compile Include="Interfaces\IGameConfigManagerFactory.cs" />
-    <Compile Include="Interfaces\Internals\IFigurePointsIncrement.cs" />
-    <Compile Include="Interfaces\Internals\ISetCell.cs" />
+    <Compile Include="Interfaces\ILineFactory.cs" />
+    <Compile Include="Interfaces\Internals\IBoardInternal.cs" />
+    <Compile Include="Interfaces\Internals\ICellInternal.cs" />
     <Compile Include="Interfaces\IProgressManagerFactory.cs" />
     <Compile Include="Lines\Line.cs" />
     <Compile Include="Lines\LineState.cs" />
     <Compile Include="Interfaces\ILine.cs" />
-    <Compile Include="FigurePointsCounters\FigurePointsCounter.cs" />
     <Compile Include="Progress\ProgressManager.cs" />
     <Compile Include="Interfaces\IFigureFactory.cs" />
     <Compile Include="Interfaces\IInGameDependenceEvents.cs" />
@@ -74,7 +72,6 @@
     <Compile Include="GameLogic\Game.cs" />
     <Compile Include="GameBoard\Board.cs" />
     <Compile Include="Interfaces\ICell.cs" />
-    <Compile Include="Base\BaseGameProgressManager.cs" />
     <Compile Include="Interfaces\IBoard.cs" />
     <Compile Include="Players\AgeConstrains.cs" />
     <Compile Include="Players\Player.cs" />
