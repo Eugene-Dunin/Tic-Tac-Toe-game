@@ -4,6 +4,7 @@ using iTechArt.TicTacToe.Foundation.Events.GameToUIArgs;
 using iTechArt.TicTacToe.Foundation.Events.UIToGameArgs;
 using iTechArt.TicTacToe.Foundation.Figures;
 using iTechArt.TicTacToe.Foundation.Interfaces;
+using iTechArt.TicTacToe.Foundation.Players;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,15 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
     {
         private IGameConfigManagerFactory gameConfigManagerFactory;
 
-        private BaseGameConfigManager gameConfigManager;
+        private IBoardFactory boardFactory;
+
+        private IProgressManagerFactory progressManagerFactory;
+
+        private IGameConfig gameConfig;
+
+        private IBoard board;
+
+        private BaseProgressManager progressManager;
 
         private bool isGameFinished;
 
@@ -37,14 +46,20 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
 
 
         public Game(
-            IGameConfigManagerFactory gameConfigManagerFactory,
+            IGameConfig gameConfigManager,
+            IBoardFactory boardFactory,
+            IProgressManagerFactory progressManagerFactory,
             IInGameDependenceEvents inGameDependenceEvents)
         {
-            this.gameConfigManagerFactory = gameConfigManagerFactory;
+            this.gameConfig = gameConfigManager;
 
-            gameConfigManager = gameConfigManagerFactory.CreateBaseGameConfigManager();
+            this.boardFactory = boardFactory;
 
-            gameConfigManager.ProgressManager.GameFinished += OnGameFinished;
+            this.progressManagerFactory = progressManagerFactory;
+
+            InitGameServices();
+
+            progressManager.GameFinished += OnGameFinished;
 
             inGameDependenceEvents.FillCellEvent += TryDoStep;
 
@@ -53,11 +68,18 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
             stepArgs = new StepArgs();
         }
 
+
+        private void InitGameServices()
+        {
+            board = boardFactory.CreateBoard(gameConfig.BoardSize);
+            progressManager = progressManagerFactory.CreateProgressManager(board);
+        }
+
         public void StartOrRepeat()
         {
             if (isGameFinished)
             {
-                gameConfigManager = gameConfigManagerFactory.CreateBaseGameConfigManager();
+                InitGameServices();
                 isGameFinished = false;
             }
             Gaming();
@@ -66,13 +88,25 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
 
         private void Gaming()
         {
-            foreach (var player in gameConfigManager.GetNextPlayer(isGameFinished))
+            var enumerator = gameConfig.Players.AsEnumerable().GetEnumerator();
+            Player player;
+
+            while(!isGameFinished)
             {
-                GameNotificationEvent?.Invoke(this,
+                if (enumerator.MoveNext())
+                {
+                    player = enumerator.Current;
+
+                    GameNotificationEvent?.Invoke(this,
                     new GameNotificationEventArgs(
-                        player.Figure.ToString(), player.ToString())
-                );
-                DoStep(player.Figure.Type);
+                       player.Figure.ToString(), player.ToString())
+                    );
+                    DoStep(player.Figure.Type);
+                }
+                else
+                {
+                    enumerator.Reset();
+                }
             }
         }
 
@@ -87,19 +121,19 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
             }
             while (!stepArgs.IsStepSucceed);
 
-            GameStepEvent?.Invoke(this, new GameStepFinishedEventArgs(gameConfigManager.Board.AsEnumerable()));
-            gameConfigManager.ProgressManager.CalcGameProgress();
+            GameStepEvent?.Invoke(this, new GameStepFinishedEventArgs(board.AsEnumerable()));
+            progressManager.CalcGameProgress();
         }
 
 
         private void TryDoStep(object sender, FillCellEventArgs fillCellEventArgs)
         {
-            var fillResult = gameConfigManager.Board.FillCell(stepArgs.FigureType, fillCellEventArgs.Row, fillCellEventArgs.Column);
+            var fillResult = board.FillCell(stepArgs.FigureType, fillCellEventArgs.Row, fillCellEventArgs.Column);
             switch (fillResult)
             {
                 case FillCellResult.Successful:
                     {
-                        gameConfigManager.Board.FillCell(stepArgs.FigureType, fillCellEventArgs.Row, fillCellEventArgs.Column);
+                        board.FillCell(stepArgs.FigureType, fillCellEventArgs.Row, fillCellEventArgs.Column);
                         stepArgs.IsStepSucceed = true;
                         break;
                     }
