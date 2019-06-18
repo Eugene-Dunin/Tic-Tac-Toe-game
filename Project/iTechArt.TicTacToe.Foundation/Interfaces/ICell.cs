@@ -1,4 +1,4 @@
-﻿using iTechArt.TicTacToe.Foundation.Cells;
+﻿using iTechArt.TicTacToe.Foundation.GameBoard;
 using iTechArt.TicTacToe.Foundation.Interfaces;
 using System;
 using System.Collections.Generic;

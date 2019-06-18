@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 using iTechArt.TicTacToe.Foundation.Interfaces;
 using iTechArt.TicTacToe.Foundation.Interfaces.Internals;
 
-namespace iTechArt.TicTacToe.Foundation.Cells
+namespace iTechArt.TicTacToe.Foundation.GameBoard
 {
-    public class Cell : ISetCell
+    public class Cell : ICellInternal
     {
-        public IFigure Figure { get; private set; }
+        public IFigure Figure { get; set; }
 
         public int Row { get; }
         public int Column { get; }
 
-        public bool IsEmpty => Figure == null ? true : false;
+        public bool IsEmpty => Figure == null;
 
         public Cell(int row, int col)
         {

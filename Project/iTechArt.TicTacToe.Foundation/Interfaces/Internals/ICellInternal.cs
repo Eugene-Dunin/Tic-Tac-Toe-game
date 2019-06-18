@@ -1,4 +1,4 @@
-﻿using iTechArt.TicTacToe.Foundation.Cells;
+﻿using iTechArt.TicTacToe.Foundation.GameBoard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace iTechArt.TicTacToe.Foundation.Interfaces.Internals
 {
-    interface ISetCell : ICell
+    internal interface ICellInternal : ICell
     {
-        void SetFigure(IFigure figure);
+        new IFigure Figure { set; }
     }
 }
