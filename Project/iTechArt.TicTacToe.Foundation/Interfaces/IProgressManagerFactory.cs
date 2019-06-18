@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using iTechArt.TicTacToe.Foundation.GameLogic;
 
 namespace iTechArt.TicTacToe.Foundation.Interfaces
 {
     public interface IProgressManagerFactory
     {
-        BaseProgressManager CreateProgressManager(IBoard boardFactory);
+        IProgressManager CreateProgressManager(IBoard boardFactory);
     }
 }
