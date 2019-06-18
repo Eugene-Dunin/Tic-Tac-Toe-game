@@ -1,12 +1,8 @@
-﻿using iTechArt.TicTacToe.Foundation.GameBoard;
-using iTechArt.TicTacToe.Foundation.Figures;
+﻿using iTechArt.TicTacToe.Foundation.Figures;
 using iTechArt.TicTacToe.Foundation.Interfaces;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using iTechArt.TicTacToe.Foundation.Interfaces.Internals;
 
 namespace iTechArt.TicTacToe.Foundation.GameBoard
@@ -20,7 +16,7 @@ namespace iTechArt.TicTacToe.Foundation.GameBoard
         private readonly ICellFactory _cellFactory;
 
 
-        public int MatrixSize { get; }
+        public int Size { get; }
 
 
         public ICell this[int row, int column] => _cells.First(cell => cell.Row == row && cell.Column == column);
@@ -33,15 +29,15 @@ namespace iTechArt.TicTacToe.Foundation.GameBoard
 
             _cellFactory = cellFactory;
 
-            MatrixSize = matrixSize;
+            Size = matrixSize;
 
             _cells = CreateCells();
 
         }
         private IReadOnlyList<ICellInternal> CreateCells()
         {
-            return Enumerable.Range(1, MatrixSize)
-                .SelectMany(row => (IEnumerable<ICellInternal>)Enumerable.Range(1, MatrixSize).Select(col => _cellFactory.CreateCell(row, col)))
+            return Enumerable.Range(1, Size)
+                .SelectMany(row => (IEnumerable<ICellInternal>)Enumerable.Range(1, Size).Select(col => _cellFactory.CreateCell(row, col)))
                 .ToList();
         }
 
@@ -49,19 +45,18 @@ namespace iTechArt.TicTacToe.Foundation.GameBoard
         public FillCellResult FillCell(FigureType figureType, int row, int column)
         {
             var matchCell = (ICellInternal)this[row, column];
-            if (matchCell != null)
+            if (matchCell == null)
             {
-                if (matchCell.IsEmpty)
-                {
-                    matchCell.Figure = _figureFactory.GreateFigure(figureType);
-
-                    return FillCellResult.Successful;
-                }
-
+                return FillCellResult.CellNotFound;
+            }
+            if (!matchCell.IsEmpty)
+            {
                 return FillCellResult.CellOccupied;
             }
+            matchCell.Figure = _figureFactory.CreateFigure(figureType);
 
-            return FillCellResult.CellNotFound;
+            return FillCellResult.Successful;
+
         }
 
         public IEnumerator<ICell> GetEnumerator()
