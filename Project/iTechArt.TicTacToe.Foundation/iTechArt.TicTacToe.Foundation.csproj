@@ -49,13 +49,16 @@
     <Compile Include="Events\GameToUIArgs\GameResult.cs" />
     <Compile Include="Events\GameToUIArgs\GameStepFinishedEventArgs.cs" />
     <Compile Include="Events\UITiGameArgs\FillCellEventArgs.cs" />
-    <Compile Include="Events\UITiGameArgs\RegisterEventArgs.cs" />
     <Compile Include="FigurePointsCounters\IncrementPointsResult.cs" />
+    <Compile Include="Interfaces\IBoardFactory.cs" />
     <Compile Include="Interfaces\ICellFactory.cs" />
     <Compile Include="Interfaces\IFigurePointsCounter.cs" />
     <Compile Include="Interfaces\IFigurePointsCounterFactory.cs" />
+    <Compile Include="Interfaces\IGameConfig.cs" />
+    <Compile Include="Interfaces\IGameConfigManagerFactory.cs" />
     <Compile Include="Interfaces\Internals\IFigurePointsIncrement.cs" />
     <Compile Include="Interfaces\Internals\ISetCell.cs" />
+    <Compile Include="Interfaces\IProgressManagerFactory.cs" />
     <Compile Include="Lines\Line.cs" />
     <Compile Include="Lines\LineState.cs" />
     <Compile Include="Interfaces\ILine.cs" />
@@ -73,11 +76,12 @@
     <Compile Include="Interfaces\ICell.cs" />
     <Compile Include="Base\BaseGameProgressManager.cs" />
     <Compile Include="Interfaces\IBoard.cs" />
-    <Compile Include="Base\BasePlayersDataManager.cs" />
     <Compile Include="Players\AgeConstrains.cs" />
     <Compile Include="Players\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ConfigManagers\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
