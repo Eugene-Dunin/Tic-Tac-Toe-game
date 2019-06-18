@@ -5,7 +5,7 @@ namespace iTechArt.TicTacToe.Foundation.Interfaces
 {
     public interface IGameConfig
     {
-        HashSet<Player> Players { get; }
+        IReadOnlyList<Player> Players { get; }
 
         int BoardSize { get; }
     }
