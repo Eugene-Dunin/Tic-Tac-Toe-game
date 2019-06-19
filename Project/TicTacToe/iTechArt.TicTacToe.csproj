@@ -41,12 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Implementation\GameLogic\GameBoardStorage.cs" />
-    <Compile Include="Implementation\GameLogic\GameProgressManager.cs" />
-    <Compile Include="Implementation\PlayersDataManager\PlayersDataManager.cs" />
+    <Compile Include="Base\BaseFigureManager.cs" />
+    <Compile Include="Base\BaseUserInputManager.cs" />
+    <Compile Include="Implementation\GameProcessManager.cs" />
+    <Compile Include="Interfaces\IBaseUserInputManagerFactory.cs" />
+    <Compile Include="Interfaces\IBoardDraw.cs" />
+    <Compile Include="Interfaces\IGameIncomingEventManager.cs" />
+    <Compile Include="Interfaces\IUserNotificationManager.cs" />
+    <Compile Include="Interfaces\IUserNotificationManagerFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Implementation\UserInteraction\UserInteractor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

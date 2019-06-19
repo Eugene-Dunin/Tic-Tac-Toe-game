@@ -1,4 +1,5 @@
-﻿using iTechArt.TicTacToe.Foundation.Figures;
+﻿using System;
+using iTechArt.TicTacToe.Foundation.Figures;
 using iTechArt.TicTacToe.Foundation.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,64 +10,84 @@ namespace iTechArt.TicTacToe.Foundation.GameBoard
 {
     public sealed class Board : IBoardInternal
     {
+        private readonly IFigureFactory _figureFactory;
+        private readonly ICellFactory _cellFactory;
+
         private readonly IReadOnlyList<ICellInternal> _cells;
 
-        private readonly IFigureFactory _figureFactory;
-
-        private readonly ICellFactory _cellFactory;
+        private ICellInternal requestedCell;
 
 
         public int Size { get; }
 
+        public ICell this[int row, int column] =>
+            TryGetCell(row, column) 
+                ? requestedCell 
+                : throw new InvalidOperationException($"Board not contain cell with [{row},{column}] coordinates.");
 
-        public ICell this[int row, int column] => _cells.First(cell => cell.Row == row && cell.Column == column);
 
-
-        public Board(
-            int matrixSize, IFigureFactory figureFactory, ICellFactory cellFactory)
+        public Board(int matrixSize, IFigureFactory figureFactory, ICellFactory cellFactory)
         {
             _figureFactory = figureFactory;
-
             _cellFactory = cellFactory;
 
             Size = matrixSize;
 
             _cells = CreateCells();
-
-        }
-        private IReadOnlyList<ICellInternal> CreateCells()
-        {
-            return Enumerable.Range(1, Size)
-                .SelectMany(row => (IEnumerable<ICellInternal>)Enumerable.Range(1, Size).Select(col => _cellFactory.CreateCell(row, col)))
-                .ToList();
         }
 
 
-        public FillCellResult FillCell(FigureType figureType, int row, int column)
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            var matchCell = (ICellInternal)this[row, column];
-            if (matchCell == null)
+            return GetEnumerator();
+        }
+
+
+        FillCellResult IBoardInternal.FillCell(FigureType figureType, int row, int column)
+        {
+            if (!TryGetCell(row, column))
             {
                 return FillCellResult.CellNotFound;
             }
-            if (!matchCell.IsEmpty)
+            if (requestedCell.IsEmpty)
             {
                 return FillCellResult.CellOccupied;
             }
-            matchCell.Figure = _figureFactory.CreateFigure(figureType);
+            requestedCell.Figure = _figureFactory.CreateFigure(figureType);
 
             return FillCellResult.Successful;
 
         }
+
 
         public IEnumerator<ICell> GetEnumerator()
         {
             return _cells.GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+
+        private IReadOnlyList<ICellInternal> CreateCells()
         {
-            return _cells.GetEnumerator();
+            return Enumerable.Range(1, Size)
+                .SelectMany(row => Enumerable.Range(1, Size).Select(col => _cellFactory.CreateCell(row, col)))
+                .Cast<ICellInternal>()
+                .ToList();
+        }
+
+        private bool TryGetCell(int row, int column)
+        {
+            try
+            {
+                requestedCell = _cells.First(cell => cell.Row == row && cell.Column == column);
+            }
+            catch
+            {
+                requestedCell = null;
+
+                return false;
+            }
+
+            return true;
         }
     }
 }

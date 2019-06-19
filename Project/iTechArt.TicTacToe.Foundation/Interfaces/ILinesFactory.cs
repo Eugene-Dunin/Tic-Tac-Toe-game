@@ -3,8 +3,8 @@ using iTechArt.TicTacToe.Foundation.Base;
 
 namespace iTechArt.TicTacToe.Foundation.Interfaces
 {
-    public interface ILineFactory
+    public interface ILinesFactory
     {
-        BaseLine CreateLine(IEnumerable<ICell> cells);
+        IReadOnlyList<BaseLine> CreateLines(IBoard board);
     }
 }

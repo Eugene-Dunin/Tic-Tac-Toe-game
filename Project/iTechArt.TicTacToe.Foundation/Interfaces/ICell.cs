@@ -4,9 +4,7 @@
     {
         IFigure Figure { get; }
 
-
         bool IsEmpty { get; }
-
 
         int Row { get; }
 
