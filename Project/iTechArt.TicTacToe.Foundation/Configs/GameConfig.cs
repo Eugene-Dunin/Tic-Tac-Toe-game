@@ -10,8 +10,9 @@ namespace iTechArt.TicTacToe.Foundation.Configs
     public class GameConfig : IGameConfig
     {
         public IReadOnlyList<Player> Players { get; }
+
         public int BoardSize { get; }
-        public IEnumerable<Player> Enumerable { get; set; }
+
 
         public GameConfig(ICollection<Player> players, Player firstPlayer, int boardSize)
         {

@@ -1,10 +1,4 @@
-﻿using iTechArt.TicTacToe.Foundation.GameBoard;
-using iTechArt.TicTacToe.Foundation.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using iTechArt.TicTacToe.Foundation.Interfaces;
 
 namespace iTechArt.TicTacToe.Foundation.Cells
 {

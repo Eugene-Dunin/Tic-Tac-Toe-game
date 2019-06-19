@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using iTechArt.TicTacToe.Foundation.Interfaces;
+using iTechArt.TicTacToe.Foundation.Base;
 
 namespace iTechArt.TicTacToe.Foundation.Events.GameUseArgs
 {
@@ -8,10 +8,10 @@ namespace iTechArt.TicTacToe.Foundation.Events.GameUseArgs
     {
         public GameResult Result { get; }
 
-        public IEnumerable<ILine> FigurePoints { get; }
+        public IEnumerable<BaseLine> FigurePoints { get; }
 
 
-        public GameFinishedEventArgs(GameResult gameResult, IEnumerable<ILine> figurePoints)
+        public GameFinishedEventArgs(GameResult gameResult, IEnumerable<BaseLine> figurePoints)
         {
             Result = gameResult;
 

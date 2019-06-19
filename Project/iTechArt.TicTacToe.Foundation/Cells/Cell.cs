@@ -6,17 +6,16 @@ namespace iTechArt.TicTacToe.Foundation.Cells
 {
     public class Cell : ICellInternal
     {
-        private IFigure figure;
+        public IFigure Figure { get; private set; }
 
 
-        public IFigure Figure
+        IFigure ICellInternal.Figure
         {
-            get => figure;
             set
             {
-                if (IsEmpty)
+                if(IsEmpty)
                 {
-                    figure = value;
+                    Figure = value;
                 }
                 else
                 {
@@ -29,7 +28,6 @@ namespace iTechArt.TicTacToe.Foundation.Cells
         public int Row { get; }
 
         public int Column { get; }
-
 
         public bool IsEmpty => Figure == null;
 
