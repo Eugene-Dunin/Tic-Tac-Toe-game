@@ -44,6 +44,7 @@
     <Compile Include="Base\BaseLine.cs" />
     <Compile Include="Cells\CellFactory.cs" />
     <Compile Include="Configs\GameConfig.cs" />
+    <Compile Include="Configs\GameConfigFactory.cs" />
     <Compile Include="GameBoard\FillCellResult.cs" />
     <Compile Include="Events\GameUseArgs\GameFinishedEventArgs.cs" />
     <Compile Include="Events\GameUseArgs\NotificationEventArgs.cs" />
@@ -53,7 +54,7 @@
     <Compile Include="Interfaces\IBoardFactory.cs" />
     <Compile Include="Interfaces\ICellFactory.cs" />
     <Compile Include="Interfaces\IGameConfig.cs" />
-    <Compile Include="Interfaces\IGameConfigManagerFactory.cs" />
+    <Compile Include="Interfaces\IGameConfigFactory.cs" />
     <Compile Include="Interfaces\ILineFactory.cs" />
     <Compile Include="Interfaces\Internals\IBoardInternal.cs" />
     <Compile Include="Interfaces\Internals\ICellInternal.cs" />
