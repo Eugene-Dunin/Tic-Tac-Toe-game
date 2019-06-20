@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using iTechArt.TicTacToe.Foundation.Base;
 using iTechArt.TicTacToe.Foundation.Interfaces;
 
 namespace iTechArt.TicTacToe.Foundation.Lines

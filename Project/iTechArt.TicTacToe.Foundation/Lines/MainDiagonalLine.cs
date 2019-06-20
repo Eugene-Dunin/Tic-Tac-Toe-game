@@ -1,5 +1,4 @@
-﻿using iTechArt.TicTacToe.Foundation.Base;
-using iTechArt.TicTacToe.Foundation.Interfaces;
+﻿using iTechArt.TicTacToe.Foundation.Interfaces;
 
 namespace iTechArt.TicTacToe.Foundation.Lines
 {
@@ -7,6 +6,8 @@ namespace iTechArt.TicTacToe.Foundation.Lines
     {
         public MainDiagonalLine(IBoard board)
             : base(board, cell => cell.Row == cell.Column)
-        { }
+        {
+
+        }
     }
 }

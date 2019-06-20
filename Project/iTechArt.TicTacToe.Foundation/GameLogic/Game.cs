@@ -1,11 +1,8 @@
 ﻿using iTechArt.TicTacToe.Foundation.GameBoard;
-using iTechArt.TicTacToe.Foundation.Figures;
 using iTechArt.TicTacToe.Foundation.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using iTechArt.TicTacToe.Foundation.Base;
-using iTechArt.TicTacToe.Foundation.Events.DependenceOfGameArgs;
 using iTechArt.TicTacToe.Foundation.Events.GameUseArgs;
 using iTechArt.TicTacToe.Foundation.Interfaces.Internals;
 
@@ -13,116 +10,90 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
 {
     public class Game
     {
-        private IGameConfig _gameConfig;
-        private IReadOnlyList<BaseLine> _lines;
-        private IBoardInternal _board;
-        private StepArgs _stepArgs;
+        private readonly IGameConfig _gameConfig;
+        private readonly IReadOnlyList<ILine> _lines;
+        private readonly IBoardInternal _board;
+        private readonly IGameInputProvider _gameInputProvider;
 
 
-        private bool IsGameFinished => _lines.Any(line => line.IsWin);
+        private bool IsGameFinished => _lines.Any(line => line.IsWin) || _board.All(cell => !cell.IsEmpty);
 
 
         public EventHandler<GameFinishedEventArgs> GameFinishedEvent;
 
-        public EventHandler<StepFinishedEventArgs> GameStepEvent;
-
-        public EventHandler<NotificationEventArgs> GameNotificationEvent;
-
-        public EventHandler<EventArgs> GetCellCoordinatesEvent;
+        public EventHandler<StepFailedEventArgs> StepFailedEvent;
 
 
         public Game(
             IGameConfig gameConfig,
             IBoardFactory boardFactory,
-            IInGameDependenceEvents inGameDependenceEvents)
+            ILinesFactory linesFactory,
+            IGameInputProvider gameInputProvider            )
         {
             _gameConfig = gameConfig;
+            _gameInputProvider = gameInputProvider;
 
             _board = (IBoardInternal)boardFactory.CreateBoard(gameConfig.BoardSize);
 
-            inGameDependenceEvents.FillCellEvent += TryDoStep;
-
-            _stepArgs = new StepArgs();
+            _lines = linesFactory.CreateLines(_board);
         }
 
 
         public void Start()
         {
-            var enumerator = _gameConfig.Players.AsEnumerable().GetEnumerator();
-
-            while(IsGameFinished)
+            using (var enumerator = _gameConfig.Players.AsEnumerable().GetEnumerator())
             {
-                if (enumerator.MoveNext())
+                while (enumerator.MoveNext() && enumerator.Current != _gameConfig.FirstPlayer){}
+
+                while (IsGameFinished)
                 {
                     var player = enumerator.Current;
+                    DoStep(player);
 
-                    GameNotificationEvent?.Invoke(this,
-                    new NotificationEventArgs(
-                       player.Figure.ToString(), player.ToString())
-                    );
-                    DoStep(player.Figure.Type);
+                    if (!enumerator.MoveNext())
+                    {
+                        enumerator.Reset();
+                    }
                 }
-                else
-                {
-                    enumerator.Reset();
-                }
+
+                EmitGameFinishedEvent();
             }
-            EmitGameFinishedEvent();
         }
 
 
-        private void DoStep(FigureType figureType)
+        private void DoStep(IPlayer player)
         {
-            _stepArgs.FigureType = figureType;
-            _stepArgs.IsStepSucceed = false;
+            FillCellResult fillResult;
             do
             {
-                GetCellCoordinatesEvent?.Invoke(this, null);
-            }
-            while (!_stepArgs.IsStepSucceed);
+                var (row, col) = _gameInputProvider.GetCellCoordinates(player);
+                fillResult = _board.FillCell(player.FigureType, row, col);
 
-            GameStepEvent?.Invoke(this, new StepFinishedEventArgs(_board));
-        }
+                switch (fillResult)
+                {
+                    case FillCellResult.Successful:
+                        break;
+                    case FillCellResult.CellOccupied:
+                    {
+                        StepFailedEvent?.Invoke(this, new StepFailedEventArgs(nameof(FillCellResult.CellOccupied)));
+                        break;
+                    }
+                    case FillCellResult.CellNotFound:
+                    {
+                        StepFailedEvent?.Invoke(this, new StepFailedEventArgs(nameof(FillCellResult.CellNotFound)));
+                        break;
+                    }
+                }
 
-        private void TryDoStep(object sender, FillCellEventArgs fillCellEventArgs)
-        {
-            var fillResult = _board.FillCell(_stepArgs.FigureType, fillCellEventArgs.Row, fillCellEventArgs.Column);
-            switch (fillResult)
-            {
-                case FillCellResult.Successful:
-                    {
-                        _board.FillCell(_stepArgs.FigureType, fillCellEventArgs.Row, fillCellEventArgs.Column);
-                        _stepArgs.IsStepSucceed = true;
-                        break;
-                    }
-                case FillCellResult.CellOccupied:
-                    {
-                        GameNotificationEvent?.Invoke(this, new NotificationEventArgs(nameof(FillCellResult.CellOccupied)));
-                        break;
-                    }
-                case FillCellResult.CellNotFound:
-                    {
-                        GameNotificationEvent?.Invoke(this, new NotificationEventArgs(nameof(FillCellResult.CellNotFound)));
-                        break;
-                    }
-            }
+            } while (fillResult != FillCellResult.Successful);
         }
 
         private void EmitGameFinishedEvent()
         {
-            var gameFinishedEventArgs = _lines.Count == 0
+            var gameFinishedEventArgs = _lines.Any(line => line.IsWin)
                 ? new GameFinishedEventArgs(GameResult.Win, _lines)
                 : new GameFinishedEventArgs(GameResult.Draw, _lines);
             GameFinishedEvent?.Invoke(this, gameFinishedEventArgs);
-        }
-
-
-
-        private struct StepArgs
-        {
-            public bool IsStepSucceed { get; set; }
-
-            public FigureType FigureType { get; set; }
         }
     }
 }
