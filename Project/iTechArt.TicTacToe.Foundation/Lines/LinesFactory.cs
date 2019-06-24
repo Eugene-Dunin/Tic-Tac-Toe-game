@@ -6,7 +6,7 @@ namespace iTechArt.TicTacToe.Foundation.Lines
 {
     public class LinesFactory : ILinesFactory
     {
-        public IReadOnlyList<BaseLine> CreateLines(IBoard board)
+        public IReadOnlyList<ILine> CreateLines(IBoard board)
         {
             var boardLines = new List<BaseLine>();
             boardLines.AddRange(Enumerable.Range(1, board.Size).Select(row =>
