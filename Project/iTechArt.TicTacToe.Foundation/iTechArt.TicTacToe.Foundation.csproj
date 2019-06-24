@@ -63,7 +63,6 @@
     <Compile Include="Interfaces\ICellFactory.cs" />
     <Compile Include="Interfaces\IGameConfig.cs" />
     <Compile Include="Interfaces\IGameConfigFactory.cs" />
-    <Compile Include="Interfaces\ILineFactory.cs" />
     <Compile Include="Interfaces\Internals\IBoardInternal.cs" />
     <Compile Include="Interfaces\Internals\ICellInternal.cs" />
     <Compile Include="Lines\ColumnLine.cs" />

@@ -30,7 +30,7 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
             IFigureFactory figureFactory,
             ICellFactory cellFactory,
             ILinesFactory linesFactory,
-            IGameInputProvider gameInputProvider            )
+            IGameInputProvider gameInputProvider)
         {
             _gameConfig = gameConfig;
             _gameInputProvider = gameInputProvider;

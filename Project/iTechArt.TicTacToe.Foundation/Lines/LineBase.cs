@@ -18,7 +18,7 @@ namespace iTechArt.TicTacToe.Foundation.Lines
             {
                 if (!isWin.HasValue)
                 {
-                    isWin = CalcState();
+                    isWin = CalcIfIsWin();
                 }
 
                 return isWin ?? false;
@@ -32,14 +32,17 @@ namespace iTechArt.TicTacToe.Foundation.Lines
         }
 
 
-        private bool? CalcState()
+        private bool? CalcIfIsWin()
         {
-            if (!Cells.Select(cell => cell.IsEmpty).Distinct().Any())
+            var filledCells = Cells.Where(cell => !cell.IsEmpty).Select(cell => cell.Figure.Type).ToList();
+            var inProgress = filledCells.Distinct().Count() == filledCells.Count() - 1;
+
+            if (filledCells.Count() != Cells.Count && inProgress)
             {
                 return null;
             }
 
-            return !Cells.Select(cell => cell.Figure.Type).Distinct().Any();
+            return inProgress;
         }
     }
 }
