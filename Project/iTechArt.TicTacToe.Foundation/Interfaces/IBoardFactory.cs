@@ -2,6 +2,6 @@
 {
     public interface IBoardFactory
     {
-        IBoard CreateBoard(int size);
+        IBoard CreateBoard(int size, IFigureFactory figureFactory, ICellFactory cellFactory);
     }
 }
