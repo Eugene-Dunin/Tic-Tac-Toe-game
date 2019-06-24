@@ -1,14 +1,14 @@
-﻿using iTechArt.TicTacToe.Foundation.Figures;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using iTechArt.TicTacToe.Foundation.Events.GameUseArgs;
+using iTechArt.TicTacToe.Foundation.Interfaces;
 
-namespace TicTacToe.Interfaces
+namespace iTechArt.TicTacToe.Interfaces
 {
-    interface IUserNotificationManager
+    internal interface IUserNotificationManager
     {
-        FigureType ChooseFigure(IEnumerable<FigureType> figureTypes);
+        void ShowFigureTypes(IFigureManager figureManager);
+        void ShowWinner(GameFinishedEventArgs gameFinishedEventArgs);
+        void ShowStepFailedMessage(StepFailedEventArgs stepFailedEventArgs);
+        void ShowCurrentPlayer(IPlayer player);
+        void ShowFigureTypeChooseError(string figureName);
     }
 }
