@@ -5,7 +5,7 @@ using iTechArt.TicTacToe.Foundation.Interfaces;
 
 namespace iTechArt.TicTacToe.Foundation.Lines
 {
-    public abstract class BaseLine : ILine
+    public abstract class LineBase : ILine
     {
         private bool? isWin;
 
@@ -26,7 +26,7 @@ namespace iTechArt.TicTacToe.Foundation.Lines
         }
 
 
-        protected BaseLine(IBoard board, Func<ICell, bool> predicate)
+        protected LineBase(IBoard board, Func<ICell, bool> predicate)
         {
             Cells = board.Where(predicate).ToList();
         }
@@ -35,7 +35,7 @@ namespace iTechArt.TicTacToe.Foundation.Lines
         private bool? CalcIfIsWin()
         {
             var filledCells = Cells.Where(cell => !cell.IsEmpty).Select(cell => cell.Figure.Type).ToList();
-            var inProgress = filledCells.Distinct().Count() == filledCells.Count() - 1;
+            var inProgress = filledCells.Distinct().Count() <= 1;
 
             if (filledCells.Count() != Cells.Count && inProgress)
             {

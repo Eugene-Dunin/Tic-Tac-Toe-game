@@ -47,7 +47,7 @@ namespace iTechArt.TicTacToe.Foundation.GameBoard
             {
                 return FillCellResult.CellNotFound;
             }
-            if (cell.IsEmpty)
+            if (!cell.IsEmpty)
             {
                 return FillCellResult.CellOccupied;
             }
