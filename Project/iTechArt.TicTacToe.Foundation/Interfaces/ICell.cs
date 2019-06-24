@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace iTechArt.TicTacToe.Foundation.Interfaces
+﻿namespace iTechArt.TicTacToe.Foundation.Interfaces
 {
-    public interface ICell : IEqualityComparer<bool>
+    public interface ICell
     {
         IFigure Figure { get; }
 
