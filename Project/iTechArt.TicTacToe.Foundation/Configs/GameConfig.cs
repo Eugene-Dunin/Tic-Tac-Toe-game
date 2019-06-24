@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using iTechArt.TicTacToe.Foundation.Figures;
 using iTechArt.TicTacToe.Foundation.Interfaces;
-using iTechArt.TicTacToe.Foundation.Players;
 
 namespace iTechArt.TicTacToe.Foundation.Configs
 {
-    public class GameConfig : IGameConfig
+    public class Config : IGameConfig
     {
         public IReadOnlyList<IPlayer> Players { get; }
 
@@ -16,35 +14,33 @@ namespace iTechArt.TicTacToe.Foundation.Configs
         public int BoardSize { get; }
 
 
-        public GameConfig(ICollection<IPlayer> players, IPlayer firstPlayer, int boardSize)
+        public Config(IReadOnlyCollection<IPlayer> players, IPlayer firstPlayer, int boardSize)
         {
-            if (players.Distinct().Count() != 0)
+            if (players.Distinct().Count() != players.Count())
             {
                 throw new ArgumentException("The set of players contains duplicate player(s).");
             }
 
-            if (players.Select(player => player.FigureType).Distinct().Count() != 0)
+            var figureTypes = players.Select(player => player.FigureType).ToList();
+
+            if (figureTypes.Distinct().Count() != figureTypes.Count())
             {
                 throw new ArgumentException("Players have duplicate figure types.");
             }
 
-            if (players.Contains(firstPlayer))
-            {
-                FirstPlayer = firstPlayer;
-            }
-            else
+            if (!players.Contains(firstPlayer))
             {
                 throw new ArgumentException("First player not found in players set.");
             }
 
-            if (boardSize > 3)
-            {
-                BoardSize = boardSize;
-            }
-            else
+            if (boardSize < 3)
             {
                 throw new ArgumentException("Board size must be 3 or more.");
             }
+
+            Players = players.ToList();
+            FirstPlayer = firstPlayer;
+            BoardSize = boardSize;
         }
     }
 }
