@@ -74,18 +74,8 @@ namespace iTechArt.TicTacToe.Foundation.GameBoard
 
         private bool TryGetCell(int row, int column, out ICellInternal cell)
         {
-            try
-            {
-                cell = _cells.First(cellInternal => cellInternal.Row == row && cellInternal.Column == column);
-            }
-            catch
-            {
-                cell = null;
-
-                return false;
-            }
-
-            return true;
+            cell = _cells.FirstOrDefault(cellInternal => cellInternal.Row == row && cellInternal.Column == column);
+            return cell != null;
         }
     }
 }

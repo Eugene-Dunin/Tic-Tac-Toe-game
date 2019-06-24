@@ -2,9 +2,9 @@
 
 namespace iTechArt.TicTacToe.Foundation.Lines
 {
-    public class RowLine : BaseLine
+    public class Row : LineBase
     {
-        public RowLine(IBoard board, int row)
+        public Row(IBoard board, int row)
             : base(board, cell => cell.Row == row)
         {
 

@@ -8,13 +8,13 @@ namespace iTechArt.TicTacToe.Foundation.Lines
     {
         public IReadOnlyList<ILine> CreateLines(IBoard board)
         {
-            var boardLines = new List<BaseLine>();
+            var boardLines = new List<LineBase>();
             boardLines.AddRange(Enumerable.Range(1, board.Size).Select(row =>
-                new RowLine(board, row)));
+                new Row(board, row)));
             boardLines.AddRange(Enumerable.Range(1, board.Size).Select(row =>
-                new ColumnLine(board, row)));
-            boardLines.Add(new MainDiagonalLine(board));
-            boardLines.Add(new SideDiagonalLine(board));
+                new Column(board, row)));
+            boardLines.Add(new MainDiagonal(board));
+            boardLines.Add(new SideDiagonal(board));
 
             return boardLines;
         }

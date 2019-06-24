@@ -2,9 +2,9 @@
 
 namespace iTechArt.TicTacToe.Foundation.Lines
 {
-    public class MainDiagonalLine : BaseLine
+    public class MainDiagonal : LineBase
     {
-        public MainDiagonalLine(IBoard board)
+        public MainDiagonal(IBoard board)
             : base(board, cell => cell.Row == cell.Column)
         {
 

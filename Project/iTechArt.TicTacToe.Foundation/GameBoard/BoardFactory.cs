@@ -1,18 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using iTechArt.TicTacToe.Foundation.Interfaces;
-using iTechArt.TicTacToe.Foundation.Interfaces.Internals;
+﻿using iTechArt.TicTacToe.Foundation.Interfaces;
 
 namespace iTechArt.TicTacToe.Foundation.GameBoard
 {
     public class BoardFactory : IBoardFactory
     {
-        public IBoard CreateBoard(int size, IFigureFactory figureFactory, ICellFactory cellFactory)
+        private readonly IFigureFactory _figureFactory;
+        private readonly ICellFactory _cellFactory;
+
+        public BoardFactory(IFigureFactory figureFactory, ICellFactory cellFactory)
         {
-            return new Board(size, figureFactory, cellFactory);
+            _figureFactory = figureFactory;
+            _cellFactory = cellFactory;
+        }
+
+        public IBoard CreateBoard(int size)
+        {
+            return new Board(size, _figureFactory, _cellFactory);
         }
     }
 }
