@@ -27,13 +27,15 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
         public Game(
             IGameConfig gameConfig,
             IBoardFactory boardFactory,
+            IFigureFactory figureFactory,
+            ICellFactory cellFactory,
             ILinesFactory linesFactory,
             IGameInputProvider gameInputProvider            )
         {
             _gameConfig = gameConfig;
             _gameInputProvider = gameInputProvider;
 
-            _board = (IBoardInternal)boardFactory.CreateBoard(gameConfig.BoardSize);
+            _board = (IBoardInternal)boardFactory.CreateBoard(gameConfig.BoardSize, figureFactory, cellFactory);
 
             _lines = linesFactory.CreateLines(_board);
         }
