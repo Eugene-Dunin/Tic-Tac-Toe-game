@@ -1,4 +1,5 @@
 ﻿using iTechArt.TicTacToe.Foundation.Events.GameUseArgs;
+using iTechArt.TicTacToe.Foundation.Events.Steps;
 
 namespace iTechArt.TicTacToe.Interfaces
 {

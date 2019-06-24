@@ -1,9 +1,9 @@
 ﻿using iTechArt.TicTacToe.Foundation.GameLogic;
 using System.Collections.Generic;
-using iTechArt.TicTacToe.FigureManagers;
 using iTechArt.TicTacToe.Foundation.Cells;
 using iTechArt.TicTacToe.Foundation.Configs;
-using iTechArt.TicTacToe.Foundation.Events.GameUseArgs;
+using iTechArt.TicTacToe.Foundation.Events.Finishes;
+using iTechArt.TicTacToe.Foundation.Events.Steps;
 using iTechArt.TicTacToe.Foundation.Figures;
 using iTechArt.TicTacToe.Foundation.GameBoard;
 using iTechArt.TicTacToe.Foundation.Interfaces;
@@ -15,8 +15,6 @@ namespace iTechArt.TicTacToe
 {
     internal class Program
     {
-        private static readonly List<IPlayer> Players;
-
         private static readonly IBoardDraw BoardDraw;
 
         private static readonly BaseInputManager InputManager;
@@ -26,19 +24,20 @@ namespace iTechArt.TicTacToe
         private static readonly IFigureManager FigureManager;
 
         private static readonly IGameConfigFactory GameConfigFactory;
-        private static readonly IBoardFactory BoardFactory;
         private static readonly IFigureFactory FigureFactory;
         private static readonly ICellFactory CellFactory;
+        private static readonly IBoardFactory BoardFactory;
         private static readonly ILinesFactory LinesFactory;
 
         private static IGameConfig _gameConfig;
 
+
         static Program()
         {
-            GameConfigFactory = new GameConfigFactory();
-            BoardFactory = new BoardFactory();
+            GameConfigFactory = new ConfigFactory();
             CellFactory = new CellFactory();
             FigureFactory = new FigureFactory();
+            BoardFactory = new BoardFactory(FigureFactory, CellFactory);
             LinesFactory = new LinesFactory();
         }
 
@@ -67,36 +66,44 @@ namespace iTechArt.TicTacToe
 
         private static Game Builder(IGameConfig config)
         {
-            var game = new Game(config, BoardFactory, FigureFactory, CellFactory, LinesFactory, InputManager);
-            game.GameFinishedEvent += OnGameFinished;
-            game.StepFailedEvent += OnStepFailed;
+            var game = new Game(config, BoardFactory, LinesFactory, InputManager);
+            game.Finished += OnGameFinished;
+            game.StepDone += OnStepDone;
             return game;
         }
 
         private static IGameConfig Register()
         {
+            var players = new List<IPlayer>();
             while (FigureManager.CurrentAllowedCountOfPlayers != 0)
             {
-                Players.Add(InputManager.RegisterNewPlayer(FigureManager));
+                players.Add(InputManager.RegisterNewPlayer(FigureManager));
             }
-            var firstPlayer = InputManager.ChooseFirstPlayer(Players);
+            var firstPlayer = InputManager.ChooseFirstPlayer(players);
             var boardSize = InputManager.GetBoardSize();
-            return GameConfigFactory.CreateBaseGameConfigManager(Players, firstPlayer, boardSize);
+            return GameConfigFactory.CreateGameConfig(players, firstPlayer, boardSize);
         }
 
-        private static void OnGameFinished(object sender, GameFinishedEventArgs args)
+        private static void OnGameFinished(object sender, FinishedEventArgs args)
         {
             UserNotificationManager.ShowWinner(args);
         }
 
-        private static void OnStepFinished(object sender, StepFinishedEventArgs args)
+        private static void OnStepDone(object sender, StepDoneEventArgs args)
         {
-            BoardDraw.Draw(args);
-        }
+            switch (args.Result)
+            {
+                    case StepResult.Successful:
+                        BoardDraw.Draw((StepFinishedEventArgs)args);
+                        break;
+                    case StepResult.CellIsFilled:
+                    UserNotificationManager.ShowStepFailedMessage((StepForbiddenEventArgs)args);
+                        break;
+                    case StepResult.CellNotExist:
 
-        private static void OnStepFailed(object sender, StepFailedEventArgs args)
-        {
-            UserNotificationManager.ShowStepFailedMessage(args);
+                        break;
+            }
+            
         }
     }
 }
