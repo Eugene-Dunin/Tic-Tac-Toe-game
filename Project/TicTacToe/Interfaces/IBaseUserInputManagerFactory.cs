@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TicTacToe.Base;
+using iTechArt.TicTacToe.FigureManagers;
+using iTechArt.TicTacToe.InputManagers;
+using iTechArt.TicTacToe.Interfaces;
 
 namespace TicTacToe.Interfaces
 {
     interface IBaseUserInputManagerFactory
     {
-        BaseUserInputManager CreateBaseUserInputManager(IUserNotificationManager userNotificationManager);
+        BaseInputManager CreateBaseUserInputManager(IUserNotificationManager userNotificationManager);
     }
 }
