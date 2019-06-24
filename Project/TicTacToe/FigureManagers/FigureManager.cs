@@ -12,7 +12,6 @@ namespace iTechArt.TicTacToe.FigureManagers
 
         public IReadOnlyCollection<FigureType> AllFigureTypes => _figureTypes;
 
-
         public int CurrentAllowedCountOfPlayers => _figureTypes.Count;
 
 
@@ -22,9 +21,9 @@ namespace iTechArt.TicTacToe.FigureManagers
         }
 
 
-        public FigureType? PopFigureType(FigureType searchedFigureType)
+        public FigureType? PopFigureType(string figureTypeName)
         {
-            var requiredFigureType = _figureTypes.First(figureType => searchedFigureType == figureType);
+            var requiredFigureType = _figureTypes.First(figureType => nameof(figureType).Equals(figureTypeName));
             _figureTypes.Remove(requiredFigureType);
             return requiredFigureType;
         }

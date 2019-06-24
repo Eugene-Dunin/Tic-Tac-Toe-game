@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using iTechArt.TicTacToe.Foundation.Figures;
-using iTechArt.TicTacToe.Foundation.Interfaces;
 
 namespace iTechArt.TicTacToe.Interfaces
 {
@@ -14,6 +9,6 @@ namespace iTechArt.TicTacToe.Interfaces
 
         int CurrentAllowedCountOfPlayers { get; }
 
-        FigureType? PopFigureType(FigureType figureType);
+        FigureType? PopFigureType(string figureTypeName);
     }
 }
