@@ -1,16 +1,17 @@
 ﻿using iTechArt.TicTacToe.Foundation.Interfaces;
 using System;
+using iTechArt.TicTacToe.Foundation.Figures;
 
 namespace iTechArt.TicTacToe.Foundation.Players
 {
-    public class Player
+    public class Player : IPlayer
     {
         private int age;
+
 
         public string Name { get; private set; }
 
         public string LastName { get; private set; }
-
 
         public int Age {
             get => age;
@@ -30,15 +31,15 @@ namespace iTechArt.TicTacToe.Foundation.Players
         }
 
 
-        public IFigure Figure { get; }
+        public FigureType FigureType { get; }
 
 
-        public Player(string name, string lastName, int age, IFigure figure)
+        public Player(string name, string lastName, int age, FigureType figureType)
         {
             Name = name;
             LastName = lastName;
             Age = age;
-            Figure = figure;
+            FigureType = figureType;
         }
     }
 }

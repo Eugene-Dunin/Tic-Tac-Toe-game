@@ -14,15 +14,13 @@ namespace iTechArt.TicTacToe.Foundation.GameBoard
         private readonly ICellFactory _cellFactory;
 
         private readonly IReadOnlyList<ICellInternal> _cells;
-
-        private ICellInternal requestedCell;
-
+ 
 
         public int Size { get; }
 
         public ICell this[int row, int column] =>
-            TryGetCell(row, column) 
-                ? requestedCell 
+            TryGetCell(row, column, out var cell) 
+                ? cell
                 : throw new InvalidOperationException($"Board not contain cell with [{row},{column}] coordinates.");
 
 
@@ -45,15 +43,15 @@ namespace iTechArt.TicTacToe.Foundation.GameBoard
 
         FillCellResult IBoardInternal.FillCell(FigureType figureType, int row, int column)
         {
-            if (!TryGetCell(row, column))
+            if (!TryGetCell(row, column, out var cell))
             {
                 return FillCellResult.CellNotFound;
             }
-            if (requestedCell.IsEmpty)
+            if (cell.IsEmpty)
             {
                 return FillCellResult.CellOccupied;
             }
-            requestedCell.Figure = _figureFactory.CreateFigure(figureType);
+            cell.Figure = _figureFactory.CreateFigure(figureType);
 
             return FillCellResult.Successful;
 
@@ -74,15 +72,15 @@ namespace iTechArt.TicTacToe.Foundation.GameBoard
                 .ToList();
         }
 
-        private bool TryGetCell(int row, int column)
+        private bool TryGetCell(int row, int column, out ICellInternal cell)
         {
             try
             {
-                requestedCell = _cells.First(cell => cell.Row == row && cell.Column == column);
+                cell = _cells.First(cellInternal => cellInternal.Row == row && cellInternal.Column == column);
             }
             catch
             {
-                requestedCell = null;
+                cell = null;
 
                 return false;
             }

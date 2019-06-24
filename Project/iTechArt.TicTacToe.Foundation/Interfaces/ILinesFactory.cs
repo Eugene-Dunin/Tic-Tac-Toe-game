@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using iTechArt.TicTacToe.Foundation.Base;
+using iTechArt.TicTacToe.Foundation.Lines;
 
 namespace iTechArt.TicTacToe.Foundation.Interfaces
 {

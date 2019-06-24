@@ -9,45 +9,33 @@ namespace iTechArt.TicTacToe.Foundation.Configs
 {
     public class GameConfig : IGameConfig
     {
-        public IReadOnlyList<Player> Players { get; }
+        public IReadOnlyList<IPlayer> Players { get; }
+
+        public IPlayer FirstPlayer { get; }
 
         public int BoardSize { get; }
 
 
-        public GameConfig(ICollection<Player> players, Player firstPlayer, int boardSize)
+        public GameConfig(ICollection<IPlayer> players, IPlayer firstPlayer, int boardSize)
         {
-            var realPlayers = new HashSet<Player>(players);
-
-            if (realPlayers.Count == players.Count())
+            if (players.Distinct().Count() != 0)
             {
                 throw new ArgumentException("The set of players contains duplicate player(s).");
             }
 
-            if (realPlayers.Any(player => player.Figure == null))
-            {
-                throw new ArgumentException("Not all players have figures.");
-            }
-
-            var figureTypes = realPlayers.Select(player => player.Figure.Type);
-            if ((new HashSet<FigureType>(realPlayers.Select(player => player.Figure.Type))).Count
-                != figureTypes.Count())
+            if (players.Select(player => player.FigureType).Distinct().Count() != 0)
             {
                 throw new ArgumentException("Players have duplicate figure types.");
             }
 
             if (players.Contains(firstPlayer))
             {
-                players.Remove(firstPlayer);
-                var playersList = new List<Player> {firstPlayer};
-                playersList.AddRange(players);
-
-                Players = playersList;
+                FirstPlayer = firstPlayer;
             }
             else
             {
                 throw new ArgumentException("First player not found in players set.");
             }
-
 
             if (boardSize > 3)
             {

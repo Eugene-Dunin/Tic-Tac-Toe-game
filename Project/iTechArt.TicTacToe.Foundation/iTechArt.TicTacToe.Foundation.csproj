@@ -33,6 +33,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,13 +44,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\BaseLine.cs" />
+    <Compile Include="Interfaces\IGameInputProvider.cs" />
+    <Compile Include="Interfaces\ILine.cs" />
+    <Compile Include="Interfaces\IPlayer.cs" />
+    <Compile Include="Lines\BaseLine.cs" />
     <Compile Include="Cells\CellFactory.cs" />
     <Compile Include="Configs\GameConfig.cs" />
     <Compile Include="Configs\GameConfigFactory.cs" />
+    <Compile Include="Events\GameUseArgs\CurrentPlayerEventArgs.cs" />
     <Compile Include="GameBoard\FillCellResult.cs" />
     <Compile Include="Events\GameUseArgs\GameFinishedEventArgs.cs" />
-    <Compile Include="Events\GameUseArgs\NotificationEventArgs.cs" />
+    <Compile Include="Events\GameUseArgs\StepFailedEventArgs.cs" />
     <Compile Include="Events\GameUseArgs\GameResult.cs" />
     <Compile Include="Events\GameUseArgs\StepFinishedEventArgs.cs" />
     <Compile Include="Events\DependenceOfGameArgs\FillCellEventArgs.cs" />
@@ -79,6 +86,8 @@
     <Compile Include="Players\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
