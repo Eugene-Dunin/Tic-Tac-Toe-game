@@ -7,18 +7,18 @@ namespace iTechArt.TicTacToe.InputManagers
 {
     internal abstract class BaseInputManager : IGameInputProvider
     {
-        private readonly IUserNotificationManager userNotificationManager;
+        private readonly IUserNotificationManager _userNotificationManager;
 
 
         protected BaseInputManager(IUserNotificationManager userNotificationManager)
         {
-            this.userNotificationManager = userNotificationManager;
+            _userNotificationManager = userNotificationManager;
         }
 
 
         protected abstract void SetPlayerInfo();
 
-        protected abstract IPlayer CreatePlayer(FigureType figure);
+        protected abstract IPlayer CreatePlayer(FigureType figureType);
 
         protected abstract string ChooseFigureType();
 
@@ -26,7 +26,7 @@ namespace iTechArt.TicTacToe.InputManagers
         public IPlayer RegisterNewPlayer(IFigureManager figureManager)
         {
             SetPlayerInfo();
-            userNotificationManager.ShowFigureTypes(figureManager);
+            _userNotificationManager.ShowFigureTypes(figureManager);
             while (true)
             {
                 var figureName = ChooseFigureType();
@@ -34,7 +34,7 @@ namespace iTechArt.TicTacToe.InputManagers
                 {
                     return CreatePlayer(figureManager.PopFigureType(figureName).Value);
                 }
-                userNotificationManager.ShowFigureTypeChooseError(figureName);
+                _userNotificationManager.ShowFigureTypeChooseError(figureName);
             }
         }
 
