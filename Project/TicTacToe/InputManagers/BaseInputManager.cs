@@ -30,9 +30,10 @@ namespace iTechArt.TicTacToe.InputManagers
             while (true)
             {
                 var figureName = ChooseFigureType();
-                if (figureManager.PopFigureType(figureName).HasValue)
+                var figureType = figureManager.PopFigureType(figureName);
+                if (figureType.HasValue)
                 {
-                    return CreatePlayer(figureManager.PopFigureType(figureName).Value);
+                    return CreatePlayer(figureType.Value);
                 }
                 _userNotificationManager.ShowFigureTypeChooseError(figureName);
             }

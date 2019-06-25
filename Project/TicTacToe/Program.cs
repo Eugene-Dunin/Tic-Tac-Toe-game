@@ -1,5 +1,6 @@
 ﻿using iTechArt.TicTacToe.Foundation.GameLogic;
 using System.Collections.Generic;
+using iTechArt.TicTacToe.FigureManagers;
 using iTechArt.TicTacToe.Foundation.Cells;
 using iTechArt.TicTacToe.Foundation.Configs;
 using iTechArt.TicTacToe.Foundation.Events.Finishes;
@@ -10,6 +11,7 @@ using iTechArt.TicTacToe.Foundation.Interfaces;
 using iTechArt.TicTacToe.Foundation.Lines;
 using iTechArt.TicTacToe.InputManagers;
 using iTechArt.TicTacToe.Interfaces;
+using iTechArt.TicTacToe.NotificationManagers;
 
 namespace iTechArt.TicTacToe
 {
@@ -24,8 +26,8 @@ namespace iTechArt.TicTacToe
         private static readonly IFigureManager FigureManager;
 
         private static readonly IGameConfigFactory GameConfigFactory;
-        private static readonly IFigureFactory FigureFactory;
         private static readonly ICellFactory CellFactory;
+        private static readonly IFigureFactory FigureFactory;
         private static readonly IBoardFactory BoardFactory;
         private static readonly ILinesFactory LinesFactory;
 
@@ -39,6 +41,11 @@ namespace iTechArt.TicTacToe
             FigureFactory = new FigureFactory();
             BoardFactory = new BoardFactory(FigureFactory, CellFactory);
             LinesFactory = new LinesFactory();
+
+            UserNotificationManager = new NotificationManager();
+            InputManager = new InputManager(UserNotificationManager);
+
+            FigureManager = new FigureManager(new HashSet<FigureType>(new []{FigureType.Circle, FigureType.Cross}));
         }
 
 
@@ -97,7 +104,7 @@ namespace iTechArt.TicTacToe
                         BoardDraw.Draw((StepFinishedEventArgs)args);
                         break;
                     case StepResult.CellIsFilled:
-                    UserNotificationManager.ShowStepFailedMessage((StepForbiddenEventArgs)args);
+                    UserNotificationManager.ShowStepDoneMessage((StepForbiddenEventArgs)args);
                         break;
                     case StepResult.CellNotExist:
 
