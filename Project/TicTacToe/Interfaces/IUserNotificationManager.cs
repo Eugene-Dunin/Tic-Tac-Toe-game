@@ -8,7 +8,7 @@ namespace iTechArt.TicTacToe.Interfaces
     {
         void ShowFigureTypes(IFigureManager figureManager);
         void ShowWinner(FinishedEventArgs gameFinishedEventArgs);
-        void ShowStepFailedMessage(StepForbiddenEventArgs stepFailedEventArgs);
+        void ShowStepDoneMessage(StepDoneEventArgs stepFailedEventArgs);
         void ShowCurrentPlayer(IPlayer player);
         void ShowFigureTypeChooseError(string figureName);
     }
