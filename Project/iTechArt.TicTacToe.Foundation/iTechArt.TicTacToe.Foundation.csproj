@@ -44,11 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Events\Finishes\DrawFinishedEventArgs.cs" />
-    <Compile Include="Events\Finishes\WinFinishedEventArgs.cs" />
-    <Compile Include="Events\Steps\StepDoneEventArgs.cs" />
-    <Compile Include="Events\Steps\StepImpossibleEventArgs.cs" />
-    <Compile Include="Events\Steps\StepResult.cs" />
+    <Compile Include="GameLogic\Finish\DrawFinishedEventArgs.cs" />
+    <Compile Include="GameLogic\Finish\WinFinishedEventArgs.cs" />
+    <Compile Include="GameLogic\StepDone\StepDoneEventArgs.cs" />
+    <Compile Include="GameLogic\StepDone\CellNotExistStepDoneEventArgs.cs" />
+    <Compile Include="GameLogic\StepDone\StepResult.cs" />
     <Compile Include="Figures\FigureFactory.cs" />
     <Compile Include="GameBoard\BoardFactory.cs" />
     <Compile Include="Interfaces\IGame.cs" />
@@ -58,12 +58,11 @@
     <Compile Include="Cells\CellFactory.cs" />
     <Compile Include="Configs\GameConfig.cs" />
     <Compile Include="Configs\ConfigFactory.cs" />
-    <Compile Include="Events\CurrentPlayerEventArgs.cs" />
     <Compile Include="GameBoard\FillCellResult.cs" />
-    <Compile Include="Events\Finishes\FinishedEventArgs.cs" />
-    <Compile Include="Events\Steps\StepForbiddenEventArgs.cs" />
-    <Compile Include="Events\Finishes\GameResult.cs" />
-    <Compile Include="Events\Steps\StepFinishedEventArgs.cs" />
+    <Compile Include="GameLogic\Finish\FinishedEventArgs.cs" />
+    <Compile Include="GameLogic\StepDone\CellIsFilledStepDoneEventArgs.cs" />
+    <Compile Include="GameLogic\Finish\GameResult.cs" />
+    <Compile Include="GameLogic\StepDone\SuccessfulStepDoneEventArgs.cs" />
     <Compile Include="Interfaces\IBoardFactory.cs" />
     <Compile Include="Interfaces\ICellFactory.cs" />
     <Compile Include="Interfaces\IGameConfig.cs" />
@@ -93,6 +92,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Events\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace iTechArt.TicTacToe.Foundation.Events.Steps
+﻿namespace iTechArt.TicTacToe.Foundation.GameLogic.StepDone
 {
     public enum StepResult
     {

@@ -1,6 +1,4 @@
-﻿using iTechArt.TicTacToe.Foundation.Events.GameUseArgs;
-
-namespace iTechArt.TicTacToe.Foundation.Events.Finishes
+﻿namespace iTechArt.TicTacToe.Foundation.GameLogic.Finish
 {
     public class DrawFinishedEventArgs : FinishedEventArgs
     {

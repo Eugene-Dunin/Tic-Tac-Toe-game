@@ -1,7 +1,6 @@
-﻿using iTechArt.TicTacToe.Foundation.Events.GameUseArgs;
-using iTechArt.TicTacToe.Foundation.Interfaces;
+﻿using iTechArt.TicTacToe.Foundation.Interfaces;
 
-namespace iTechArt.TicTacToe.Foundation.Events.Finishes
+namespace iTechArt.TicTacToe.Foundation.GameLogic.Finish
 {
     public class WinFinishedEventArgs : FinishedEventArgs
     {

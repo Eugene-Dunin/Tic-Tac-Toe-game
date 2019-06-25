@@ -1,4 +1,4 @@
-﻿namespace iTechArt.TicTacToe.Foundation.Events.GameUseArgs
+﻿namespace iTechArt.TicTacToe.Foundation.GameLogic.Finish
 {
     public enum GameResult
     {

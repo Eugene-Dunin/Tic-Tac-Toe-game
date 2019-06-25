@@ -14,16 +14,16 @@ namespace iTechArt.TicTacToe.Foundation.Configs
         public int BoardSize { get; }
 
 
-        public Config(IReadOnlyCollection<IPlayer> players, IPlayer firstPlayer, int boardSize)
+        public Config(IReadOnlyList<IPlayer> players, IPlayer firstPlayer, int boardSize)
         {
-            if (players.Distinct().Count() != players.Count())
+            if (players.Distinct().Count() != players.Count)
             {
                 throw new ArgumentException("The set of players contains duplicate player(s).");
             }
 
             var figureTypes = players.Select(player => player.FigureType).ToList();
 
-            if (figureTypes.Distinct().Count() != figureTypes.Count())
+            if (figureTypes.Distinct().Count() != figureTypes.Count)
             {
                 throw new ArgumentException("Players have duplicate figure types.");
             }
@@ -38,7 +38,7 @@ namespace iTechArt.TicTacToe.Foundation.Configs
                 throw new ArgumentException("Board size must be 3 or more.");
             }
 
-            Players = players.ToList();
+            Players = players;
             FirstPlayer = firstPlayer;
             BoardSize = boardSize;
         }
