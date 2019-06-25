@@ -2,8 +2,8 @@
 
 namespace iTechArt.TicTacToe.Interfaces
 {
-    internal interface IBoardDraw
+    interface ICharFigure : IFigure 
     {
-        void Draw(IBoard board);
+        char FigureSymbol { get; }
     }
 }
