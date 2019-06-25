@@ -16,13 +16,6 @@ namespace iTechArt.TicTacToe.InputManagers
         }
 
 
-        protected abstract void SetPlayerInfo();
-
-        protected abstract IPlayer CreatePlayer(FigureType figureType);
-
-        protected abstract string ChooseFigureType();
-
-
         public IPlayer RegisterNewPlayer(IFigureManager figureManager)
         {
             SetPlayerInfo();
@@ -39,7 +32,6 @@ namespace iTechArt.TicTacToe.InputManagers
             }
         }
 
-
         public abstract IPlayer ChooseFirstPlayer(IReadOnlyCollection<IPlayer> players);
 
         public abstract int GetBoardSize();
@@ -49,5 +41,12 @@ namespace iTechArt.TicTacToe.InputManagers
         public abstract bool CloseApp();
 
         public abstract (int row, int col) GetCellCoordinates(IPlayer player);
+
+
+        protected abstract void SetPlayerInfo();
+
+        protected abstract IPlayer CreatePlayer(FigureType figureType);
+
+        protected abstract string ChooseFigureType();
     }
 }

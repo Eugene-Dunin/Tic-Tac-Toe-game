@@ -13,34 +13,11 @@ namespace iTechArt.TicTacToe.InputManagers
         private string name;
         private string lastname;
 
+
         public InputManager(IUserNotificationManager userNotificationManager) : base(userNotificationManager)
         {
         }
 
-        protected override void SetPlayerInfo()
-        {
-            do
-            {
-                if (!int.TryParse(Console.ReadLine(), out age))
-                {
-                    Console.WriteLine("Incorrect age, it must be a number. Try again.");
-                    continue;
-                }
-                name = Console.ReadLine();
-                lastname = Console.ReadLine();
-                return;
-            } while (true);
-        }
-
-        protected override IPlayer CreatePlayer(FigureType figureType)
-        {
-            return new Player(name, lastname, age, figureType);
-        }
-
-        protected override string ChooseFigureType()
-        {
-            return Console.ReadLine();
-        }
 
         public override IPlayer ChooseFirstPlayer(IReadOnlyCollection<IPlayer> players)
         {
@@ -72,6 +49,47 @@ namespace iTechArt.TicTacToe.InputManagers
             return YesNoQuestion();
         }
 
+        public override (int row, int col) GetCellCoordinates(IPlayer player)
+        {
+            do
+            {
+                (int row, int col) coordinates;
+                if(NumberInputResultWithMessage("Input row number:" , out coordinates.row) &&
+                   NumberInputResultWithMessage("Input column number:", out coordinates.col))
+                {
+                    return coordinates;
+                }
+                Console.WriteLine("Incorrect coordinates, it must be numbers. Try again.");
+            } while (true);
+        }
+
+
+        protected override void SetPlayerInfo()
+        {
+            do
+            {
+                if (!int.TryParse(Console.ReadLine(), out age))
+                {
+                    Console.WriteLine("Incorrect age, it must be a number. Try again.");
+                    continue;
+                }
+                name = Console.ReadLine();
+                lastname = Console.ReadLine();
+                return;
+            } while (true);
+        }
+
+        protected override IPlayer CreatePlayer(FigureType figureType)
+        {
+            return new Player(name, lastname, age, figureType);
+        }
+
+        protected override string ChooseFigureType()
+        {
+            return Console.ReadLine();
+        }
+
+
         private bool YesNoQuestion()
         {
             do
@@ -87,20 +105,6 @@ namespace iTechArt.TicTacToe.InputManagers
                         Console.WriteLine("Incorrect answer. Please, print \"yes\" or \"no\".");
                         break;
                 }
-            } while (true);
-        }
-
-        public override (int row, int col) GetCellCoordinates(IPlayer player)
-        {
-            do
-            {
-                (int row, int col) coordinates;
-                if(NumberInputResultWithMessage("Input row number:" , out coordinates.row) &&
-                   NumberInputResultWithMessage("Input column number:", out coordinates.col))
-                {
-                    return coordinates;
-                }
-                Console.WriteLine("Incorrect coordinates, it must be numbers. Try again.");
             } while (true);
         }
 

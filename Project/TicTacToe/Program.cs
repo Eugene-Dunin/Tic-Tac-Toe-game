@@ -18,19 +18,14 @@ namespace iTechArt.TicTacToe
     internal class Program
     {
         private static readonly IBoardDraw BoardDraw;
-
         private static readonly BaseInputManager InputManager;
-
         private static readonly IUserNotificationManager UserNotificationManager;
-
         private static readonly IFigureManager FigureManager;
-
         private static readonly IGameConfigFactory GameConfigFactory;
         private static readonly ICellFactory CellFactory;
         private static readonly IFigureFactory FigureFactory;
         private static readonly IBoardFactory BoardFactory;
         private static readonly ILinesFactory LinesFactory;
-
         private static IGameConfig _gameConfig;
 
 
@@ -101,7 +96,7 @@ namespace iTechArt.TicTacToe
             switch (args.Result)
             {
                     case StepResult.Successful:
-                        BoardDraw.Draw((StepFinishedEventArgs)args);
+                        BoardDraw.Draw(((StepFinishedEventArgs)args).Board);
                         break;
                     case StepResult.CellIsFilled:
                     UserNotificationManager.ShowStepDoneMessage((StepForbiddenEventArgs)args);
