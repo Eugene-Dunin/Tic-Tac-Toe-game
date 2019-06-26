@@ -56,7 +56,7 @@
     <Compile Include="Interfaces\ILine.cs" />
     <Compile Include="Interfaces\IPlayer.cs" />
     <Compile Include="Cells\CellFactory.cs" />
-    <Compile Include="Configs\GameConfig.cs" />
+    <Compile Include="Configs\Config.cs" />
     <Compile Include="Configs\ConfigFactory.cs" />
     <Compile Include="GameBoard\FillCellResult.cs" />
     <Compile Include="GameLogic\Finish\FinishedEventArgs.cs" />
