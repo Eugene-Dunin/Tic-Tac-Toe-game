@@ -5,7 +5,7 @@ namespace iTechArt.TicTacToe.Interfaces
 {
     internal interface IRegisterManager
     {
-        IReadOnlyList<IPlayer> CreatePlayers(int playersCount, IPlayerRegisterManager playerRegisterManager);
+        IReadOnlyList<IPlayer> CreatePlayers(IPlayerRegisterManager playerRegisterManager);
 
         IPlayer ChooseFirstPlayer();
 
