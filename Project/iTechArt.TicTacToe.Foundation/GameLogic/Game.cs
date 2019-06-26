@@ -16,12 +16,13 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
         private readonly IBoardInternal _board;
         private readonly IReadOnlyList<ILine> _lines;
         private readonly IReadOnlyList<IPlayer> _players;
-        private int currentPlayerIndex;
+
+        private int _currentPlayerIndex;
 
 
         private bool IsGameFinished => _lines.Any(line => line.IsWin) || _board.All(cell => !cell.IsEmpty);
 
-        private IPlayer CurrentPlayer => _players.ElementAt(currentPlayerIndex);
+        private IPlayer CurrentPlayer => _players[_currentPlayerIndex];
 
 
         public event EventHandler<FinishedEventArgs> Finished;
@@ -41,8 +42,9 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
 
             _lines = linesFactory.CreateLines(_board);
 
-            currentPlayerIndex = gameConfig.Players.ToList().IndexOf(gameConfig.FirstPlayer);
-            _players = gameConfig.Players;
+            var players = gameConfig.Players.ToList();
+            _players = players;
+            _currentPlayerIndex = players.IndexOf(gameConfig.FirstPlayer);
         }
 
 
@@ -51,7 +53,7 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
             while (!IsGameFinished)
             {
                 DoStep(CurrentPlayer);
-                currentPlayerIndex = ++currentPlayerIndex % _players.Count;
+                _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
             }
             EmitGameFinishedEvent();
         }
@@ -83,8 +85,10 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
 
         private void EmitGameFinishedEvent()
         {
-            var gameFinishedEventArgs = _lines.Any(line => line.IsWin)
-                ? (FinishedEventArgs)new WinFinishedEventArgs(_lines.First(line => line.IsWin))
+            var winLine = _lines.SingleOrDefault(line => line.IsWin);
+
+            var gameFinishedEventArgs = winLine != null
+                ? (FinishedEventArgs)new WinFinishedEventArgs(winLine)
                 : new DrawFinishedEventArgs();
 
             Finished?.Invoke(this, gameFinishedEventArgs);

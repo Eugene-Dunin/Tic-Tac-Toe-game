@@ -6,6 +6,7 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic.StepDone
     {
         public StepResult Result { get; }
 
+
         protected StepDoneEventArgs(StepResult result)
         {
             Result = result;

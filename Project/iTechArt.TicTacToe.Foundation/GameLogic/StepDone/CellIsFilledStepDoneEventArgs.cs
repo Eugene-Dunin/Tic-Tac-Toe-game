@@ -7,7 +7,8 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic.StepDone
         public ICell FilledCell { get; }
 
 
-        public CellIsFilledStepDoneEventArgs(ICell filledCell) : base(StepResult.CellIsFilled)
+        public CellIsFilledStepDoneEventArgs(ICell filledCell) 
+            : base(StepResult.CellIsFilled)
         {
             FilledCell = filledCell;
         }

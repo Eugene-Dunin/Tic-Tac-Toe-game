@@ -7,7 +7,8 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic.StepDone
         public IBoard Board { get; }
 
 
-        public SuccessfulStepDoneEventArgs(IBoard board) : base(StepResult.Successful)
+        public SuccessfulStepDoneEventArgs(IBoard board)
+            : base(StepResult.Successful)
         {
             Board = board;
         }
