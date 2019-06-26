@@ -4,6 +4,11 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic.Finish
 {
     public abstract  class FinishedEventArgs : EventArgs
     {
-        public abstract GameResult Result { get; }
+        public GameResult Result { get; }
+
+        protected FinishedEventArgs(GameResult result)
+        {
+            Result = result;
+        }
     }
 }

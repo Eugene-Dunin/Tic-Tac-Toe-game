@@ -2,6 +2,10 @@
 {
     public class DrawFinishedEventArgs : FinishedEventArgs
     {
-        public override GameResult Result => GameResult.Draw;
+        public DrawFinishedEventArgs()
+            : base(GameResult.Draw)
+        {
+
+        }
     }
 }

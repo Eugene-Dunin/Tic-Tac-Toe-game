@@ -4,6 +4,7 @@
     {
         public CellNotExistStepDoneEventArgs() : base(StepResult.CellNotExist)
         {
+
         }
     }
 }
