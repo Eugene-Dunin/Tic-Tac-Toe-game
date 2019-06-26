@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using iTechArt.TicTacToe.Foundation.Figures;
-using iTechArt.TicTacToe.Foundation.Interfaces;
+﻿using iTechArt.TicTacToe.Foundation.Interfaces;
 using iTechArt.TicTacToe.Interfaces;
 
 namespace iTechArt.TicTacToe.InputManagers
@@ -16,9 +14,9 @@ namespace iTechArt.TicTacToe.InputManagers
         }
 
 
-        public IPlayer RegisterNewPlayer(IFigureManager figureManager)
+        public void RegisterNewPlayer(IFigureManager figureManager)
         {
-            SetPlayerInfo();
+            /*SetPlayerInfo();
             _userNotificationManager.ShowFigureTypes(figureManager);
             while (true)
             {
@@ -29,24 +27,9 @@ namespace iTechArt.TicTacToe.InputManagers
                     return CreatePlayer(figureType.Value);
                 }
                 _userNotificationManager.ShowFigureTypeChooseError(figureName);
-            }
+            }*/
         }
 
-        public abstract IPlayer ChooseFirstPlayer(IReadOnlyCollection<IPlayer> players);
-
-        public abstract int GetBoardSize();
-
-        public abstract bool RepeatGame();
-
-        public abstract bool CloseApp();
-
         public abstract (int row, int col) GetCellCoordinates(IPlayer player);
-
-
-        protected abstract void SetPlayerInfo();
-
-        protected abstract IPlayer CreatePlayer(FigureType figureType);
-
-        protected abstract string ChooseFigureType();
     }
 }

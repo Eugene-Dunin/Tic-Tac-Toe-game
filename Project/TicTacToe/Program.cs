@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using iTechArt.TicTacToe.FigureManagers;
 using iTechArt.TicTacToe.Foundation.Cells;
 using iTechArt.TicTacToe.Foundation.Configs;
-using iTechArt.TicTacToe.Foundation.Events.Finishes;
-using iTechArt.TicTacToe.Foundation.Events.Steps;
 using iTechArt.TicTacToe.Foundation.Figures;
 using iTechArt.TicTacToe.Foundation.GameBoard;
+using iTechArt.TicTacToe.Foundation.GameLogic.Finish;
+using iTechArt.TicTacToe.Foundation.GameLogic.StepDone;
 using iTechArt.TicTacToe.Foundation.Interfaces;
 using iTechArt.TicTacToe.Foundation.Lines;
 using iTechArt.TicTacToe.InputManagers;
@@ -26,6 +26,10 @@ namespace iTechArt.TicTacToe
         private static readonly IFigureFactory FigureFactory;
         private static readonly IBoardFactory BoardFactory;
         private static readonly ILinesFactory LinesFactory;
+        private static readonly IRegisterManager RegisterManager;
+        private static readonly IPlayerRegisterManager PlayerRegisterManager;
+        private static readonly IPartyFinishedProvider PartyFinishedProvider;
+
         private static IGameConfig _gameConfig;
 
 
@@ -46,27 +50,27 @@ namespace iTechArt.TicTacToe
 
         private static void Main(string[] args)
         {
-            _gameConfig = Register();
+            _gameConfig = BuildConfig();
             var game = Builder(_gameConfig);
             game.Start();
 
             do
             {
-                if (InputManager.RepeatGame())
+                if (PartyFinishedProvider.RepeatGame())
                 {
                     game = Builder(_gameConfig);
                     game.Start();
                 }
                 else
                 {
-                    _gameConfig = Register();
+                    _gameConfig = BuildConfig();
                     game = Builder(_gameConfig);
                     game.Start();
                 }
-            } while (InputManager.CloseApp());
+            } while (PartyFinishedProvider.CloseApp());
         }
 
-        private static Game Builder(IGameConfig config)
+        private static IGame Builder(IGameConfig config)
         {
             var game = new Game(config, BoardFactory, LinesFactory, InputManager);
             game.Finished += OnGameFinished;
@@ -74,15 +78,11 @@ namespace iTechArt.TicTacToe
             return game;
         }
 
-        private static IGameConfig Register()
+        private static IGameConfig BuildConfig()
         {
-            var players = new List<IPlayer>();
-            while (FigureManager.CurrentAllowedCountOfPlayers != 0)
-            {
-                players.Add(InputManager.RegisterNewPlayer(FigureManager));
-            }
-            var firstPlayer = InputManager.ChooseFirstPlayer(players);
-            var boardSize = InputManager.GetBoardSize();
+            var players = RegisterManager.CreatePlayers(PlayerRegisterManager);
+            var firstPlayer = RegisterManager.ChooseFirstPlayer();
+            var boardSize = RegisterManager.GetBoardSize();
             return GameConfigFactory.CreateGameConfig(players, firstPlayer, boardSize);
         }
 
@@ -95,17 +95,14 @@ namespace iTechArt.TicTacToe
         {
             switch (args.Result)
             {
-                    case StepResult.Successful:
-                        BoardDraw.Draw(((StepFinishedEventArgs)args).Board);
-                        break;
-                    case StepResult.CellIsFilled:
-                    UserNotificationManager.ShowStepDoneMessage((StepForbiddenEventArgs)args);
-                        break;
-                    case StepResult.CellNotExist:
-
-                        break;
+                case StepResult.Successful:
+                    BoardDraw.Draw(((SuccessfulStepDoneEventArgs)args).Board);
+                    break;
+                case StepResult.CellIsFilled:
+                case StepResult.CellNotExist:
+                    UserNotificationManager.ShowStepDoneMessage(args);
+                    break;
             }
-            
         }
     }
 }

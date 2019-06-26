@@ -45,22 +45,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoardDrawers\BoardDrawer.cs" />
     <Compile Include="FigureManagers\FigureManager.cs" />
     <Compile Include="InputManagers\BaseInputManager.cs" />
     <Compile Include="InputManagers\InputManager.cs" />
-    <Compile Include="Interfaces\IBaseUserInputManagerFactory.cs" />
     <Compile Include="Interfaces\IBoardDraw.cs" />
     <Compile Include="Interfaces\IFigureManager.cs" />
+    <Compile Include="Interfaces\IPartyFinishedProvider.cs" />
+    <Compile Include="Interfaces\IPlayerRegisterManager.cs" />
+    <Compile Include="Interfaces\IRegisterManager.cs" />
     <Compile Include="Interfaces\IUserNotificationManager.cs" />
-    <Compile Include="Interfaces\IUserNotificationManagerFactory.cs" />
+    <Compile Include="NotificationManagers\NotificationManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegisterManagers\RegisterManagerBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="CharFigures\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iTechArt.TicTacToe.Foundation\iTechArt.TicTacToe.Foundation.csproj">
       <Project>{c0bf88d6-56c3-4331-891e-471630294080}</Project>

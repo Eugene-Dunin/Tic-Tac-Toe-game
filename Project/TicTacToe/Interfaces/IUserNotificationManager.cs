@@ -1,5 +1,5 @@
-﻿using iTechArt.TicTacToe.Foundation.Events.Finishes;
-using iTechArt.TicTacToe.Foundation.Events.Steps;
+﻿using iTechArt.TicTacToe.Foundation.GameLogic.Finish;
+using iTechArt.TicTacToe.Foundation.GameLogic.StepDone;
 using iTechArt.TicTacToe.Foundation.Interfaces;
 
 namespace iTechArt.TicTacToe.Interfaces
