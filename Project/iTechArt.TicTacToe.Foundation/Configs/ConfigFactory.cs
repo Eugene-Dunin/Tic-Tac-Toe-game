@@ -5,7 +5,7 @@ namespace iTechArt.TicTacToe.Foundation.Configs
 {
     public class ConfigFactory : IGameConfigFactory
     {
-        public IGameConfig CreateGameConfig(IReadOnlyCollection<IPlayer> players, IPlayer firstPlayer, int boardSize)
+        public IGameConfig CreateGameConfig(IReadOnlyList<IPlayer> players, IPlayer firstPlayer, int boardSize)
         {
             return new Config(players, firstPlayer, boardSize);
         }

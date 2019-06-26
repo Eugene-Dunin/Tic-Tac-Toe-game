@@ -35,14 +35,17 @@ namespace iTechArt.TicTacToe.Foundation.Lines
         private bool? CalcIfIsWin()
         {
             var filledCells = Cells.Where(cell => !cell.IsEmpty).Select(cell => cell.Figure.Type).ToList();
-            var inProgress = filledCells.Distinct().Count() <= 1;
 
-            if (filledCells.Count() != Cells.Count && inProgress)
+            if (filledCells.Distinct().Count() > 1)
+            {
+                return false;
+            }
+            if (filledCells.Count() != Cells.Count)
             {
                 return null;
             }
 
-            return inProgress;
+            return true;
         }
     }
 }

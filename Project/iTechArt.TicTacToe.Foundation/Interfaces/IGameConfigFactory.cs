@@ -4,6 +4,6 @@ namespace iTechArt.TicTacToe.Foundation.Interfaces
 {
     public interface IGameConfigFactory
     {
-        IGameConfig CreateGameConfig(IReadOnlyCollection<IPlayer> players, IPlayer firstPlayer, int boardSize);
+        IGameConfig CreateGameConfig(IReadOnlyList<IPlayer> players, IPlayer firstPlayer, int boardSize);
     }
 }

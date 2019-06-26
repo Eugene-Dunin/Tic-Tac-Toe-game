@@ -39,8 +39,7 @@ namespace iTechArt.TicTacToe.Foundation.GameBoard
         {
             return GetEnumerator();
         }
-
-
+        
         FillCellResult IBoardInternal.FillCell(FigureType figureType, int row, int column)
         {
             if (!TryGetCell(row, column, out var cell))
@@ -74,7 +73,8 @@ namespace iTechArt.TicTacToe.Foundation.GameBoard
 
         private bool TryGetCell(int row, int column, out ICellInternal cell)
         {
-            cell = _cells.FirstOrDefault(cellInternal => cellInternal.Row == row && cellInternal.Column == column);
+            cell = _cells.SingleOrDefault(cellInternal => cellInternal.Row == row && cellInternal.Column == column);
+
             return cell != null;
         }
     }

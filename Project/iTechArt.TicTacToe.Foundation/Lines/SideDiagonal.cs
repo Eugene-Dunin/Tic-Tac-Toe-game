@@ -1,5 +1,4 @@
 ﻿using iTechArt.TicTacToe.Foundation.Interfaces;
-﻿using iTechArt.TicTacToe.Foundation.Interfaces;
 
 namespace iTechArt.TicTacToe.Foundation.Lines
 {
