@@ -14,6 +14,8 @@ using iTechArt.TicTacToe.GameInputProviders;
 using iTechArt.TicTacToe.Interfaces;
 using iTechArt.TicTacToe.NotificationManagers;
 using iTechArt.TicTacToe.PartyFinishProviders;
+using iTechArt.TicTacToe.PlayerRegisterManagers;
+using iTechArt.TicTacToe.RegisterManagers;
 
 namespace iTechArt.TicTacToe
 {
@@ -26,10 +28,10 @@ namespace iTechArt.TicTacToe
         private static readonly ILinesFactory LinesFactory;
 
         private static readonly IBoardDraw BoardDraw;
-        private static readonly IGameInputProvider InputManager;
         private static readonly IEventNotificationManager EventNotificationManager;
-        private static readonly IRegisterManager RegisterManager;
         private static readonly IPlayerRegisterManager PlayerRegisterManager;
+        private static readonly IGamePreparationService PreparationService;
+        private static readonly IGameInputProvider InputManager;
         private static readonly IPartyFinishedProvider PartyFinishedProvider;
 
         private static readonly IConsole Console;
@@ -50,9 +52,10 @@ namespace iTechArt.TicTacToe
             ConsoleInputProvider = new ConsoleInputProvider(Console);
 
             EventNotificationManager = new EventNotificationManager(Console);
+            PlayerRegisterManager = new PlayerRegisterManager(ConsoleInputProvider, Console);
+            PreparationService = new GamePreparationService(ConsoleInputProvider, Console);
             InputManager = new GameInputProvider(ConsoleInputProvider, Console);
             PartyFinishedProvider = new PartyFinishProvider(ConsoleInputProvider);
-
         }
 
 
@@ -78,20 +81,17 @@ namespace iTechArt.TicTacToe
             } while (PartyFinishedProvider.CloseApp());
         }
 
+        private static IGameConfig BuildConfig()
+        {
+            return PreparationService.PrepareForGame(GameConfigFactory, PlayerRegisterManager);
+        }
+
         private static IGame Builder(IGameConfig config)
         {
             var game = new Game(config, BoardFactory, LinesFactory, InputManager);
             game.Finished += OnGameFinished;
             game.StepDone += OnStepDone;
             return game;
-        }
-
-        private static IGameConfig BuildConfig()
-        {
-            var players = RegisterManager.CreatePlayers(PlayerRegisterManager);
-            var firstPlayer = RegisterManager.ChooseFirstPlayer();
-            var boardSize = RegisterManager.GetBoardSize();
-            return GameConfigFactory.CreateGameConfig(players, firstPlayer, boardSize);
         }
 
         private static void OnGameFinished(object sender, FinishedEventArgs args)

@@ -8,7 +8,7 @@ using iTechArt.TicTacToe.Interfaces;
 
 namespace iTechArt.TicTacToe.RegisterManagers
 {
-    internal class RegisterManager : IRegisterManager
+    internal class GamePreparationService : IGamePreparationService
     {
         private readonly IConsole _console;
         private readonly IConsoleInputProvider _inputProvider;
@@ -18,7 +18,7 @@ namespace iTechArt.TicTacToe.RegisterManagers
         private IReadOnlyList<IPlayer> _players;
 
 
-        public RegisterManager(IConsoleInputProvider inputProvider, IConsole console)
+        public GamePreparationService(IConsoleInputProvider inputProvider, IConsole console)
         {
             _inputProvider = inputProvider;
             _console = console;
@@ -26,7 +26,16 @@ namespace iTechArt.TicTacToe.RegisterManagers
         }
 
 
-        public IReadOnlyList<IPlayer> CreatePlayers(IPlayerRegisterManager playerRegisterManager)
+        public IGameConfig PrepareForGame(IGameConfigFactory gameConfigFactory, IPlayerRegisterManager playerRegisterManager)
+        {
+            var players = CreatePlayers(playerRegisterManager);
+            var firstPlayer = ChooseFirstPlayer();
+            var boardSize = GetBoardSize();
+            return gameConfigFactory.CreateGameConfig(players, firstPlayer, boardSize);
+        }
+
+
+        private IReadOnlyList<IPlayer> CreatePlayers(IPlayerRegisterManager playerRegisterManager)
         {
             var playersCount = _inputProvider.GetNumber("Set players count",
                 "Incorrect players count, it must be a number. Try again.");
@@ -44,7 +53,7 @@ namespace iTechArt.TicTacToe.RegisterManagers
             return _players;
         }
 
-        public IPlayer ChooseFirstPlayer()
+        private IPlayer ChooseFirstPlayer()
         {
             foreach (var i in Enumerable.Range(0, _players.Count - 1))
             {
@@ -65,7 +74,7 @@ namespace iTechArt.TicTacToe.RegisterManagers
             return _players[playerNum - 1];
         }
 
-        public int GetBoardSize()
+        private int GetBoardSize()
         {
             return _inputProvider.GetNumber("Set gameBoardSize",
                 "Incorrect board size, it must be a number. Try again.");

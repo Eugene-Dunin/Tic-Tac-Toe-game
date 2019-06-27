@@ -42,12 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleInputManagers\ConsoleInputProvider.cs" />
-    <Compile Include="ConsoleInputManagers\ConsoleInputProviderFactory.cs" />
     <Compile Include="Consoles\ConcreteConsole.cs" />
-    <Compile Include="Consoles\ConsoleFactory.cs" />
     <Compile Include="Interfaces\IConsole.cs" />
-    <Compile Include="Interfaces\IConsoleFactory.cs" />
-    <Compile Include="Interfaces\IConsoleInputProviderFactory.cs" />
     <Compile Include="Interfaces\IConsoleInputProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,4 +1,5 @@
-﻿using iTechArt.TicTacToe.Console.Interfaces;
+﻿using System;
+using iTechArt.TicTacToe.Console.Interfaces;
 
 namespace iTechArt.TicTacToe.Console.ConsoleInputManagers
 {
@@ -18,7 +19,7 @@ namespace iTechArt.TicTacToe.Console.ConsoleInputManagers
             Console.WriteLine(initialMessage);
             do
             {
-                if (int.TryParse(Console.ReadLine(), out var value))
+                if (Int32.TryParse(Console.ReadLine(), out var value))
                 {
                     return value;
                 }
