@@ -2,7 +2,8 @@
 {
     public class CellNotExistStepDoneEventArgs : StepDoneEventArgs
     {
-        public CellNotExistStepDoneEventArgs() : base(StepResult.CellNotExist)
+        public CellNotExistStepDoneEventArgs()
+            : base(StepResult.CellNotExist)
         {
 
         }
