@@ -1,6 +1,7 @@
-﻿using iTechArt.TicTacToe.Foundation.GameLogic;
-using System.Collections.Generic;
-using iTechArt.TicTacToe.FigureManagers;
+﻿using iTechArt.TicTacToe.Console.ConsoleInputManagers;
+using iTechArt.TicTacToe.Console.Consoles;
+using iTechArt.TicTacToe.Console.Interfaces;
+using iTechArt.TicTacToe.Foundation.GameLogic;
 using iTechArt.TicTacToe.Foundation.Cells;
 using iTechArt.TicTacToe.Foundation.Configs;
 using iTechArt.TicTacToe.Foundation.Figures;
@@ -9,26 +10,31 @@ using iTechArt.TicTacToe.Foundation.GameLogic.Finish;
 using iTechArt.TicTacToe.Foundation.GameLogic.StepDone;
 using iTechArt.TicTacToe.Foundation.Interfaces;
 using iTechArt.TicTacToe.Foundation.Lines;
-using iTechArt.TicTacToe.InputManagers;
+using iTechArt.TicTacToe.GameInputProviders;
 using iTechArt.TicTacToe.Interfaces;
 using iTechArt.TicTacToe.NotificationManagers;
+using iTechArt.TicTacToe.PartyFinishProviders;
 
 namespace iTechArt.TicTacToe
 {
     internal class Program
     {
-        private static readonly IBoardDraw BoardDraw;
-        private static readonly BaseInputManager InputManager;
-        private static readonly IUserNotificationManager UserNotificationManager;
-        private static readonly IFigureManager FigureManager;
         private static readonly IGameConfigFactory GameConfigFactory;
         private static readonly ICellFactory CellFactory;
         private static readonly IFigureFactory FigureFactory;
         private static readonly IBoardFactory BoardFactory;
         private static readonly ILinesFactory LinesFactory;
+
+        private static readonly IBoardDraw BoardDraw;
+        private static readonly IGameInputProvider InputManager;
+        private static readonly IEventNotificationManager EventNotificationManager;
         private static readonly IRegisterManager RegisterManager;
         private static readonly IPlayerRegisterManager PlayerRegisterManager;
         private static readonly IPartyFinishedProvider PartyFinishedProvider;
+
+        private static readonly IConsoleFactory ConsoleFactory;
+        private static readonly IConsoleInputProviderFactory ConsoleInputProviderFactory;
+        private static readonly IConsoleInputProvider ConsoleInputProvider;
 
         private static IGameConfig _gameConfig;
 
@@ -41,10 +47,16 @@ namespace iTechArt.TicTacToe
             BoardFactory = new BoardFactory(FigureFactory, CellFactory);
             LinesFactory = new LinesFactory();
 
-            UserNotificationManager = new NotificationManager();
-            InputManager = new InputManager(UserNotificationManager);
+            ConsoleFactory = new ConsoleFactory();
+            ConsoleInputProviderFactory = new ConsoleInputProviderFactory();
+            ConsoleInputProvider = ConsoleInputProviderFactory.CreateConsoleInputProvider(ConsoleFactory);
 
-            FigureManager = new FigureManager(new HashSet<FigureType>(new []{FigureType.Circle, FigureType.Cross}));
+
+
+            EventNotificationManager = new EventNotificationManager(ConsoleInputProvider);
+            InputManager = new GameInputProvider(ConsoleInputProvider);
+            PartyFinishedProvider = new PartyFinishProvider(ConsoleInputProvider);
+
         }
 
 
@@ -88,7 +100,7 @@ namespace iTechArt.TicTacToe
 
         private static void OnGameFinished(object sender, FinishedEventArgs args)
         {
-            UserNotificationManager.ShowWinner(args);
+            EventNotificationManager.ShowWinner(args);
         }
 
         private static void OnStepDone(object sender, StepDoneEventArgs args)
@@ -100,7 +112,7 @@ namespace iTechArt.TicTacToe
                     break;
                 case StepResult.CellIsFilled:
                 case StepResult.CellNotExist:
-                    UserNotificationManager.ShowStepDoneMessage(args);
+                    EventNotificationManager.ShowStepDoneMessage(args);
                     break;
             }
         }

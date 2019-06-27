@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iTechArt.TicTacToe.Foundati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iTechArt.TicTacToe", "TicTacToe\iTechArt.TicTacToe.csproj", "{D4DBD925-7EE4-47EC-8763-5EBCEBC7984E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iTechArt.TicTacToe.Console", "iTechArt.TicTacToe.Console\iTechArt.TicTacToe.Console.csproj", "{636E3E20-D1CD-4A8A-BAC0-B84E9CEDE918}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D4DBD925-7EE4-47EC-8763-5EBCEBC7984E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4DBD925-7EE4-47EC-8763-5EBCEBC7984E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4DBD925-7EE4-47EC-8763-5EBCEBC7984E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{636E3E20-D1CD-4A8A-BAC0-B84E9CEDE918}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{636E3E20-D1CD-4A8A-BAC0-B84E9CEDE918}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{636E3E20-D1CD-4A8A-BAC0-B84E9CEDE918}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{636E3E20-D1CD-4A8A-BAC0-B84E9CEDE918}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
