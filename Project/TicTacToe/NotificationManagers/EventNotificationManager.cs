@@ -7,27 +7,29 @@ namespace iTechArt.TicTacToe.NotificationManagers
 {
     internal class EventNotificationManager : IEventNotificationManager
     {
-        private readonly IConsoleInputProvider _consoleInputProvider;
+        private readonly IConsole _console;
 
-        public EventNotificationManager(IConsoleInputProvider consoleInputProvider)
+
+        public EventNotificationManager(IConsole console)
         {
-            _consoleInputProvider = consoleInputProvider;
+            _console = console;
         }
+
 
         public void ShowWinner(FinishedEventArgs gameFinishedEventArgs)
         {
             switch (gameFinishedEventArgs.Result)
             {
                 case GameResult.Draw:
-                    _consoleInputProvider.Console.WriteLine("Game result: Draw");
+                    _console.WriteLine("Game result: Draw");
                     break;
                 case GameResult.Win:
                     var result = (WinFinishedEventArgs) gameFinishedEventArgs;
-                    _consoleInputProvider.Console.WriteLine("Game result: Win");
-                    _consoleInputProvider.Console.WriteLine("Win line have next cells:");
+                    _console.WriteLine("Game result: Win");
+                    _console.WriteLine("Win line have next cells:");
                     /*result.WinLine.Cells.ToList().ForEach
-                        (cell => _consoleInputProvider.Console.WriteLine($"[{cell.Row}, {cell.Column}]"));*/
-                    _consoleInputProvider.Console.WriteLine();
+                        (cell => _console.WriteLine($"[{cell.Row}, {cell.Column}]"));*/
+                    _console.WriteLine();
                     break;
             }
         }
@@ -37,11 +39,11 @@ namespace iTechArt.TicTacToe.NotificationManagers
             switch (stepDoneEventArgs.Result)
             {
                 case StepResult.CellNotExist:
-                    _consoleInputProvider.Console.WriteLine("Selected cell is not exist.");
+                    _console.WriteLine("Selected cell is not exist.");
                     break;
                 case StepResult.CellIsFilled:
                     var cell = ((CellIsFilledStepDoneEventArgs)stepDoneEventArgs).FilledCell;
-                    _consoleInputProvider.Console.WriteLine($"Cell on [{cell.Row}, {cell.Column}] filled by {nameof(cell.Figure.Type)}");
+                    _console.WriteLine($"Cell on [{cell.Row}, {cell.Column}] filled by {nameof(cell.Figure.Type)}");
                     break;
             }
         }

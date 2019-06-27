@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using iTechArt.TicTacToe.Console.Interfaces;
 using iTechArt.TicTacToe.Foundation.Interfaces;
 using iTechArt.TicTacToe.Interfaces;
 
@@ -9,14 +9,17 @@ namespace iTechArt.TicTacToe.BoardDrawers
 {
     internal class BoardDrawer : IBoardDraw
     {
-        private const char verticalLineComponent = '|';
-        private const char horizontalLineComponent = '-';
+        private const char VerticalLineComponent = '|';
+        private const char HorizontalLineComponent = '-';
 
-        private readonly IReadOnlyList<ICharFigure> charFigures;
+        private readonly IConsole _console;
+        private readonly IReadOnlyList<ICharFigure> _charFigures;
 
-        public BoardDrawer(IReadOnlyList<ICharFigure> charFigures)
+
+        public BoardDrawer(IReadOnlyList<ICharFigure> charFigures, IConsole console)
         {
-            this.charFigures = charFigures;
+            _charFigures = charFigures;
+            _console = console;
         }
 
 
@@ -24,20 +27,21 @@ namespace iTechArt.TicTacToe.BoardDrawers
         {
             var horizontalLine = BuildHorizontalLine(board);
 
-            Console.WriteLine(horizontalLine);
+            _console.WriteLine(horizontalLine);
             foreach (var row in Enumerable.Range(1, board.Size))
             {
                 DrawFigureLayer(board, row);
-                Console.WriteLine(horizontalLine);
+                _console.WriteLine(horizontalLine);
             }
         }
+
 
         private string BuildHorizontalLine(IBoard board)
         {
             var horizontalLine = new StringBuilder(board.Size * 2 + 1);
             for (var horizontalIndex = 0; horizontalIndex <= board.Size * 2 + 1; horizontalIndex++)
             {
-                horizontalLine.Append(horizontalLineComponent);
+                horizontalLine.Append(HorizontalLineComponent);
             }
             return horizontalLine.ToString(); 
         }
@@ -46,11 +50,11 @@ namespace iTechArt.TicTacToe.BoardDrawers
         {
             foreach (var cell in board.Where(cell => cell.Row == row))
             {
-                Console.Write(verticalLineComponent);
-                var requiredСharFigure = charFigures.FirstOrDefault(charFigure => charFigure.Type == cell.Figure.Type);
-                if (requiredСharFigure != null) Console.Write(requiredСharFigure.FigureSymbol);
+                _console.Write(VerticalLineComponent.ToString());
+                var requiredСharFigure = _charFigures.FirstOrDefault(charFigure => charFigure.Type == cell.Figure.Type);
+                if (requiredСharFigure != null) _console.Write(requiredСharFigure.FigureSymbol.ToString());
             }
-            Console.WriteLine(verticalLineComponent);
+            _console.WriteLine(VerticalLineComponent.ToString());
         }
     }
 }

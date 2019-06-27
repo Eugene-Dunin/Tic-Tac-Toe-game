@@ -32,8 +32,7 @@ namespace iTechArt.TicTacToe
         private static readonly IPlayerRegisterManager PlayerRegisterManager;
         private static readonly IPartyFinishedProvider PartyFinishedProvider;
 
-        private static readonly IConsoleFactory ConsoleFactory;
-        private static readonly IConsoleInputProviderFactory ConsoleInputProviderFactory;
+        private static readonly IConsole Console;
         private static readonly IConsoleInputProvider ConsoleInputProvider;
 
         private static IGameConfig _gameConfig;
@@ -47,14 +46,11 @@ namespace iTechArt.TicTacToe
             BoardFactory = new BoardFactory(FigureFactory, CellFactory);
             LinesFactory = new LinesFactory();
 
-            ConsoleFactory = new ConsoleFactory();
-            ConsoleInputProviderFactory = new ConsoleInputProviderFactory();
-            ConsoleInputProvider = ConsoleInputProviderFactory.CreateConsoleInputProvider(ConsoleFactory);
+            Console = new ConcreteConsole();
+            ConsoleInputProvider = new ConsoleInputProvider(Console);
 
-
-
-            EventNotificationManager = new EventNotificationManager(ConsoleInputProvider);
-            InputManager = new GameInputProvider(ConsoleInputProvider);
+            EventNotificationManager = new EventNotificationManager(Console);
+            InputManager = new GameInputProvider(ConsoleInputProvider, Console);
             PartyFinishedProvider = new PartyFinishProvider(ConsoleInputProvider);
 
         }

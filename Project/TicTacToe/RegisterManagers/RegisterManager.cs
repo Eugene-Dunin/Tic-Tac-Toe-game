@@ -10,6 +10,7 @@ namespace iTechArt.TicTacToe.RegisterManagers
 {
     internal class RegisterManager : IRegisterManager
     {
+        private readonly IConsole _console;
         private readonly IConsoleInputProvider _inputProvider;
         private readonly IReadOnlyList<FigureType> _figureTypesSet;
 
@@ -17,9 +18,10 @@ namespace iTechArt.TicTacToe.RegisterManagers
         private IReadOnlyList<IPlayer> _players;
 
 
-        public RegisterManager(IConsoleInputProvider inputProvider)
+        public RegisterManager(IConsoleInputProvider inputProvider, IConsole console)
         {
             _inputProvider = inputProvider;
+            _console = console;
             _figureTypesSet = ((FigureType[])Enum.GetValues(typeof(FigureType))).ToList();
         }
 
@@ -46,7 +48,7 @@ namespace iTechArt.TicTacToe.RegisterManagers
         {
             foreach (var i in Enumerable.Range(0, _players.Count - 1))
             {
-                _inputProvider.Console.WriteLine($"{i + 1}) {_players[i].Name} {_players[i].LastName}");
+                _console.WriteLine($"{i + 1}) {_players[i].Name} {_players[i].LastName}");
             }
 
             int playerNum;
@@ -57,7 +59,7 @@ namespace iTechArt.TicTacToe.RegisterManagers
                 {
                     break;
                 }
-                _inputProvider.Console.WriteLine("There is no player with that number");
+                _console.WriteLine("There is no player with that number");
             } while (playerNum >= 1 && playerNum <= _players.Count);
 
             return _players[playerNum - 1];
