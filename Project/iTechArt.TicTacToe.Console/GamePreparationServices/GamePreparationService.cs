@@ -36,16 +36,29 @@ namespace iTechArt.TicTacToe.Console.GamePreparationServices
 
         private IReadOnlyList<IPlayer> CreatePlayers(IPlayerRegisterManager playerRegisterManager)
         {
-            var playersCount = _inputProvider.GetNumber("Set players count",
-                "Incorrect players count, it must be a number. Try again.");
+            int playersCount;
+            do
+            {
+                playersCount = _inputProvider.GetNumber("Set players count",
+                    "Incorrect players count, it must be a number. Try again.");
+                if (playersCount <= _figureTypesSet.Count)
+                {
+                    break;
+                }
+
+                _console.WriteLine($"Max count of players {_figureTypesSet.Count}.");
+            } while (true);
+
 
             _allowedFigureTypes = _figureTypesSet.ToList();
 
+            var counter = 1;
             _players = Enumerable.Range(1, playersCount).Select(i =>
             {
+                _console.WriteLine($"{counter} player:");
                 var player = playerRegisterManager.Register(_allowedFigureTypes);
                 _allowedFigureTypes.Remove(player.FigureType);
-
+                counter++;
                 return player;
             }).ToList();
 
@@ -54,7 +67,7 @@ namespace iTechArt.TicTacToe.Console.GamePreparationServices
 
         private IPlayer ChooseFirstPlayer()
         {
-            foreach (var i in Enumerable.Range(0, _players.Count - 1))
+            foreach (var i in Enumerable.Range(0, _players.Count))
             {
                 _console.WriteLine($"{i + 1}) {_players[i].Name} {_players[i].LastName}");
             }

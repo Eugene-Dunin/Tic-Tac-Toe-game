@@ -1,8 +1,9 @@
-﻿using iTechArt.TicTacToe.Console.Interfaces;
+﻿using System.Linq;
+using iTechArt.TicTacToe.Console.Interfaces;
 using iTechArt.TicTacToe.Foundation.GameLogic.Finish;
 using iTechArt.TicTacToe.Foundation.GameLogic.StepDone;
 
-namespace iTechArt.TicTacToe.Console.NotificationManagers
+namespace iTechArt.TicTacToe.Console.EventNotificationManagers
 {
     public class EventNotificationManager : IEventNotificationManager
     {
@@ -26,8 +27,8 @@ namespace iTechArt.TicTacToe.Console.NotificationManagers
                     var result = (WinFinishedEventArgs) gameFinishedEventArgs;
                     _console.WriteLine("Game result: Win");
                     _console.WriteLine("Win line have next cells:");
-                    /*result.WinLine.Cells.ToList().ForEach
-                        (cell => _console.WriteLine($"[{cell.Row}, {cell.Column}]"));*/
+                    result.WinLine.Cells.ToList().ForEach
+                        (cell => _console.WriteLine($"[{cell.Row}, {cell.Column}]"));
                     _console.WriteLine();
                     break;
             }
@@ -42,7 +43,7 @@ namespace iTechArt.TicTacToe.Console.NotificationManagers
                     break;
                 case StepResult.CellIsFilled:
                     var cell = ((CellIsFilledStepDoneEventArgs)stepDoneEventArgs).FilledCell;
-                    _console.WriteLine($"Cell on [{cell.Row}, {cell.Column}] filled by {nameof(cell.Figure.Type)}");
+                    _console.WriteLine($"Cell on [{cell.Row}, {cell.Column}] filled by {cell.Figure.Type.ToString()}");
                     break;
             }
         }

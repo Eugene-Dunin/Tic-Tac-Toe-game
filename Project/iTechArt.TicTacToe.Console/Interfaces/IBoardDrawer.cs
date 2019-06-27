@@ -2,7 +2,7 @@
 
 namespace iTechArt.TicTacToe.Console.Interfaces
 {
-    public interface IBoardDraw
+    public interface IBoardDrawer
     {
         void Draw(IBoard board);
     }

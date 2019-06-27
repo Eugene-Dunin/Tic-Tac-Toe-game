@@ -1,9 +1,11 @@
-﻿using iTechArt.TicTacToe.Console.ConsoleInputManagers;
+﻿using iTechArt.TicTacToe.Console.BoardDrawers;
+using iTechArt.TicTacToe.Console.ConsoleInputManagers;
 using iTechArt.TicTacToe.Console.Consoles;
+using iTechArt.TicTacToe.Console.EventNotificationManagers;
+using iTechArt.TicTacToe.Console.FigureTypeDrawers;
 using iTechArt.TicTacToe.Console.GameInputProviders;
 using iTechArt.TicTacToe.Console.GamePreparationServices;
 using iTechArt.TicTacToe.Console.Interfaces;
-using iTechArt.TicTacToe.Console.NotificationManagers;
 using iTechArt.TicTacToe.Console.PartyFinishProviders;
 using iTechArt.TicTacToe.Console.PlayerRegisterManagers;
 using iTechArt.TicTacToe.Foundation.GameLogic;
@@ -25,14 +27,15 @@ namespace iTechArt.TicTacToe
         private static readonly IFigureFactory FigureFactory;
         private static readonly IBoardFactory BoardFactory;
         private static readonly ILinesFactory LinesFactory;
+        private static readonly IGameFactory gameFactory;
 
-        private static readonly IBoardDraw BoardDraw;
+        private static readonly IBoardDrawer BoardDrawer;
+        private static readonly IFigureDrawer FigureDrawer;
         private static readonly IEventNotificationManager EventNotificationManager;
         private static readonly IPlayerRegisterManager PlayerRegisterManager;
         private static readonly IGamePreparationService PreparationService;
         private static readonly IGameInputProvider InputManager;
         private static readonly IPartyFinishedProvider PartyFinishedProvider;
-
         private static readonly IConsole Console;
         private static readonly IConsoleInputProvider ConsoleInputProvider;
 
@@ -55,6 +58,11 @@ namespace iTechArt.TicTacToe
             PreparationService = new GamePreparationService(ConsoleInputProvider, Console);
             InputManager = new GameInputProvider(ConsoleInputProvider, Console);
             PartyFinishedProvider = new PartyFinishProvider(ConsoleInputProvider);
+
+            gameFactory = new GameFactory(BoardFactory, LinesFactory,InputManager);
+
+            FigureDrawer = new FigureDrawer(Console);
+            BoardDrawer = new BoardDrawer(Console, FigureDrawer);
         }
 
 
@@ -87,7 +95,7 @@ namespace iTechArt.TicTacToe
 
         private static IGame Builder(IGameConfig config)
         {
-            var game = new Game(config, BoardFactory, LinesFactory, InputManager);
+            var game = gameFactory.CreateGame(config);
             game.Finished += OnGameFinished;
             game.StepDone += OnStepDone;
             return game;
@@ -103,7 +111,7 @@ namespace iTechArt.TicTacToe
             switch (args.Result)
             {
                 case StepResult.Successful:
-                    BoardDraw.Draw(((SuccessfulStepDoneEventArgs)args).Board);
+                    BoardDrawer.Draw(((SuccessfulStepDoneEventArgs)args).Board);
                     break;
                 case StepResult.CellIsFilled:
                 case StepResult.CellNotExist:

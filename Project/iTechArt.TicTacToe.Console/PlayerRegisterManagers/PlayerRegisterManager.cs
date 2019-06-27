@@ -36,8 +36,8 @@ namespace iTechArt.TicTacToe.Console.PlayerRegisterManagers
             do
             {
                 var figureTypeName = _inputProvider.GetString("Input name of chosen figure.", "Name can not be empty.");
-                var resultFigureType = availableFigureTypes.SingleOrDefault(figureType => nameof(figureType).Equals(figureTypeName));
-                if (nameof(resultFigureType).Equals(figureTypeName))
+                var resultFigureType = availableFigureTypes.SingleOrDefault(figureType => figureTypeName.Equals(figureType.ToString()));
+                if (figureTypeName.Equals(resultFigureType.ToString()))
                 {
                     return resultFigureType;
                 }

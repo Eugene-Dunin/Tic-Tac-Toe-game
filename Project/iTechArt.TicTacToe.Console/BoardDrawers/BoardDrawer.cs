@@ -1,24 +1,22 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using iTechArt.TicTacToe.Console.Interfaces;
 using iTechArt.TicTacToe.Foundation.Interfaces;
 
 namespace iTechArt.TicTacToe.Console.BoardDrawers
 {
-    public class BoardDrawer : IBoardDraw
+    public class BoardDrawer : IBoardDrawer
     {
         private const char VerticalLineComponent = '|';
         private const char HorizontalLineComponent = '-';
 
         private readonly IConsole _console;
-        private readonly IReadOnlyList<ICharFigure> _charFigures;
+        private readonly IFigureDrawer _figureDrawer;
 
-
-        public BoardDrawer(IReadOnlyList<ICharFigure> charFigures, IConsole console)
+        public BoardDrawer(IConsole console, IFigureDrawer figureDrawer)
         {
-            _charFigures = charFigures;
             _console = console;
+            _figureDrawer = figureDrawer;
         }
 
 
@@ -50,8 +48,7 @@ namespace iTechArt.TicTacToe.Console.BoardDrawers
             foreach (var cell in board.Where(cell => cell.Row == row))
             {
                 _console.Write(VerticalLineComponent.ToString());
-                var requiredСharFigure = _charFigures.FirstOrDefault(charFigure => charFigure.Type == cell.Figure.Type);
-                if (requiredСharFigure != null) _console.Write(requiredСharFigure.FigureSymbol.ToString());
+                _figureDrawer.Draw(cell.Figure);
             }
             _console.WriteLine(VerticalLineComponent.ToString());
         }
