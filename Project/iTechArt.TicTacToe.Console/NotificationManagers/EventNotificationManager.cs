@@ -1,11 +1,10 @@
 ﻿using iTechArt.TicTacToe.Console.Interfaces;
 using iTechArt.TicTacToe.Foundation.GameLogic.Finish;
 using iTechArt.TicTacToe.Foundation.GameLogic.StepDone;
-using iTechArt.TicTacToe.Interfaces;
 
-namespace iTechArt.TicTacToe.NotificationManagers
+namespace iTechArt.TicTacToe.Console.NotificationManagers
 {
-    internal class EventNotificationManager : IEventNotificationManager
+    public class EventNotificationManager : IEventNotificationManager
     {
         private readonly IConsole _console;
 

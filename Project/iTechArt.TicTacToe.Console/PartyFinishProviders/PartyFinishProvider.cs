@@ -1,16 +1,17 @@
 ﻿using iTechArt.TicTacToe.Console.Interfaces;
-using iTechArt.TicTacToe.Interfaces;
 
-namespace iTechArt.TicTacToe.PartyFinishProviders
+namespace iTechArt.TicTacToe.Console.PartyFinishProviders
 {
-    internal class PartyFinishProvider : IPartyFinishedProvider
+    public class PartyFinishProvider : IPartyFinishedProvider
     {
         private readonly IConsoleInputProvider _inputProvider;
+
 
         public PartyFinishProvider(IConsoleInputProvider inputProvider)
         {
             _inputProvider = inputProvider;
         }
+
 
         public bool RepeatGame()
         {

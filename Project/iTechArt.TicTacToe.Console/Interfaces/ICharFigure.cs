@@ -1,8 +1,8 @@
 ﻿using iTechArt.TicTacToe.Foundation.Interfaces;
 
-namespace iTechArt.TicTacToe.Interfaces
+namespace iTechArt.TicTacToe.Console.Interfaces
 {
-    interface ICharFigure : IFigure 
+    public interface ICharFigure : IFigure 
     {
         char FigureSymbol { get; }
     }

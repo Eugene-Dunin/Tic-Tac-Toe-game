@@ -4,11 +4,10 @@ using System.Linq;
 using iTechArt.TicTacToe.Console.Interfaces;
 using iTechArt.TicTacToe.Foundation.Figures;
 using iTechArt.TicTacToe.Foundation.Interfaces;
-using iTechArt.TicTacToe.Interfaces;
 
-namespace iTechArt.TicTacToe.RegisterManagers
+namespace iTechArt.TicTacToe.Console.GamePreparationServices
 {
-    internal class GamePreparationService : IGamePreparationService
+    public class GamePreparationService : IGamePreparationService
     {
         private readonly IConsole _console;
         private readonly IConsoleInputProvider _inputProvider;

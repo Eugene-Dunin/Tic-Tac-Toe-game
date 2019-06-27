@@ -1,6 +1,11 @@
 ﻿using iTechArt.TicTacToe.Console.ConsoleInputManagers;
 using iTechArt.TicTacToe.Console.Consoles;
+using iTechArt.TicTacToe.Console.GameInputProviders;
+using iTechArt.TicTacToe.Console.GamePreparationServices;
 using iTechArt.TicTacToe.Console.Interfaces;
+using iTechArt.TicTacToe.Console.NotificationManagers;
+using iTechArt.TicTacToe.Console.PartyFinishProviders;
+using iTechArt.TicTacToe.Console.PlayerRegisterManagers;
 using iTechArt.TicTacToe.Foundation.GameLogic;
 using iTechArt.TicTacToe.Foundation.Cells;
 using iTechArt.TicTacToe.Foundation.Configs;
@@ -10,12 +15,6 @@ using iTechArt.TicTacToe.Foundation.GameLogic.Finish;
 using iTechArt.TicTacToe.Foundation.GameLogic.StepDone;
 using iTechArt.TicTacToe.Foundation.Interfaces;
 using iTechArt.TicTacToe.Foundation.Lines;
-using iTechArt.TicTacToe.GameInputProviders;
-using iTechArt.TicTacToe.Interfaces;
-using iTechArt.TicTacToe.NotificationManagers;
-using iTechArt.TicTacToe.PartyFinishProviders;
-using iTechArt.TicTacToe.PlayerRegisterManagers;
-using iTechArt.TicTacToe.RegisterManagers;
 
 namespace iTechArt.TicTacToe
 {

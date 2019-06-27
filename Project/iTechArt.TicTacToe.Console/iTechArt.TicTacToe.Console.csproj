@@ -33,6 +33,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,11 +44,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoardDrawers\BoardDrawer.cs" />
     <Compile Include="ConsoleInputManagers\ConsoleInputProvider.cs" />
     <Compile Include="Consoles\ConcreteConsole.cs" />
+    <Compile Include="GameInputProviders\GameInputProvider.cs" />
+    <Compile Include="GamePreparationServices\GamePreparationService.cs" />
+    <Compile Include="Interfaces\IBoardDraw.cs" />
+    <Compile Include="Interfaces\ICharFigure.cs" />
     <Compile Include="Interfaces\IConsole.cs" />
     <Compile Include="Interfaces\IConsoleInputProvider.cs" />
+    <Compile Include="Interfaces\IEventNotificationManager.cs" />
+    <Compile Include="Interfaces\IGamePreparationService.cs" />
+    <Compile Include="Interfaces\IPartyFinishedProvider.cs" />
+    <Compile Include="Interfaces\IPlayerRegisterManager.cs" />
+    <Compile Include="NotificationManagers\EventNotificationManager.cs" />
+    <Compile Include="PartyFinishProviders\PartyFinishProvider.cs" />
+    <Compile Include="PlayerRegisterManagers\PlayerRegisterManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\iTechArt.TicTacToe.Foundation\iTechArt.TicTacToe.Foundation.csproj">
+      <Project>{c0bf88d6-56c3-4331-891e-471630294080}</Project>
+      <Name>iTechArt.TicTacToe.Foundation</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CharFigures\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

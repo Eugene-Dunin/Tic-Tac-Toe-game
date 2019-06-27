@@ -4,9 +4,8 @@ using iTechArt.TicTacToe.Console.Interfaces;
 using iTechArt.TicTacToe.Foundation.Figures;
 using iTechArt.TicTacToe.Foundation.Interfaces;
 using iTechArt.TicTacToe.Foundation.Players;
-using iTechArt.TicTacToe.Interfaces;
 
-namespace iTechArt.TicTacToe.PlayerRegisterManagers
+namespace iTechArt.TicTacToe.Console.PlayerRegisterManagers
 {
     public class PlayerRegisterManager : IPlayerRegisterManager
     {
@@ -21,23 +20,23 @@ namespace iTechArt.TicTacToe.PlayerRegisterManagers
         }
 
 
-        public IPlayer Register(IReadOnlyList<FigureType> figureTypes)
+        public IPlayer Register(IReadOnlyList<FigureType> availableFigureTypes)
         {
             var name = _inputProvider.GetString("Input you name","Name can not be empty.");
             var lastName = _inputProvider.GetString("Input you lastname", "Lastname can not be empty.");
-            var figureType = GetFigureType(figureTypes);
+            var figureType = GetFigureType(availableFigureTypes);
             return new Player(name, lastName, figureType);
         }
 
 
-        private FigureType GetFigureType(IReadOnlyList<FigureType> figureTypes)
+        private FigureType GetFigureType(IReadOnlyList<FigureType> availableFigureTypes)
         {
             _console.WriteLine("Allowed figure types:");
-            figureTypes.ToList().ForEach(allowedFigureType => _console.WriteLine(allowedFigureType.ToString()));
+            availableFigureTypes.ToList().ForEach(allowedFigureType => _console.WriteLine(allowedFigureType.ToString()));
             do
             {
                 var figureTypeName = _inputProvider.GetString("Input name of chosen figure.", "Name can not be empty.");
-                var resultFigureType = figureTypes.SingleOrDefault(figureType => nameof(figureType).Equals(figureTypeName));
+                var resultFigureType = availableFigureTypes.SingleOrDefault(figureType => nameof(figureType).Equals(figureTypeName));
                 if (nameof(resultFigureType).Equals(figureTypeName))
                 {
                     return resultFigureType;

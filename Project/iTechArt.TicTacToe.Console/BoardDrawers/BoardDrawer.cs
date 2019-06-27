@@ -3,11 +3,10 @@ using System.Linq;
 using System.Text;
 using iTechArt.TicTacToe.Console.Interfaces;
 using iTechArt.TicTacToe.Foundation.Interfaces;
-using iTechArt.TicTacToe.Interfaces;
 
-namespace iTechArt.TicTacToe.BoardDrawers
+namespace iTechArt.TicTacToe.Console.BoardDrawers
 {
-    internal class BoardDrawer : IBoardDraw
+    public class BoardDrawer : IBoardDraw
     {
         private const char VerticalLineComponent = '|';
         private const char HorizontalLineComponent = '-';

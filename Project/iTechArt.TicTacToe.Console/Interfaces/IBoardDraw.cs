@@ -1,8 +1,8 @@
 ﻿using iTechArt.TicTacToe.Foundation.Interfaces;
 
-namespace iTechArt.TicTacToe.Interfaces
+namespace iTechArt.TicTacToe.Console.Interfaces
 {
-    internal interface IBoardDraw
+    public interface IBoardDraw
     {
         void Draw(IBoard board);
     }

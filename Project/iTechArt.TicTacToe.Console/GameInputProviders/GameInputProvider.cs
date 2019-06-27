@@ -1,9 +1,9 @@
 ﻿using iTechArt.TicTacToe.Console.Interfaces;
 using iTechArt.TicTacToe.Foundation.Interfaces;
 
-namespace iTechArt.TicTacToe.GameInputProviders
+namespace iTechArt.TicTacToe.Console.GameInputProviders
 {
-    internal class GameInputProvider : IGameInputProvider
+    public class GameInputProvider : IGameInputProvider
     {
         private readonly IConsole _console;
         private readonly IConsoleInputProvider _inputProvider;
