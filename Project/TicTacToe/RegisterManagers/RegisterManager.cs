@@ -52,8 +52,7 @@ namespace iTechArt.TicTacToe.RegisterManagers
             int playerNum;
             do
             {
-                playerNum = _inputProvider.GetNumber("Input number of player who will go first.",
-                    "Is not a number.");
+                playerNum = _inputProvider.GetNumber("Input number of player who will go first.");
                 if (playerNum >= 1 && playerNum <= _players.Count)
                 {
                     break;
