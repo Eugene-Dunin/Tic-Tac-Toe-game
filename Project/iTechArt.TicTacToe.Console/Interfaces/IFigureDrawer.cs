@@ -2,8 +2,8 @@
 
 namespace iTechArt.TicTacToe.Console.Interfaces
 {
-    public interface ICharFigure : IFigure 
+    public interface IFigureDrawer 
     {
-        char FigureSymbol { get; }
+        void Draw(IFigure figure);
     }
 }
