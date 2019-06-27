@@ -14,13 +14,13 @@ namespace iTechArt.TicTacToe.PartyFinishProviders
 
         public bool RepeatGame()
         {
-            return _inputProvider.YesNoQuestion("Do you wish repeat game?",
+            return _inputProvider.Prompt("Do you wish repeat game?",
                 "Incorrect answer. Please, print \"yes\" or \"no\".");
         }
 
         public bool CloseApp()
         {
-            return _inputProvider.YesNoQuestion("Do you wish finish app?",
+            return _inputProvider.Prompt("Do you wish finish app?",
                 "Incorrect answer. Please, print \"yes\" or \"no\".");
         }
     }

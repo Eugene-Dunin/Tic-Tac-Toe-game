@@ -2,12 +2,10 @@
 {
     public interface IConsoleInputProvider
     {
-        IConsole Console { get; }
-
         int GetNumber(string initialMessage, string errorMessage = "Is not a number.");
 
-        string GetString();
+        string GetString(string initialMessage, string errorMessage);
 
-        bool YesNoQuestion(string initialMessage, string errorMessage);
+        bool Prompt(string initialMessage, string errorMessage);
     }
 }

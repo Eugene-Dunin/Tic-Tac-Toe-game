@@ -6,10 +6,12 @@ namespace iTechArt.TicTacToe.Console.ConsoleInputManagers
     {
         public IConsole Console { get; }
 
+
         public ConsoleInputProvider(IConsole console)
         {
             Console = console;
         }
+
 
         public int GetNumber(string initialMessage, string errorMessage)
         {
@@ -24,12 +26,21 @@ namespace iTechArt.TicTacToe.Console.ConsoleInputManagers
             } while (true);
         }
 
-        public string GetString()
+        public string GetString(string initialMessage, string errorMessage)
         {
-            return Console.ReadLine();
+            Console.WriteLine(initialMessage);
+            do
+            {
+                var value = Console.ReadLine();
+                if (!string.IsNullOrEmpty(value))
+                {
+                    return value;
+                }
+                Console.WriteLine(errorMessage);
+            } while (true);
         }
 
-        public bool YesNoQuestion(string initialMessage, string errorMessage)
+        public bool Prompt(string initialMessage, string errorMessage)
         {
             Console.WriteLine(initialMessage);
             do
