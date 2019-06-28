@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using iTechArt.TicTacToe.Console.Extensions;
 using iTechArt.TicTacToe.Console.Interfaces;
 using iTechArt.TicTacToe.Foundation.Figures;
 using iTechArt.TicTacToe.Foundation.Interfaces;
@@ -11,9 +12,7 @@ namespace iTechArt.TicTacToe.Console.GamePreparationServices
     {
         private readonly IConsole _console;
         private readonly IConsoleInputProvider _inputProvider;
-        private readonly IReadOnlyList<FigureType> _figureTypesSet;
 
-        private List<FigureType> _allowedFigureTypes;
         private IReadOnlyList<IPlayer> _players;
 
 
@@ -21,7 +20,6 @@ namespace iTechArt.TicTacToe.Console.GamePreparationServices
         {
             _inputProvider = inputProvider;
             _console = console;
-            _figureTypesSet = ((FigureType[])Enum.GetValues(typeof(FigureType))).ToList();
         }
 
 
@@ -30,18 +28,21 @@ namespace iTechArt.TicTacToe.Console.GamePreparationServices
             var players = CreatePlayers(playerRegisterManager);
             var firstPlayer = ChooseFirstPlayer();
             var boardSize = GetBoardSize();
+
             return gameConfigFactory.CreateGameConfig(players, firstPlayer, boardSize);
         }
 
 
         private IReadOnlyList<IPlayer> CreatePlayers(IPlayerRegisterManager playerRegisterManager)
         {
+            var _figureTypesSet = ((FigureType[])Enum.GetValues(typeof(FigureType))).ToList();
+
             int playersCount;
             do
             {
                 playersCount = _inputProvider.GetNumber("Set players count",
                     "Incorrect players count, it must be a number. Try again.");
-                if (playersCount <= _figureTypesSet.Count)
+                if (playersCount > 1 && playersCount <= _figureTypesSet.Count)
                 {
                     break;
                 }
@@ -49,47 +50,47 @@ namespace iTechArt.TicTacToe.Console.GamePreparationServices
                 _console.WriteLine($"Max count of players {_figureTypesSet.Count}.");
             } while (true);
 
-
-            _allowedFigureTypes = _figureTypesSet.ToList();
-
-            var counter = 1;
-            _players = Enumerable.Range(1, playersCount).Select(i =>
+            List<IPlayer> players = new List<IPlayer>(playersCount);
+            for (var playerNum = 1; playerNum <= playersCount; playerNum++)
             {
-                _console.WriteLine($"{counter} player:");
-                var player = playerRegisterManager.Register(_allowedFigureTypes);
-                _allowedFigureTypes.Remove(player.FigureType);
-                counter++;
-                return player;
-            }).ToList();
+                _console.WriteLine($"{playerNum} player:");
+                var player = playerRegisterManager.Register(_figureTypesSet);
+                _figureTypesSet.Remove(player.FigureType);
+                players.Add(player);
+            }
+
+            _players = players;
 
             return _players;
         }
 
         private IPlayer ChooseFirstPlayer()
         {
-            foreach (var i in Enumerable.Range(0, _players.Count))
-            {
-                _console.WriteLine($"{i + 1}) {_players[i].Name} {_players[i].LastName}");
-            }
+            _players.ForEach((player, index) => _console.WriteLine($"{index}) {player.Name} {player.LastName}"));
 
-            int playerNum;
             do
             {
-                playerNum = _inputProvider.GetNumber("Input number of player who will go first.");
+                var playerNum = _inputProvider.GetNumber("Input number of player who will go first.");
                 if (playerNum >= 1 && playerNum <= _players.Count)
                 {
-                    break;
+                    return _players[playerNum - 1];
                 }
                 _console.WriteLine("There is no player with that number");
-            } while (playerNum >= 1 && playerNum <= _players.Count);
-
-            return _players[playerNum - 1];
+            } while (true);
         }
 
         private int GetBoardSize()
         {
-            return _inputProvider.GetNumber("Set gameBoardSize",
-                "Incorrect board size, it must be a number. Try again.");
+            do
+            {
+                var boardSize = _inputProvider.GetNumber("Set gameBoardSize. Min size 3.",
+                    "Incorrect board size, it must be a number. Try again.");
+                if (boardSize > 3)
+                {
+                    return boardSize;
+                }
+                _console.WriteLine($"Board size must be 3 or more.");
+            } while (true);
         }
     }
 }
