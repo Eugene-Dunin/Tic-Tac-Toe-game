@@ -5,48 +5,48 @@ namespace iTechArt.TicTacToe.Console.ConsoleInputManagers
 {
     public class ConsoleInputProvider : IConsoleInputProvider
     {
-        public IConsole Console { get; }
+        private readonly IConsole _console;
 
 
         public ConsoleInputProvider(IConsole console)
         {
-            Console = console;
+            _console = console;
         }
 
 
         public int GetNumber(string initialMessage, string errorMessage)
         {
-            Console.WriteLine(initialMessage);
+            _console.WriteLine(initialMessage);
             do
             {
-                if (Int32.TryParse(Console.ReadLine(), out var value))
+                if (Int32.TryParse(_console.ReadLine(), out var value))
                 {
                     return value;
                 }
-                Console.WriteLine(errorMessage);
+                _console.WriteLine(errorMessage);
             } while (true);
         }
 
         public string GetString(string initialMessage, string errorMessage)
         {
-            Console.WriteLine(initialMessage);
+            _console.WriteLine(initialMessage);
             do
             {
-                var value = Console.ReadLine();
+                var value = _console.ReadLine();
                 if (!string.IsNullOrEmpty(value))
                 {
                     return value;
                 }
-                Console.WriteLine(errorMessage);
+                _console.WriteLine(errorMessage);
             } while (true);
         }
 
         public bool Prompt(string initialMessage, string errorMessage)
         {
-            Console.WriteLine(initialMessage);
+            _console.WriteLine(initialMessage);
             do
             {
-                var answer = Console.ReadLine()?.ToUpper();
+                var answer = _console.ReadLine()?.ToUpper();
                 switch (answer)
                 {
                     case "YES":
@@ -54,7 +54,7 @@ namespace iTechArt.TicTacToe.Console.ConsoleInputManagers
                     case "NO":
                         return false;
                     default:
-                        Console.WriteLine(errorMessage);
+                        _console.WriteLine(errorMessage);
                         break;
                 }
             } while (true);

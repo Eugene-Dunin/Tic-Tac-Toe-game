@@ -13,6 +13,7 @@ namespace iTechArt.TicTacToe.Console.BoardDrawers
         private readonly IConsole _console;
         private readonly IFigureDrawer _figureDrawer;
 
+
         public BoardDrawer(IConsole console, IFigureDrawer figureDrawer)
         {
             _console = console;

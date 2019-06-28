@@ -1,5 +1,4 @@
 ﻿using iTechArt.TicTacToe.Console.Interfaces;
-using System;
 
 namespace iTechArt.TicTacToe.Console.Consoles
 {
