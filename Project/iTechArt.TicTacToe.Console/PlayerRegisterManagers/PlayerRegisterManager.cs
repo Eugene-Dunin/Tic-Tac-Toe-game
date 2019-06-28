@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using iTechArt.TicTacToe.Console.Extensions;
 using iTechArt.TicTacToe.Console.Interfaces;
 using iTechArt.TicTacToe.Foundation.Figures;
 using iTechArt.TicTacToe.Foundation.Interfaces;
@@ -32,14 +33,14 @@ namespace iTechArt.TicTacToe.Console.PlayerRegisterManagers
         private FigureType GetFigureType(IReadOnlyList<FigureType> availableFigureTypes)
         {
             _console.WriteLine("Allowed figure types:");
-            availableFigureTypes.ToList().ForEach(allowedFigureType => _console.WriteLine(allowedFigureType.ToString()));
+            availableFigureTypes.ForEach(
+                (allowedFigureType, index) => _console.WriteLine($"{index}) {allowedFigureType.ToString()}"));
             do
             {
-                var figureTypeName = _inputProvider.GetString("Input name of chosen figure.", "Name can not be empty.");
-                var resultFigureType = availableFigureTypes.SingleOrDefault(figureType => figureTypeName.Equals(figureType.ToString()));
-                if (figureTypeName.Equals(resultFigureType.ToString()))
+                var figureNumber = _inputProvider.GetNumber("Input number of chosen figure.");
+                if (figureNumber >= 1 && figureNumber <= availableFigureTypes.Count)
                 {
-                    return resultFigureType;
+                    return availableFigureTypes[figureNumber - 1];
                 }
                 _console.WriteLine("There is not figure type with that name.");
             } while (true);
