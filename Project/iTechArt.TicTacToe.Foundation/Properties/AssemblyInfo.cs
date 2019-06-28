@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Tic-Tac-Toe Figure")]
+[assembly: AssemblyTitle("iTechArt.Tic-Tac-Toe_Game.Foundation")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Tic-Tac-Toe Figure")]
+[assembly: AssemblyProduct("iTechArt.Tic-Tac-Toe_Game.Foundation")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c9867f35-04d6-4e68-a548-55f236e07a11")]
+[assembly: Guid("c0bf88d6-56c3-4331-891e-471630294080")]
 
 // Version information for an assembly consists of the following four values:
 //

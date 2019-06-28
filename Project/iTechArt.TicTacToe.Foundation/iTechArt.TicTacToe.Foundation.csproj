@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C0BF88D6-56C3-4331-891E-471630294080}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>iTechArt.TicTacToe.Foundation</RootNamespace>
+    <AssemblyName>iTechArt.TicTacToeGame.Foundation</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GameLogic\Finish\DrawFinishedEventArgs.cs" />
+    <Compile Include="GameLogic\Finish\WinFinishedEventArgs.cs" />
+    <Compile Include="GameLogic\StepDone\StepDoneEventArgs.cs" />
+    <Compile Include="GameLogic\StepDone\CellNotExistStepDoneEventArgs.cs" />
+    <Compile Include="GameLogic\StepDone\StepResult.cs" />
+    <Compile Include="Figures\FigureFactory.cs" />
+    <Compile Include="GameBoard\BoardFactory.cs" />
+    <Compile Include="Interfaces\IGame.cs" />
+    <Compile Include="Interfaces\IGameInputProvider.cs" />
+    <Compile Include="Interfaces\ILine.cs" />
+    <Compile Include="Interfaces\IPlayer.cs" />
+    <Compile Include="Cells\CellFactory.cs" />
+    <Compile Include="Configs\Config.cs" />
+    <Compile Include="Configs\ConfigFactory.cs" />
+    <Compile Include="GameBoard\FillCellResult.cs" />
+    <Compile Include="GameLogic\Finish\FinishedEventArgs.cs" />
+    <Compile Include="GameLogic\StepDone\CellIsFilledStepDoneEventArgs.cs" />
+    <Compile Include="GameLogic\Finish\GameResult.cs" />
+    <Compile Include="GameLogic\StepDone\SuccessfulStepDoneEventArgs.cs" />
+    <Compile Include="Interfaces\IBoardFactory.cs" />
+    <Compile Include="Interfaces\ICellFactory.cs" />
+    <Compile Include="Interfaces\IGameConfig.cs" />
+    <Compile Include="Interfaces\IGameConfigFactory.cs" />
+    <Compile Include="Interfaces\Internals\IBoardInternal.cs" />
+    <Compile Include="Interfaces\Internals\ICellInternal.cs" />
+    <Compile Include="Lines\Column.cs" />
+    <Compile Include="Interfaces\ILinesFactory.cs" />
+    <Compile Include="Lines\LineBase.cs" />
+    <Compile Include="Lines\LinesFactory.cs" />
+    <Compile Include="Lines\MainDiagonal.cs" />
+    <Compile Include="Lines\Row.cs" />
+    <Compile Include="Lines\SideDiagonal.cs" />
+    <Compile Include="Interfaces\IFigureFactory.cs" />
+    <Compile Include="Figures\Circle.cs" />
+    <Compile Include="Figures\FigureType.cs" />
+    <Compile Include="Interfaces\IFigure.cs" />
+    <Compile Include="Figures\Cross.cs" />
+    <Compile Include="Cells\Cell.cs" />
+    <Compile Include="GameLogic\Game.cs" />
+    <Compile Include="GameBoard\Board.cs" />
+    <Compile Include="Interfaces\ICell.cs" />
+    <Compile Include="Interfaces\IBoard.cs" />
+    <Compile Include="Players\AgeConstrains.cs" />
+    <Compile Include="Players\Player.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Events\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
