@@ -11,51 +11,71 @@ namespace iTechArt.TicTacToe.Console.GamePreparationServices
     public class GamePreparationService : IGamePreparationService
     {
         private readonly IConsole _console;
+        private readonly IGameConfigFactory _gameConfigFactory;
+        private readonly IPlayerRegisterManager _playerRegisterManager;
         private readonly IConsoleInputProvider _inputProvider;
 
         private IReadOnlyList<IPlayer> _players;
 
 
-        public GamePreparationService(IConsoleInputProvider inputProvider, IConsole console)
+        public GamePreparationService(
+            IGameConfigFactory gameConfigFactory,
+            IPlayerRegisterManager playerRegisterManager,
+            IConsoleInputProvider inputProvider,
+            IConsole console)
         {
+            _gameConfigFactory = gameConfigFactory;
+            _playerRegisterManager = playerRegisterManager;
             _inputProvider = inputProvider;
             _console = console;
         }
 
 
-        public IGameConfig PrepareForGame(IGameConfigFactory gameConfigFactory, IPlayerRegisterManager playerRegisterManager)
+        public IGameConfig PrepareForGame(IGameConfig gameConfigFactory)
         {
-            var players = CreatePlayers(playerRegisterManager);
-            var firstPlayer = ChooseFirstPlayer();
-            var boardSize = GetBoardSize();
+            IPlayer firstPlayer;
+            int boardSize;
 
-            return gameConfigFactory.CreateGameConfig(players, firstPlayer, boardSize);
+            if (gameConfigFactory == null)
+            {
+                var players = CreatePlayers(_playerRegisterManager);
+                firstPlayer = ChooseFirstPlayer();
+                boardSize = GetBoardSize();
+
+                return _gameConfigFactory.CreateGameConfig(players, firstPlayer, boardSize);
+            }
+
+            _players = gameConfigFactory.Players.ToList();
+            firstPlayer = ChooseFirstPlayer();
+            boardSize = GetBoardSize();
+
+            return _gameConfigFactory.CreateGameConfig(_players, firstPlayer, boardSize);
         }
 
 
         private IReadOnlyList<IPlayer> CreatePlayers(IPlayerRegisterManager playerRegisterManager)
         {
-            var _figureTypesSet = ((FigureType[])Enum.GetValues(typeof(FigureType))).ToList();
+            var figureTypesSet = ((FigureType[])Enum.GetValues(typeof(FigureType))).ToList();
 
             int playersCount;
             do
             {
                 playersCount = _inputProvider.GetNumber("Set players count",
                     "Incorrect players count, it must be a number. Try again.");
-                if (playersCount > 1 && playersCount <= _figureTypesSet.Count)
+                if (playersCount > 1 && playersCount <= figureTypesSet.Count)
                 {
                     break;
                 }
 
-                _console.WriteLine($"Max count of players {_figureTypesSet.Count}.");
+                _console.WriteLine($"Max count of players {figureTypesSet.Count}.");
             } while (true);
 
-            List<IPlayer> players = new List<IPlayer>(playersCount);
+            var players = new List<IPlayer>(playersCount);
             for (var playerNum = 1; playerNum <= playersCount; playerNum++)
             {
                 _console.WriteLine($"{playerNum} player:");
-                var player = playerRegisterManager.Register(_figureTypesSet);
-                _figureTypesSet.Remove(player.FigureType);
+                var player = playerRegisterManager.Register(figureTypesSet);
+                figureTypesSet.Remove(player.FigureType);
                 players.Add(player);
             }
 

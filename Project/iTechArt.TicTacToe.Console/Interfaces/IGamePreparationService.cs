@@ -4,6 +4,6 @@ namespace iTechArt.TicTacToe.Console.Interfaces
 {
     public interface  IGamePreparationService
     {
-        IGameConfig PrepareForGame(IGameConfigFactory gameConfigFactory, IPlayerRegisterManager playerRegisterManager);
+        IGameConfig PrepareForGame(IGameConfig config = null);
     }
 }
