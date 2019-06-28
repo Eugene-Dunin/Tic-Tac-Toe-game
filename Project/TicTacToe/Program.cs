@@ -1,7 +1,7 @@
-﻿using iTechArt.TicTacToe.Console.BoardDrawers;
+﻿using System.Linq;
+using iTechArt.TicTacToe.Console.BoardDrawers;
 using iTechArt.TicTacToe.Console.ConsoleInputManagers;
 using iTechArt.TicTacToe.Console.Consoles;
-using iTechArt.TicTacToe.Console.EventNotificationManagers;
 using iTechArt.TicTacToe.Console.FigureTypeDrawers;
 using iTechArt.TicTacToe.Console.GameInputProviders;
 using iTechArt.TicTacToe.Console.GamePreparationServices;
@@ -31,7 +31,6 @@ namespace iTechArt.TicTacToe
 
         private static readonly IBoardDrawer BoardDrawer;
         private static readonly IFigureDrawer FigureDrawer;
-        private static readonly IEventNotificationManager EventNotificationManager;
         private static readonly IPlayerRegisterManager PlayerRegisterManager;
         private static readonly IGamePreparationService PreparationService;
         private static readonly IGameInputProvider InputManager;
@@ -53,9 +52,8 @@ namespace iTechArt.TicTacToe
             Console = new ConcreteConsole();
             ConsoleInputProvider = new ConsoleInputProvider(Console);
 
-            EventNotificationManager = new EventNotificationManager(Console);
             PlayerRegisterManager = new PlayerRegisterManager(ConsoleInputProvider, Console);
-            PreparationService = new GamePreparationService(ConsoleInputProvider, Console);
+            PreparationService = new GamePreparationService(GameConfigFactory, PlayerRegisterManager, ConsoleInputProvider, Console);
             InputManager = new GameInputProvider(ConsoleInputProvider, Console);
             PartyFinishedProvider = new PartyFinishProvider(ConsoleInputProvider);
 
@@ -76,6 +74,7 @@ namespace iTechArt.TicTacToe
             {
                 if (PartyFinishedProvider.RepeatGame())
                 {
+                    _gameConfig = BuildConfig(_gameConfig);
                     game = Builder(_gameConfig);
                     game.Start();
                 }
@@ -88,9 +87,9 @@ namespace iTechArt.TicTacToe
             } while (PartyFinishedProvider.CloseApp());
         }
 
-        private static IGameConfig BuildConfig()
+        private static IGameConfig BuildConfig(IGameConfig gameConfig = null)
         {
-            return PreparationService.PrepareForGame(GameConfigFactory, PlayerRegisterManager);
+            return PreparationService.PrepareForGame(gameConfig);
         }
 
         private static IGame Builder(IGameConfig config)
@@ -103,7 +102,20 @@ namespace iTechArt.TicTacToe
 
         private static void OnGameFinished(object sender, FinishedEventArgs args)
         {
-            EventNotificationManager.ShowWinner(args);
+            switch (args.Result)
+            {
+                case GameResult.Draw:
+                    Console.WriteLine("Game result: Draw");
+                    break;
+                case GameResult.Win:
+                    var result = (WinFinishedEventArgs)args;
+                    Console.WriteLine("Game result: Win");
+                    Console.WriteLine("Win line have next cells:");
+                    result.WinLine.Cells.ToList().ForEach
+                        (cell => Console.WriteLine($"[{cell.Row}, {cell.Column}]"));
+                    Console.WriteLine();
+                    break;
+            }
         }
 
         private static void OnStepDone(object sender, StepDoneEventArgs args)
@@ -113,9 +125,12 @@ namespace iTechArt.TicTacToe
                 case StepResult.Successful:
                     BoardDrawer.Draw(((SuccessfulStepDoneEventArgs)args).Board);
                     break;
-                case StepResult.CellIsFilled:
                 case StepResult.CellNotExist:
-                    EventNotificationManager.ShowStepDoneMessage(args);
+                    Console.WriteLine("Selected cell is not exist.");
+                    break;
+                case StepResult.CellIsFilled:
+                    var cell = ((CellIsFilledStepDoneEventArgs)args).FilledCell;
+                    Console.WriteLine($"Cell on [{cell.Row}, {cell.Column}] filled by {cell.Figure.Type.ToString()}");
                     break;
             }
         }

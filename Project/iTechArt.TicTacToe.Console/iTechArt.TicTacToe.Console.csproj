@@ -47,6 +47,7 @@
     <Compile Include="BoardDrawers\BoardDrawer.cs" />
     <Compile Include="ConsoleInputManagers\ConsoleInputProvider.cs" />
     <Compile Include="Consoles\ConcreteConsole.cs" />
+    <Compile Include="Extensions\IReadOnlyListExtension.cs" />
     <Compile Include="FigureTypeDrawers\FigureDrawer.cs" />
     <Compile Include="GameInputProviders\GameInputProvider.cs" />
     <Compile Include="GamePreparationServices\GamePreparationService.cs" />
