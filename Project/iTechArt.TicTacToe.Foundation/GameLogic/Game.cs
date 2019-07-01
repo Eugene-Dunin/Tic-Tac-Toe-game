@@ -88,7 +88,7 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
             var winLine = _lines.SingleOrDefault(line => line.IsWin);
 
             var gameFinishedEventArgs = winLine != null
-                ? (FinishedEventArgs)new WinFinishedEventArgs(winLine)
+                ? (FinishedEventArgs)new WinFinishedEventArgs(winLine, CurrentPlayer)
                 : new DrawFinishedEventArgs();
 
             Finished?.Invoke(this, gameFinishedEventArgs);
