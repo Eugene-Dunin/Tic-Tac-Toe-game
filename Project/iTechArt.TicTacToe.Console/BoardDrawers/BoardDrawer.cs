@@ -39,7 +39,7 @@ namespace iTechArt.TicTacToe.Console.BoardDrawers
         private string BuildHorizontalLine(IBoard board)
         {
             var horizontalLine = new StringBuilder(board.Size * 2 + 1);
-            for (var horizontalIndex = 0; horizontalIndex <= board.Size * 2 + 1; horizontalIndex++)
+            for (var horizontalIndex = 0; horizontalIndex < board.Size * 2 + 1; horizontalIndex++)
             {
                 horizontalLine.Append(HorizontalLineComponent);
             }
