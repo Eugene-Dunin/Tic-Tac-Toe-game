@@ -31,7 +31,7 @@ namespace iTechArt.TicTacToe.Console.GamePreparationServices
 
         public IGameConfig PrepareForGame(IGameConfig gameConfig)
         {
-            var players = gameConfig?.Players.ToList() ?? CreatePlayers(_playerRegisterManager);
+            var players = gameConfig?.Players.ToList() ?? CreatePlayers();
             var firstPlayer = ChooseFirstPlayer(players);
             var boardSize = GetBoardSize();
 
@@ -39,7 +39,7 @@ namespace iTechArt.TicTacToe.Console.GamePreparationServices
         }
 
 
-        private IReadOnlyList<IPlayer> CreatePlayers(IPlayerRegisterManager playerRegisterManager)
+        private IReadOnlyList<IPlayer> CreatePlayers()
         {
             var figureTypesSet = ((FigureType[])Enum.GetValues(typeof(FigureType))).ToList();
 
@@ -60,7 +60,7 @@ namespace iTechArt.TicTacToe.Console.GamePreparationServices
             for (var playerNum = 1; playerNum <= playersCount; playerNum++)
             {
                 _console.WriteLine($"{playerNum} player:");
-                var player = playerRegisterManager.Register(figureTypesSet);
+                var player = _playerRegisterManager.Register(figureTypesSet);
                 figureTypesSet.Remove(player.FigureType);
                 players.Add(player);
             }
@@ -70,7 +70,7 @@ namespace iTechArt.TicTacToe.Console.GamePreparationServices
 
         private IPlayer ChooseFirstPlayer(IReadOnlyList<IPlayer> players)
         {
-            players.ForEach((player, index) => _console.WriteLine($"{index}) {player.Name} {player.LastName}"));
+            players.ForEach((player, index) => _console.WriteLine($"{index + 1}) {player.Name} {player.LastName}"));
 
             do
             {

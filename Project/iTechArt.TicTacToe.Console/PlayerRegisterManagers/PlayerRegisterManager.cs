@@ -33,7 +33,7 @@ namespace iTechArt.TicTacToe.Console.PlayerRegisterManagers
         {
             _console.WriteLine("Allowed figure types:");
             availableFigureTypes.ForEach(
-                (allowedFigureType, index) => _console.WriteLine($"{index}) {allowedFigureType.ToString()}"));
+                (allowedFigureType, index) => _console.WriteLine($"{index + 1}) {allowedFigureType.ToString()}"));
             do
             {
                 var figureNumber = _inputProvider.GetNumber("Input number of chosen figure.");
