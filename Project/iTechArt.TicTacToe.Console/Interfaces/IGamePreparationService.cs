@@ -4,6 +4,6 @@ namespace iTechArt.TicTacToe.Console.Interfaces
 {
     public interface  IGamePreparationService
     {
-        IGameConfig PrepareForGame(IGameConfig config = null);
+        IGameConfig PrepareForGame(IGameConfig gameConfig = null);
     }
 }

@@ -2,6 +2,7 @@
 using iTechArt.TicTacToe.Console.BoardDrawers;
 using iTechArt.TicTacToe.Console.ConsoleInputManagers;
 using iTechArt.TicTacToe.Console.Consoles;
+using iTechArt.TicTacToe.Console.Extensions;
 using iTechArt.TicTacToe.Console.FigureTypeDrawers;
 using iTechArt.TicTacToe.Console.GameInputProviders;
 using iTechArt.TicTacToe.Console.GamePreparationServices;
@@ -67,24 +68,17 @@ namespace iTechArt.TicTacToe
         private static void Main(string[] args)
         {
             _gameConfig = BuildConfig();
-            var game = Builder(_gameConfig);
+            var game = CreateGame(_gameConfig);
             game.Start();
+            RemoveGameSubscriptions(game);
 
-            do
+            while (PartyFinishedProvider.CloseApp())
             {
-                if (PartyFinishedProvider.RepeatGame())
-                {
-                    _gameConfig = BuildConfig(_gameConfig);
-                    game = Builder(_gameConfig);
-                    game.Start();
-                }
-                else
-                {
-                    _gameConfig = BuildConfig();
-                    game = Builder(_gameConfig);
-                    game.Start();
-                }
-            } while (PartyFinishedProvider.CloseApp());
+                _gameConfig = PartyFinishedProvider.RepeatGame() ? BuildConfig(_gameConfig) : BuildConfig();
+                game = CreateGame(_gameConfig);
+                game.Start();
+                RemoveGameSubscriptions(game);
+            }
         }
 
         private static IGameConfig BuildConfig(IGameConfig gameConfig = null)
@@ -92,12 +86,19 @@ namespace iTechArt.TicTacToe
             return PreparationService.PrepareForGame(gameConfig);
         }
 
-        private static IGame Builder(IGameConfig config)
+        private static IGame CreateGame(IGameConfig config)
         {
             var game = gameFactory.CreateGame(config);
             game.Finished += OnGameFinished;
             game.StepDone += OnStepDone;
+
             return game;
+        }
+
+        private static void RemoveGameSubscriptions(IGame game)
+        {
+            game.Finished -= OnGameFinished;
+            game.StepDone -= OnStepDone;
         }
 
         private static void OnGameFinished(object sender, FinishedEventArgs args)
@@ -111,7 +112,7 @@ namespace iTechArt.TicTacToe
                     var result = (WinFinishedEventArgs)args;
                     Console.WriteLine("Game result: Win");
                     Console.WriteLine("Win line have next cells:");
-                    result.WinLine.Cells.ToList().ForEach
+                    result.WinLine.Cells.ForEach
                         (cell => Console.WriteLine($"[{cell.Row}, {cell.Column}]"));
                     Console.WriteLine();
                     break;

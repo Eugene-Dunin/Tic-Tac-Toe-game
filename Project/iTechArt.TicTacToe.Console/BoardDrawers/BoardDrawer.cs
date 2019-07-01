@@ -7,8 +7,8 @@ namespace iTechArt.TicTacToe.Console.BoardDrawers
 {
     public class BoardDrawer : IBoardDrawer
     {
-        private const char VerticalLineComponent = '|';
-        private const char HorizontalLineComponent = '-';
+        private const string VerticalLineComponent = "|";
+        private const string HorizontalLineComponent = "-";
 
         private readonly IConsole _console;
         private readonly IFigureDrawer _figureDrawer;
@@ -48,10 +48,10 @@ namespace iTechArt.TicTacToe.Console.BoardDrawers
         {
             foreach (var cell in board.Where(cell => cell.Row == row))
             {
-                _console.Write(VerticalLineComponent.ToString());
+                _console.Write(VerticalLineComponent);
                 _figureDrawer.Draw(cell.Figure);
             }
-            _console.WriteLine(VerticalLineComponent.ToString());
+            _console.WriteLine(VerticalLineComponent);
         }
     }
 }

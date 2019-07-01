@@ -15,8 +15,6 @@ namespace iTechArt.TicTacToe.Console.GamePreparationServices
         private readonly IPlayerRegisterManager _playerRegisterManager;
         private readonly IConsoleInputProvider _inputProvider;
 
-        private IReadOnlyList<IPlayer> _players;
-
 
         public GamePreparationService(
             IGameConfigFactory gameConfigFactory,
@@ -31,25 +29,13 @@ namespace iTechArt.TicTacToe.Console.GamePreparationServices
         }
 
 
-        public IGameConfig PrepareForGame(IGameConfig gameConfigFactory)
+        public IGameConfig PrepareForGame(IGameConfig gameConfig)
         {
-            IPlayer firstPlayer;
-            int boardSize;
+            var players = gameConfig?.Players.ToList() ?? CreatePlayers(_playerRegisterManager);
+            var firstPlayer = ChooseFirstPlayer(players);
+            var boardSize = GetBoardSize();
 
-            if (gameConfigFactory == null)
-            {
-                var players = CreatePlayers(_playerRegisterManager);
-                firstPlayer = ChooseFirstPlayer();
-                boardSize = GetBoardSize();
-
-                return _gameConfigFactory.CreateGameConfig(players, firstPlayer, boardSize);
-            }
-
-            _players = gameConfigFactory.Players.ToList();
-            firstPlayer = ChooseFirstPlayer();
-            boardSize = GetBoardSize();
-
-            return _gameConfigFactory.CreateGameConfig(_players, firstPlayer, boardSize);
+            return _gameConfigFactory.CreateGameConfig(players, firstPlayer, boardSize);
         }
 
 
@@ -79,21 +65,19 @@ namespace iTechArt.TicTacToe.Console.GamePreparationServices
                 players.Add(player);
             }
 
-            _players = players;
-
-            return _players;
+            return players;
         }
 
-        private IPlayer ChooseFirstPlayer()
+        private IPlayer ChooseFirstPlayer(IReadOnlyList<IPlayer> players)
         {
-            _players.ForEach((player, index) => _console.WriteLine($"{index}) {player.Name} {player.LastName}"));
+            players.ForEach((player, index) => _console.WriteLine($"{index}) {player.Name} {player.LastName}"));
 
             do
             {
                 var playerNum = _inputProvider.GetNumber("Input number of player who will go first.");
-                if (playerNum >= 1 && playerNum <= _players.Count)
+                if (playerNum >= 1 && playerNum <= players.Count)
                 {
-                    return _players[playerNum - 1];
+                    return players[playerNum - 1];
                 }
                 _console.WriteLine("There is no player with that number");
             } while (true);

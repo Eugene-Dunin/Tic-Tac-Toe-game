@@ -22,6 +22,7 @@ namespace iTechArt.TicTacToe.Console.GameInputProviders
             (int row, int col) coordinates;
             coordinates.row = _inputProvider.GetNumber("Input row number:");
             coordinates.col = _inputProvider.GetNumber("Input column number:");
+
             return coordinates;
         }
     }
