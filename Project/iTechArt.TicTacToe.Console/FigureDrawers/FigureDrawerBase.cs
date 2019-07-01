@@ -6,12 +6,12 @@ namespace iTechArt.TicTacToe.Console.FigureDrawers
 {
     public abstract class FigureDrawerBase
     {
-        public FigureType DrawFigureType { get; }
+        public FigureType FigureTypeToDraw { get; }
 
 
-        protected FigureDrawerBase(FigureType drawFigureType)
+        protected FigureDrawerBase(FigureType figureTypeToDraw)
         {
-            DrawFigureType = drawFigureType;
+            FigureTypeToDraw = figureTypeToDraw;
         }
 
 
@@ -32,7 +32,7 @@ namespace iTechArt.TicTacToe.Console.FigureDrawers
                 throw new NullReferenceException("The figure is absent.");
             }
 
-            if (figure.Type != DrawFigureType)
+            if (figure.Type != FigureTypeToDraw)
             {
                 throw new ArgumentException("The type of the drawn figure does not correspond to the type of the figure of the renderer.");
             }

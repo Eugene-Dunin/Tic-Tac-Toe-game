@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using iTechArt.TicTacToe.Console.Extensions;
 using iTechArt.TicTacToe.Console.Interfaces;
 using iTechArt.TicTacToe.Foundation.Figures;
@@ -24,6 +25,12 @@ namespace iTechArt.TicTacToe.Console.PlayerRegisterManagers
         {
             var name = _inputProvider.GetString("Input you name","Name can not be empty.");
             var lastName = _inputProvider.GetString("Input you lastname", "Lastname can not be empty.");
+
+            if (availableFigureTypes.Count == 1)
+            {
+                return new Player(name, lastName, availableFigureTypes.First());
+            }
+
             var figureType = GetFigureType(availableFigureTypes);
             return new Player(name, lastName, figureType);
         }

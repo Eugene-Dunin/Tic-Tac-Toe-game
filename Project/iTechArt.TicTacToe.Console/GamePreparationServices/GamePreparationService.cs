@@ -65,6 +65,7 @@ namespace iTechArt.TicTacToe.Console.GamePreparationServices
                 players.Add(player);
             }
 
+
             return players;
         }
 
@@ -89,7 +90,7 @@ namespace iTechArt.TicTacToe.Console.GamePreparationServices
             {
                 var boardSize = _inputProvider.GetNumber("Set gameBoardSize. Min size 3.",
                     "Incorrect board size, it must be a number. Try again.");
-                if (boardSize > 3)
+                if (boardSize >= 3)
                 {
                     return boardSize;
                 }

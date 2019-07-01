@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using iTechArt.TicTacToe.Console.FigureDrawers;
 using iTechArt.TicTacToe.Console.Interfaces;
 using iTechArt.TicTacToe.Foundation.Interfaces;
 
@@ -11,13 +13,13 @@ namespace iTechArt.TicTacToe.Console.BoardDrawers
         private const string HorizontalLineComponent = "-";
 
         private readonly IConsole _console;
-        private readonly IFigureDrawer _figureDrawer;
+        private readonly IReadOnlyList<FigureDrawerBase> _figureDrawers;
 
 
-        public BoardDrawer(IConsole console, IFigureDrawer figureDrawer)
+        public BoardDrawer(IConsole console, IFigureDrawersFactory figureDrawersFactory)
         {
             _console = console;
-            _figureDrawer = figureDrawer;
+            _figureDrawers = figureDrawersFactory.CreateFigureDrawers();
         }
 
 
@@ -46,10 +48,18 @@ namespace iTechArt.TicTacToe.Console.BoardDrawers
 
         private void DrawFigureLayer(IBoard board, int row)
         {
-            foreach (var cell in board.Where(cell => cell.Row == row))
+            foreach (var cell in board.Where(cell => cell.Row == row).ToList())
             {
                 _console.Write(VerticalLineComponent);
-                _figureDrawer.Draw(cell.Figure);
+                if (cell.Figure != null)
+                {
+                    var searchedFigureDrawer = _figureDrawers.Single(figureDrawer => figureDrawer.FigureTypeToDraw == cell.Figure.Type);
+                    searchedFigureDrawer.Draw(cell.Figure);
+                }
+                else
+                {
+                    _console.Write(" ");
+                }
             }
             _console.WriteLine(VerticalLineComponent);
         }

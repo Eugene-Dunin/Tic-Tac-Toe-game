@@ -1,9 +1,8 @@
-﻿using System.Linq;
-using iTechArt.TicTacToe.Console.BoardDrawers;
+﻿using iTechArt.TicTacToe.Console.BoardDrawers;
 using iTechArt.TicTacToe.Console.ConsoleInputManagers;
 using iTechArt.TicTacToe.Console.Consoles;
 using iTechArt.TicTacToe.Console.Extensions;
-using iTechArt.TicTacToe.Console.FigureTypeDrawers;
+using iTechArt.TicTacToe.Console.FigureDrawers;
 using iTechArt.TicTacToe.Console.GameInputProviders;
 using iTechArt.TicTacToe.Console.GamePreparationServices;
 using iTechArt.TicTacToe.Console.Interfaces;
@@ -31,7 +30,7 @@ namespace iTechArt.TicTacToe
         private static readonly IGameFactory gameFactory;
 
         private static readonly IBoardDrawer BoardDrawer;
-        private static readonly IFigureDrawer FigureDrawer;
+        private static readonly IFigureDrawersFactory FigureDrawerFactory;
         private static readonly IPlayerRegisterManager PlayerRegisterManager;
         private static readonly IGamePreparationService PreparationService;
         private static readonly IGameInputProvider InputManager;
@@ -60,8 +59,8 @@ namespace iTechArt.TicTacToe
 
             gameFactory = new GameFactory(BoardFactory, LinesFactory,InputManager);
 
-            FigureDrawer = new FigureDrawer(Console);
-            BoardDrawer = new BoardDrawer(Console, FigureDrawer);
+            FigureDrawerFactory = new FigureDrawersFactory(Console);
+            BoardDrawer = new BoardDrawer(Console, FigureDrawerFactory);
         }
 
 
@@ -72,7 +71,7 @@ namespace iTechArt.TicTacToe
             game.Start();
             RemoveGameSubscriptions(game);
 
-            while (PartyFinishedProvider.CloseApp())
+            while (!PartyFinishedProvider.CloseApp())
             {
                 _gameConfig = PartyFinishedProvider.RepeatGame() ? BuildConfig(_gameConfig) : BuildConfig();
                 game = CreateGame(_gameConfig);
@@ -106,7 +105,7 @@ namespace iTechArt.TicTacToe
             switch (args.Result)
             {
                 case GameResult.Draw:
-                    Console.WriteLine("Game result: Draw");
+                    Console.WriteLine("Game result: DrawDefault");
                     break;
                 case GameResult.Win:
                     var result = (WinFinishedEventArgs)args;
