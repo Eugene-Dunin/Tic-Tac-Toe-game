@@ -50,9 +50,13 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
 
         public void Start()
         {
-            while (!IsGameFinished)
+            while (true)
             {
                 DoStep(CurrentPlayer);
+                if (IsGameFinished)
+                {
+                    break;
+                }
                 _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
             }
             EmitGameFinishedEvent();
