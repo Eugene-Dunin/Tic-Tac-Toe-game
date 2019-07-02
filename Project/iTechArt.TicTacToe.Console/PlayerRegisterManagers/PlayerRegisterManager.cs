@@ -28,10 +28,11 @@ namespace iTechArt.TicTacToe.Console.PlayerRegisterManagers
 
             if (availableFigureTypes.Count == 1)
             {
-                return new Player(name, lastName, availableFigureTypes.First());
+                return new Player(name, lastName, availableFigureTypes.Single());
             }
 
             var figureType = GetFigureType(availableFigureTypes);
+
             return new Player(name, lastName, figureType);
         }
 

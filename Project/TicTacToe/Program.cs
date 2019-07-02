@@ -2,6 +2,7 @@
 using iTechArt.TicTacToe.Console.ConsoleInputManagers;
 using iTechArt.TicTacToe.Console.Consoles;
 using iTechArt.TicTacToe.Console.Extensions;
+using iTechArt.TicTacToe.Console.FigureDrawerProviders;
 using iTechArt.TicTacToe.Console.FigureDrawers;
 using iTechArt.TicTacToe.Console.GameInputProviders;
 using iTechArt.TicTacToe.Console.GamePreparationServices;
@@ -22,62 +23,55 @@ namespace iTechArt.TicTacToe
 {
     internal class Program
     {
-        private static readonly IGameConfigFactory GameConfigFactory;
-        private static readonly ICellFactory CellFactory;
-        private static readonly IFigureFactory FigureFactory;
-        private static readonly IBoardFactory BoardFactory;
-        private static readonly ILinesFactory LinesFactory;
-        private static readonly IGameFactory gameFactory;
+        private static readonly IGameFactory GameFactory;
 
         private static readonly IBoardDrawer BoardDrawer;
-        private static readonly IFigureDrawersFactory FigureDrawerFactory;
-        private static readonly IPlayerRegisterManager PlayerRegisterManager;
         private static readonly IGamePreparationService PreparationService;
-        private static readonly IGameInputProvider InputManager;
         private static readonly IPartyFinishedProvider PartyFinishedProvider;
         private static readonly IConsole Console;
-        private static readonly IConsoleInputProvider ConsoleInputProvider;
-
-        private static IGameConfig _gameConfig;
 
 
         static Program()
         {
-            GameConfigFactory = new ConfigFactory();
-            CellFactory = new CellFactory();
-            FigureFactory = new FigureFactory();
-            BoardFactory = new BoardFactory(FigureFactory, CellFactory);
-            LinesFactory = new LinesFactory();
+            IGameConfigFactory configFactory = new ConfigFactory();
+            ICellFactory cellFactory = new CellFactory();
+            IFigureFactory figureFactory = new FigureFactory();
+            IBoardFactory boardFactory = new BoardFactory(figureFactory, cellFactory);
+            ILinesFactory linesFactory = new LinesFactory();
 
             Console = new ConcreteConsole();
-            ConsoleInputProvider = new ConsoleInputProvider(Console);
+            IConsoleInputProvider consoleInputProvider = new ConsoleInputProvider(Console);
 
-            PlayerRegisterManager = new PlayerRegisterManager(ConsoleInputProvider, Console);
-            PreparationService = new GamePreparationService(GameConfigFactory, PlayerRegisterManager, ConsoleInputProvider, Console);
-            InputManager = new GameInputProvider(ConsoleInputProvider, Console);
-            PartyFinishedProvider = new PartyFinishProvider(ConsoleInputProvider);
+            IPlayerRegisterManager playerRegisterManager = new PlayerRegisterManager(consoleInputProvider, Console);
+            PreparationService = new GamePreparationService(configFactory, playerRegisterManager, consoleInputProvider, Console);
+            IGameInputProvider inputManager = new GameInputProvider(consoleInputProvider, Console);
+            PartyFinishedProvider = new PartyFinishProvider(consoleInputProvider);
 
-            gameFactory = new GameFactory(BoardFactory, LinesFactory,InputManager);
+            GameFactory = new GameFactory(boardFactory, linesFactory,inputManager);
 
-            FigureDrawerFactory = new FigureDrawersFactory(Console);
-            BoardDrawer = new BoardDrawer(Console, FigureDrawerFactory);
+            IFigureDrawerFactory figureDrawerFactory = new FigureDrawerFactory(Console);
+            IFigureDrawerProvider figureDrawerProvider = new FigureDrawerProvider(figureDrawerFactory);
+            BoardDrawer = new BoardDrawer(Console, figureDrawerProvider);
         }
 
 
         private static void Main(string[] args)
         {
-            _gameConfig = BuildConfig();
-            var game = CreateGame(_gameConfig);
-            game.Start();
-            RemoveGameSubscriptions(game);
+            var gameConfig = BuildConfig();
+            LaunchParty(gameConfig);
 
             while (!PartyFinishedProvider.CloseApp())
             {
-                _gameConfig = PartyFinishedProvider.RepeatGame() ? BuildConfig(_gameConfig) : BuildConfig();
-                game = CreateGame(_gameConfig);
-                game.Start();
-                RemoveGameSubscriptions(game);
+                gameConfig = PartyFinishedProvider.RepeatGame() ? BuildConfig(gameConfig) : BuildConfig();
+                LaunchParty(gameConfig);
             }
+        }
+
+        private static void LaunchParty(IGameConfig gameConfig)
+        {
+            var game = CreateGame(gameConfig);
+            game.Start();
+            RemoveGameSubscriptions(game);
         }
 
         private static IGameConfig BuildConfig(IGameConfig gameConfig = null)
@@ -87,7 +81,7 @@ namespace iTechArt.TicTacToe
 
         private static IGame CreateGame(IGameConfig config)
         {
-            var game = gameFactory.CreateGame(config);
+            var game = GameFactory.CreateGame(config);
             game.Finished += OnGameFinished;
             game.StepDone += OnStepDone;
 
@@ -123,14 +117,15 @@ namespace iTechArt.TicTacToe
             switch (args.Result)
             {
                 case StepResult.Successful:
-                    var castedArgs = (SuccessfulStepDoneEventArgs) args;
-                    BoardDrawer.Draw(castedArgs.Board);
+                    var castedArgsSuccessful = (SuccessfulStepDoneEventArgs) args;
+                    BoardDrawer.Draw(castedArgsSuccessful.Board);
                     break;
                 case StepResult.CellNotExist:
                     Console.WriteLine("Selected cell is not exist.");
                     break;
                 case StepResult.CellIsFilled:
-                    var cell = ((CellIsFilledStepDoneEventArgs)args).FilledCell;
+                    var castedArgsCellIsFilled = (CellIsFilledStepDoneEventArgs)args;
+                    var cell = castedArgsCellIsFilled.FilledCell;
                     Console.WriteLine($"Cell on [{cell.Row}, {cell.Column}] filled by {cell.Figure.Type.ToString()}");
                     break;
             }

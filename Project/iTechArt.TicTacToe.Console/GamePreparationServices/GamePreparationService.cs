@@ -65,7 +65,6 @@ namespace iTechArt.TicTacToe.Console.GamePreparationServices
                 players.Add(player);
             }
 
-
             return players;
         }
 

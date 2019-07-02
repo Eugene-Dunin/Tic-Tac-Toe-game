@@ -1,17 +1,18 @@
 ﻿using System;
+using iTechArt.TicTacToe.Console.Interfaces;
 using iTechArt.TicTacToe.Foundation.Figures;
 using iTechArt.TicTacToe.Foundation.Interfaces;
 
 namespace iTechArt.TicTacToe.Console.FigureDrawers
 {
-    public abstract class FigureDrawerBase
+    public abstract class FigureDrawerBase : IFigureDrawer
     {
-        public FigureType FigureTypeToDraw { get; }
+        private FigureType _figureTypeToDraw { get; }
 
 
         protected FigureDrawerBase(FigureType figureTypeToDraw)
         {
-            FigureTypeToDraw = figureTypeToDraw;
+            _figureTypeToDraw = figureTypeToDraw;
         }
 
 
@@ -32,7 +33,7 @@ namespace iTechArt.TicTacToe.Console.FigureDrawers
                 throw new NullReferenceException("The figure is absent.");
             }
 
-            if (figure.Type != FigureTypeToDraw)
+            if (figure.Type != _figureTypeToDraw)
             {
                 throw new ArgumentException("The type of the drawn figure does not correspond to the type of the figure of the renderer.");
             }

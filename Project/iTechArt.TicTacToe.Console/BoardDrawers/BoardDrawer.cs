@@ -13,13 +13,13 @@ namespace iTechArt.TicTacToe.Console.BoardDrawers
         private const string HorizontalLineComponent = "-";
 
         private readonly IConsole _console;
-        private readonly IReadOnlyList<FigureDrawerBase> _figureDrawers;
+        private readonly IFigureDrawerProvider _figureDrawerProvider;
 
 
-        public BoardDrawer(IConsole console, IFigureDrawersFactory figureDrawersFactory)
+        public BoardDrawer(IConsole console, IFigureDrawerProvider figureDrawerProvider)
         {
             _console = console;
-            _figureDrawers = figureDrawersFactory.CreateFigureDrawers();
+            _figureDrawerProvider = figureDrawerProvider;
         }
 
 
@@ -30,30 +30,32 @@ namespace iTechArt.TicTacToe.Console.BoardDrawers
             _console.WriteLine(horizontalLine);
             foreach (var row in Enumerable.Range(1, board.Size))
             {
-                DrawFigureLayer(board, row);
+                var cells = board.Where(cell => cell.Row == row).ToList();
+                DrawFigureLayer(cells);
                 _console.WriteLine(horizontalLine);
             }
         }
 
 
-        private string BuildHorizontalLine(IBoard board)
+        private static string BuildHorizontalLine(IBoard board)
         {
             var horizontalLine = new StringBuilder(board.Size * 2 + 1);
             for (var horizontalIndex = 0; horizontalIndex < board.Size * 2 + 1; horizontalIndex++)
             {
                 horizontalLine.Append(HorizontalLineComponent);
             }
+
             return horizontalLine.ToString(); 
         }
 
-        private void DrawFigureLayer(IBoard board, int row)
+        private void DrawFigureLayer(IReadOnlyList<ICell> cells)
         {
-            foreach (var cell in board.Where(cell => cell.Row == row).ToList())
+            foreach (var cell in cells)
             {
                 _console.Write(VerticalLineComponent);
-                if (cell.Figure != null)
+                if (!cell.IsEmpty)
                 {
-                    var searchedFigureDrawer = _figureDrawers.Single(figureDrawer => figureDrawer.FigureTypeToDraw == cell.Figure.Type);
+                    var searchedFigureDrawer = _figureDrawerProvider.GetDrawer(cell.Figure.Type);
                     searchedFigureDrawer.Draw(cell.Figure);
                 }
                 else
