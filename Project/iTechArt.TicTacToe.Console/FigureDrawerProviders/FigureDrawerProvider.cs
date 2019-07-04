@@ -6,13 +6,15 @@ namespace iTechArt.TicTacToe.Console.FigureDrawerProviders
 {
     public class FigureDrawerProvider : IFigureDrawerProvider
     {
-        private readonly IFigureDrawerFactory _figureDrawerFactory;
+        private readonly IFigureDrawerFactory _figureDrawerFactory;+
+
         private readonly IDictionary<FigureType, IFigureDrawer> _figureDrawersCache;
 
 
         public FigureDrawerProvider(IFigureDrawerFactory figureDrawerFactory)
         {
             _figureDrawerFactory = figureDrawerFactory;
+
             _figureDrawersCache = new Dictionary<FigureType, IFigureDrawer>();
         }
 

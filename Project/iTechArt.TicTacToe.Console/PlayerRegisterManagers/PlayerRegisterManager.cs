@@ -26,13 +26,10 @@ namespace iTechArt.TicTacToe.Console.PlayerRegisterManagers
             var name = _inputProvider.GetString("Input you name","Name can not be empty.");
             var lastName = _inputProvider.GetString("Input you lastname", "Lastname can not be empty.");
 
-            if (availableFigureTypes.Count == 1)
-            {
-                return new Player(name, lastName, availableFigureTypes.Single());
-            }
-
-            var figureType = GetFigureType(availableFigureTypes);
-
+            var figureType = availableFigureTypes.Count == 1
+                ? GetFigureType(availableFigureTypes)
+                : availableFigureTypes.Single();
+ 
             return new Player(name, lastName, figureType);
         }
 
