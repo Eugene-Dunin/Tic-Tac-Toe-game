@@ -94,15 +94,15 @@ namespace iTechArt.TicTacToe
             game.StepDone -= OnStepDone;
         }
 
-        private static void OnGameFinished(object sender, FinishedEventArgs args)
+        private static void OnGameFinished(object sender, FinishedEventArgs finishedArgs)
         {
-            switch (args.Result)
+            switch (finishedArgs.Result)
             {
                 case GameResult.Draw:
                     Console.WriteLine("Game result: DrawDefault");
                     break;
                 case GameResult.Win:
-                    var result = (WinFinishedEventArgs)args;
+                    var result = (WinFinishedEventArgs)finishedArgs;
                     Console.WriteLine("Game result: Win");
                     Console.WriteLine($"Winner: {result.WinPlayer.Name} {result.WinPlayer.LastName}, Figure type: {result.WinPlayer.FigureType}");
                     result.WinLine.Cells.ForEach
@@ -112,19 +112,19 @@ namespace iTechArt.TicTacToe
             }
         }
 
-        private static void OnStepDone(object sender, StepDoneEventArgs args)
+        private static void OnStepDone(object sender, StepDoneEventArgs StepDoneArgs)
         {
-            switch (args.Result)
+            switch (StepDoneArgs.Result)
             {
                 case StepResult.Successful:
-                    var castedArgsSuccessful = (SuccessfulStepDoneEventArgs) args;
+                    var castedArgsSuccessful = (SuccessfulStepDoneEventArgs) StepDoneArgs;
                     BoardDrawer.Draw(castedArgsSuccessful.Board);
                     break;
                 case StepResult.CellNotExist:
                     Console.WriteLine("Selected cell is not exist.");
                     break;
                 case StepResult.CellIsFilled:
-                    var castedArgsCellIsFilled = (CellIsFilledStepDoneEventArgs)args;
+                    var castedArgsCellIsFilled = (CellIsFilledStepDoneEventArgs)StepDoneArgs;
                     var cell = castedArgsCellIsFilled.FilledCell;
                     Console.WriteLine($"Cell on [{cell.Row}, {cell.Column}] filled by {cell.Figure.Type.ToString()}");
                     break;
