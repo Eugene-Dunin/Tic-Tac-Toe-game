@@ -33,24 +33,24 @@ namespace iTechArt.TicTacToe
 
         static Program()
         {
-            IGameConfigFactory configFactory = new ConfigFactory();
-            ICellFactory cellFactory = new CellFactory();
-            IFigureFactory figureFactory = new FigureFactory();
-            IBoardFactory boardFactory = new BoardFactory(figureFactory, cellFactory);
-            ILinesFactory linesFactory = new LinesFactory();
+            var configFactory = new ConfigFactory();
+            var cellFactory = new CellFactory();
+            var figureFactory = new FigureFactory();
+            var boardFactory = new BoardFactory(figureFactory, cellFactory);
+            var linesFactory = new LinesFactory();
 
             Console = new ConcreteConsole();
-            IConsoleInputProvider consoleInputProvider = new ConsoleInputProvider(Console);
+            var consoleInputProvider = new ConsoleInputProvider(Console);
 
-            IPlayerRegisterManager playerRegisterManager = new PlayerRegisterManager(consoleInputProvider, Console);
+            var playerRegisterManager = new PlayerRegisterManager(consoleInputProvider, Console);
             PreparationService = new GamePreparationService(configFactory, playerRegisterManager, consoleInputProvider, Console);
-            IGameInputProvider inputManager = new GameInputProvider(consoleInputProvider, Console);
+            var inputManager = new GameInputProvider(consoleInputProvider, Console);
             PartyFinishedProvider = new PartyFinishProvider(consoleInputProvider);
 
             GameFactory = new GameFactory(boardFactory, linesFactory,inputManager);
 
-            IFigureDrawerFactory figureDrawerFactory = new FigureDrawerFactory(Console);
-            IFigureDrawerProvider figureDrawerProvider = new FigureDrawerProvider(figureDrawerFactory);
+            var figureDrawerFactory = new FigureDrawerFactory(Console);
+            var figureDrawerProvider = new FigureDrawerProvider(figureDrawerFactory);
             BoardDrawer = new BoardDrawer(Console, figureDrawerProvider);
         }
 

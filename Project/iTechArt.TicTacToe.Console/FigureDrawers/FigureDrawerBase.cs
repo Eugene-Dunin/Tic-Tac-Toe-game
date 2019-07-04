@@ -7,7 +7,7 @@ namespace iTechArt.TicTacToe.Console.FigureDrawers
 {
     public abstract class FigureDrawerBase : IFigureDrawer
     {
-        private FigureType _figureTypeToDraw { get; }
+        private readonly FigureType _figureTypeToDraw;
 
 
         protected FigureDrawerBase(FigureType figureTypeToDraw)

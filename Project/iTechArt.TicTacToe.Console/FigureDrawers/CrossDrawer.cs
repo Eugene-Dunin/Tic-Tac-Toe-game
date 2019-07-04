@@ -9,7 +9,8 @@ namespace iTechArt.TicTacToe.Console.FigureDrawers
         private readonly IConsole _console;
 
 
-        public CrossDrawer(IConsole console) : base(FigureType.Cross)
+        public CrossDrawer(IConsole console)
+            : base(FigureType.Cross)
         {
             _console = console;
         }
