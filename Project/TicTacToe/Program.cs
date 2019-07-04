@@ -105,7 +105,7 @@ namespace iTechArt.TicTacToe
                     var result = (WinFinishedEventArgs)finishedArgs;
                     Console.WriteLine("Game result: Win");
                     Console.WriteLine($"Winner: {result.WinPlayer.Name} {result.WinPlayer.LastName}, Figure type: {result.WinPlayer.FigureType}");
-                    result.WinLine.Cells.ForEach
+                    result.WinCells.ForEach
                         (cell => Console.WriteLine($"[{cell.Row}, {cell.Column}]"));
                     Console.WriteLine();
                     break;
@@ -117,15 +117,15 @@ namespace iTechArt.TicTacToe
             switch (StepDoneArgs.Result)
             {
                 case StepResult.Successful:
-                    var castedArgsSuccessful = (SuccessfulStepDoneEventArgs) StepDoneArgs;
-                    BoardDrawer.Draw(castedArgsSuccessful.Board);
+                    var successfulStepDoneArgs = (SuccessfulStepDoneEventArgs) StepDoneArgs;
+                    BoardDrawer.Draw(successfulStepDoneArgs.Board);
                     break;
                 case StepResult.CellNotExist:
                     Console.WriteLine("Selected cell is not exist.");
                     break;
                 case StepResult.CellIsFilled:
-                    var castedArgsCellIsFilled = (CellIsFilledStepDoneEventArgs)StepDoneArgs;
-                    var cell = castedArgsCellIsFilled.FilledCell;
+                    var cellIsFilledStepDoneArgs = (CellIsFilledStepDoneEventArgs)StepDoneArgs;
+                    var cell = cellIsFilledStepDoneArgs.FilledCell;
                     Console.WriteLine($"Cell on [{cell.Row}, {cell.Column}] filled by {cell.Figure.Type.ToString()}");
                     break;
             }
