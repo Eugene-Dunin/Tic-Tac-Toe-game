@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D4DBD925-7EE4-47EC-8763-5EBCEBC7984E}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>iTechArt.TicTacToe</RootNamespace>
-    <AssemblyName>iTechArt.TicTacToe</AssemblyName>
+    <ProjectGuid>{636E3E20-D1CD-4A8A-BAC0-B84E9CEDE918}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>iTechArt.TicTacToe.Console</RootNamespace>
+    <AssemblyName>iTechArt.TicTacToe.Console</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -35,33 +33,50 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="BoardDrawers\BoardDrawer.cs" />
+    <Compile Include="ConsoleInputManagers\ConsoleInputProvider.cs" />
+    <Compile Include="Consoles\ConcreteConsole.cs" />
+    <Compile Include="Extensions\EnumerableExtension.cs" />
+    <Compile Include="FigureDrawerProviders\FigureDrawerProvider.cs" />
+    <Compile Include="FigureDrawers\CircleDrawer.cs" />
+    <Compile Include="FigureDrawers\CrossDrawer.cs" />
+    <Compile Include="FigureDrawers\FigureDrawerBase.cs" />
+    <Compile Include="FigureDrawers\FigureDrawerFactory.cs" />
+    <Compile Include="GameInputProviders\GameInputProvider.cs" />
+    <Compile Include="GamePreparationServices\GamePreparationService.cs" />
+    <Compile Include="Interfaces\IBoardDrawer.cs" />
+    <Compile Include="Interfaces\IConsole.cs" />
+    <Compile Include="Interfaces\IConsoleInputProvider.cs" />
+    <Compile Include="Interfaces\IFigureDrawer.cs" />
+    <Compile Include="Interfaces\IFigureDrawerProvider.cs" />
+    <Compile Include="Interfaces\IFigureDrawerFactory.cs" />
+    <Compile Include="Interfaces\IGamePreparationService.cs" />
+    <Compile Include="Interfaces\IPartyFinishedProvider.cs" />
+    <Compile Include="Interfaces\IPlayerRegisterManager.cs" />
+    <Compile Include="PartyFinishProviders\PartyFinishProvider.cs" />
+    <Compile Include="PlayerRegisterManagers\PlayerRegisterManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="..\iTechArt.TicTacToe.Console\iTechArt.TicTacToe.Console.csproj">
-      <Project>{636E3E20-D1CD-4A8A-BAC0-B84E9CEDE918}</Project>
-      <Name>iTechArt.TicTacToe.Console</Name>
-    </ProjectReference>
     <ProjectReference Include="..\iTechArt.TicTacToe.Foundation\iTechArt.TicTacToe.Foundation.csproj">
       <Project>{c0bf88d6-56c3-4331-891e-471630294080}</Project>
       <Name>iTechArt.TicTacToe.Foundation</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

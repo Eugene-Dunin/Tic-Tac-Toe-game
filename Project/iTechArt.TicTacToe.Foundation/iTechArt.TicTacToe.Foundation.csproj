@@ -46,12 +46,14 @@
   <ItemGroup>
     <Compile Include="GameLogic\Finish\DrawFinishedEventArgs.cs" />
     <Compile Include="GameLogic\Finish\WinFinishedEventArgs.cs" />
+    <Compile Include="GameLogic\GameFactory.cs" />
     <Compile Include="GameLogic\StepDone\StepDoneEventArgs.cs" />
     <Compile Include="GameLogic\StepDone\CellNotExistStepDoneEventArgs.cs" />
     <Compile Include="GameLogic\StepDone\StepResult.cs" />
     <Compile Include="Figures\FigureFactory.cs" />
     <Compile Include="GameBoard\BoardFactory.cs" />
     <Compile Include="Interfaces\IGame.cs" />
+    <Compile Include="Interfaces\IGameFactory.cs" />
     <Compile Include="Interfaces\IGameInputProvider.cs" />
     <Compile Include="Interfaces\ILine.cs" />
     <Compile Include="Interfaces\IPlayer.cs" />
@@ -86,15 +88,12 @@
     <Compile Include="GameBoard\Board.cs" />
     <Compile Include="Interfaces\ICell.cs" />
     <Compile Include="Interfaces\IBoard.cs" />
-    <Compile Include="Players\AgeConstrains.cs" />
     <Compile Include="Players\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Events\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

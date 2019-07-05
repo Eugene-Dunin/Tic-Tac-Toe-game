@@ -20,8 +20,6 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
         private int _currentPlayerIndex;
 
 
-        private bool IsGameFinished => _lines.Any(line => line.IsWin) || _board.All(cell => !cell.IsEmpty);
-
         private IPlayer CurrentPlayer => _players[_currentPlayerIndex];
 
 
@@ -50,12 +48,13 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
 
         public void Start()
         {
-            while (!IsGameFinished)
+            ILine winLine;
+            while (TryGetWinLine(out winLine) || _board.All(cell => !cell.IsEmpty))
             {
                 DoStep(CurrentPlayer);
                 _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
             }
-            EmitGameFinishedEvent();
+            EmitGameFinishedEvent(winLine);
         }
 
 
@@ -83,15 +82,20 @@ namespace iTechArt.TicTacToe.Foundation.GameLogic
             } while (fillResult != FillCellResult.Successful);
         }
 
-        private void EmitGameFinishedEvent()
+        private void EmitGameFinishedEvent(ILine winLine)
         {
-            var winLine = _lines.SingleOrDefault(line => line.IsWin);
-
             var gameFinishedEventArgs = winLine != null
-                ? (FinishedEventArgs)new WinFinishedEventArgs(winLine)
+                ? (FinishedEventArgs)new WinFinishedEventArgs(winLine.Cells, CurrentPlayer)
                 : new DrawFinishedEventArgs();
 
             Finished?.Invoke(this, gameFinishedEventArgs);
+        }
+
+        private bool TryGetWinLine(out ILine winLine)
+        {
+            winLine = _lines.SingleOrDefault(line => line.IsWin);
+
+            return winLine != null;
         }
     }
 }
